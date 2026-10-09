@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Galeria Hermes Santos</title>
+  <link rel="preload" href="assets/cormorant-garamond-300.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="hero.css">
+  <script>document.documentElement.classList.add('hero-motion');setTimeout(function(){document.documentElement.classList.remove('hero-waiting')},1500);document.documentElement.classList.add('hero-waiting');</script>
+  <script src="hero.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <main id="conteudo">
+    <section class="gallery-hero" aria-labelledby="artist-name">
+      <div class="gallery-stage">
+        <div class="room-environment" aria-hidden="true">
+          <img class="room-plate" src="assets/gallery-room.webp" width="1672" height="941" alt="" aria-hidden="true" fetchpriority="high">
+          <div class="room-light-reveal"></div>
+          <div class="floor-light-reveal"></div>
+        </div>
+        <div class="room-shade" aria-hidden="true"></div>
+        <header class="gallery-header">
+          <a class="gallery-brand" href="./" aria-label="Galeria Hermes Santos">
+            <img src="assets/hermes-official-logo.png" width="1122" height="1402" alt="">
+          </a>
+          <button class="menu-trigger" type="button" aria-expanded="false" aria-controls="gallery-navigation" hidden>Menu</button>
+          <nav id="gallery-navigation" aria-label="Navegação principal">
+            <div class="gallery-links">
+              <a href="#obras">Obras</a><a href="#exposicoes">Exposições</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a>
+            </div>
+            <div class="gallery-languages" aria-label="Idioma"><a href="./" lang="pt-BR" aria-current="page">PT</a><span aria-hidden="true">|</span><a href="?lang=en" lang="en">EN</a></div>
+          </nav>
+        </header>
+        <div class="gallery-center">
+          <div class="artwork-mount artwork-contact" aria-hidden="true"></div>
+          <div class="artwork-mount">
+            <img src="assets/artwork-placeholder-from-approved-hero.webp" width="370" height="370" alt="Obra de Hermes Santos: disco circular de fibras claras em torno de um centro escuro" fetchpriority="high">
+          </div>
+          <h1 id="artist-name" aria-label="Hermes Santos"><span>H<span class="small-caps">ermes</span></span> <span>S<span class="small-caps">antos</span></span></h1>
+          <p class="gallery-subtitle">GALERIA DE ARTE</p>
+        </div>
+        <img class="gallery-bench" src="assets/gallery-bench.webp" width="1390" height="223" alt="" aria-hidden="true">
+        <div class="bench-edge-light" aria-hidden="true"></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

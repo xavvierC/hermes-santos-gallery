@@ -1,0 +1,77 @@
+@font-face{font-family:Gallery Cormorant;src:url('assets/cormorant-garamond-300.woff2') format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:Gallery Fallback;src:local('Times New Roman');size-adjust:103%;ascent-override:95%;descent-override:25%;line-gap-override:0%}
+:root{color-scheme:dark;background:#0a0a09;color:#f1eee8;font-family:Gallery Cormorant,Gallery Fallback,serif}
+*{box-sizing:border-box}body{margin:0}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}a:focus-visible,button:focus-visible{outline:2px solid #e7e1d8;outline-offset:6px}a:hover{color:#fff}
+.skip-link{position:fixed;top:12px;left:12px;padding:12px;background:#11100e;z-index:10;translate:0 -160%}.skip-link:focus{translate:0}
+.gallery-hero{background:#0a0a09;min-height:100svh;overflow:clip}
+.gallery-stage{position:relative;isolation:isolate;width:min(100%,2560px);margin:auto;height:100vh;height:100svh;min-height:640px;container-type:size}
+.room-plate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 80%;z-index:-3}
+.room-shade{position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,#0a0a09,transparent 5%,transparent 95%,#0a0a09)}
+.gallery-header{position:absolute;top:2.65%;left:4%;right:3.4%;display:flex;align-items:center;justify-content:space-between;gap:32px;z-index:3}
+.gallery-brand{display:flex;align-items:center;gap:1.1vw;flex-shrink:0}.gallery-brand img{width:5.8vw;max-width:148px;height:auto}.gallery-brand span{font-size:clamp(14px,1.15vw,29px);font-weight:500;letter-spacing:.12em;line-height:1.2}
+#gallery-navigation{display:flex;align-items:center;gap:3.5vw}.gallery-links{display:flex;gap:2.8vw;align-items:center;font-size:clamp(18px,1.25vw,32px);font-weight:400;white-space:nowrap}
+.gallery-languages{display:flex;align-items:center;gap:.8vw;border-left:1px solid rgba(241,238,232,.4);padding-left:3.5vw;min-height:3.5vw;font-size:clamp(14px,.95vw,24px);color:#c1b6a8}.gallery-languages a[aria-current]{color:#e7e1d8}
+.gallery-center{position:absolute;inset:0;text-align:center}
+.artwork-mount{position:absolute;top:14%;left:50%;transform:translateX(-50%);width:min(21cqw,38cqh);aspect-ratio:1;container-type:inline-size;border-radius:50%;box-shadow:1.4px 2.8px 4.2px rgba(0,0,0,.7),7px 14px 21px rgba(0,0,0,.55),17.5px 35px 63px rgba(0,0,0,.4);border:1px solid #171411;overflow:hidden}
+.artwork-mount img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}.artwork-mount:after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 18%,rgba(255,228,186,.12),transparent 52%),linear-gradient(145deg,transparent 45%,rgba(0,0,0,.17));box-shadow:inset 1px 1px 0 rgba(235,209,174,.17)}
+#artist-name{position:absolute;top:calc(57cqh - .22em);left:50%;transform:translateX(-50%);margin:0;font-size:clamp(55px,6vw,154px);font-weight:300;line-height:1.06;letter-spacing:.055em;white-space:nowrap;color:#f1eee8}.small-caps{font-size:.83em;text-transform:uppercase}
+.gallery-subtitle{position:absolute;top:calc(69cqh - .3em);left:50%;transform:translateX(-50%);white-space:nowrap;margin:0;font-size:clamp(17px,1.4vw,36px);line-height:1.4;letter-spacing:.5em;padding-left:.5em;color:#c6bbae;font-weight:400}
+.gallery-bench{position:absolute;top:83%;left:50%;transform:translateX(-50%);width:45.6%;height:10cqh;filter:brightness(.38);box-shadow:0 18px 16px -12px rgba(0,0,0,.6);z-index:1}
+.menu-trigger{display:none;border:0;background:none;padding:10px 0;font-size:20px;cursor:pointer}.menu-trigger[hidden]{display:none}
+@media(min-width:768px) and (max-width:1279px){.gallery-header{left:4%;right:4%}.gallery-brand img{width:7vw}.gallery-brand span{font-size:15px}.gallery-links{gap:2.2vw;font-size:19px}#gallery-navigation{gap:2vw}.gallery-languages{padding-left:2vw;min-height:42px}#artist-name{font-size:6.3vw}}
+@media(max-width:999px){.gallery-header{top:24px}.gallery-brand img{width:70px}.gallery-brand span{font-size:15px}.artwork-mount{top:14%;width:min(38vw,34cqh,340px)}#artist-name{font-size:7.6vw}.gallery-subtitle{font-size:21px}.gallery-bench{width:58%;height:auto;top:84%}.js .menu-trigger{display:block}.js #gallery-navigation{display:none;position:absolute;left:-4.35%;right:-4.35%;top:calc(100% + 18px);padding:28px 7%;background:#11100e;box-shadow:0 20px 35px #0008}.js #gallery-navigation.is-open{display:flex;align-items:flex-start;justify-content:space-between}.js .gallery-links{flex-direction:column;align-items:flex-start;gap:22px;font-size:24px}.gallery-languages{padding-left:22px;gap:12px;min-height:40px}.menu-open{overflow:hidden}}
+@media(max-width:767px){.gallery-header{left:6%;right:6%;top:24px;gap:12px}.gallery-brand{gap:12px}.gallery-brand img{width:56px}.gallery-brand span{font-size:13px}.artwork-mount{top:18%;width:min(66vw,36cqh,330px)}#artist-name{top:calc(55cqh - .22em);font-size:10.4vw;letter-spacing:.035em}.gallery-subtitle{top:calc(63cqh - .3em);font-size:clamp(14px,3.6vw,20px);letter-spacing:.46em;padding-left:.46em}.gallery-bench{width:76%;top:85%;height:auto}.room-plate{object-position:center}.room-shade{background:rgba(0,0,0,.2)}.js #gallery-navigation{left:-6.82%;right:-6.82%}html:not(.js) .gallery-header{flex-wrap:wrap}html:not(.js) #gallery-navigation{width:100%;gap:12px;justify-content:space-between}html:not(.js) .gallery-links{gap:14px;font-size:17px}html:not(.js) .gallery-languages{padding-left:12px;font-size:13px;gap:7px}}
+@media(max-width:339px){#artist-name{white-space:normal;font-size:16vw;max-width:90%;line-height:.95}#artist-name>span{display:block}.gallery-subtitle{top:72%;font-size:12px}}
+@media(max-height:500px) and (min-width:768px){.artwork-mount{width:min(38vw,34cqh,280px)}#artist-name{font-size:70px}.gallery-subtitle{font-size:21px}}
+
+@font-face{font-family:Gallery Cormorant;src:url(assets/cormorant-garamond-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Gallery Cormorant;src:url(assets/cormorant-garamond-500.woff2) format("woff2");font-weight:500;font-display:swap}
+
+/* These reveal layers disappear completely at rest. The light and reflection
+   are already baked into the approved plate, so no replacement art is needed. */
+.room-environment{display:contents}
+.room-light-reveal,.floor-light-reveal{position:absolute;inset:0;z-index:-2;opacity:0;pointer-events:none}
+.room-light-reveal{background:radial-gradient(ellipse 38% 90% at 50% 0%,#0a0a09 0%,#0a0a09 35%,transparent 80%)}
+.floor-light-reveal{background:linear-gradient(transparent 68%,#0a0a09 80%)}
+.artwork-contact{display:block;overflow:visible;box-shadow:none;border-color:transparent;pointer-events:none}
+.artwork-contact::before{content:'';position:absolute;inset:-1px;border-radius:50%;box-shadow:.4cqw .8cqw 1.2cqw rgba(0,0,0,.7),2cqw 4cqw 6cqw rgba(0,0,0,.72),5cqw 10cqw 18cqw rgba(0,0,0,.7)}
+.artwork-mount:not(.artwork-contact){box-shadow:none}
+.artwork-contact::after{content:none}
+.room-environment::before{content:'';position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:0}
+.bench-edge-light{position:absolute;top:calc(83% + 2.1cqh);left:50%;transform:translateX(-50%);width:45.1%;height:1px;z-index:2;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(219,177,127,.13) 15%,rgba(219,177,127,.13) 85%,transparent)}
+@media(max-width:999px){.bench-edge-light{top:calc(84% + 1.96vw);width:57.4%}}
+@media(max-width:767px){.bench-edge-light{top:calc(85% + 2.57vw);width:75%}}
+@media(min-aspect-ratio:19/10){.room-environment::before{opacity:1;background:linear-gradient(90deg,rgba(10,10,9,.97),rgba(10,10,9,.95) 12%,transparent 25%,transparent 75%,rgba(10,10,9,.95) 88%,rgba(10,10,9,.97));mask-image:linear-gradient(#000 0%,#000 8%,transparent 19%)}}
+
+@media(prefers-reduced-motion:no-preference){
+  .hero-motion .gallery-hero{--intro-ease:cubic-bezier(.22,.61,.36,1);--room-duration:1800ms;--settle-duration:4200ms;--light-delay:400ms;--art-delay:1000ms;--mount-delay:1500ms;--bench-delay:1300ms;--title-delay:1900ms;--subtitle-delay:2500ms;--brand-delay:3000ms;--nav-delay:3150ms;--language-delay:3600ms}
+  .hero-motion .room-plate{transform-origin:50% 40%;animation:gallery-reveal var(--room-duration) var(--intro-ease) both,gallery-room-settle var(--settle-duration) var(--intro-ease) both}
+  .hero-motion .room-environment::before{animation:gallery-reveal var(--room-duration) var(--intro-ease) both}
+  .hero-motion .artwork-contact{display:block}
+  .hero-motion .artwork-mount:not(.artwork-contact){box-shadow:none}
+  .hero-motion .room-light-reveal{animation:gallery-light-reveal 1800ms var(--intro-ease) var(--light-delay) both}
+  .hero-motion .floor-light-reveal{animation:gallery-light-reveal 1600ms var(--intro-ease) var(--bench-delay) both}
+  .hero-motion .artwork-mount:not(.artwork-contact){animation:gallery-reveal 1800ms var(--intro-ease) var(--art-delay) both}
+  .hero-motion .artwork-contact,.hero-motion .artwork-mount:not(.artwork-contact)::after{animation:gallery-reveal 1500ms var(--intro-ease) var(--mount-delay) both}
+  .hero-motion .gallery-bench{animation:gallery-reveal 1600ms var(--intro-ease) var(--bench-delay) both}
+  .hero-motion .bench-edge-light{animation:gallery-reveal 1600ms var(--intro-ease) var(--bench-delay) both}
+  .hero-motion #artist-name{animation:gallery-title-reveal 1400ms var(--intro-ease) var(--title-delay) both}
+  .hero-motion .gallery-subtitle{animation:gallery-reveal 1200ms var(--intro-ease) var(--subtitle-delay) both}
+  .hero-motion .gallery-brand,.hero-motion .menu-trigger{animation:gallery-reveal 1000ms var(--intro-ease) var(--brand-delay) both}
+  .hero-motion .gallery-links a{animation:gallery-reveal 780ms var(--intro-ease) var(--nav-delay) both}
+  .hero-motion .gallery-links a:nth-child(2){animation-delay:calc(var(--nav-delay) + 90ms)}
+  .hero-motion .gallery-links a:nth-child(3){animation-delay:calc(var(--nav-delay) + 180ms)}
+  .hero-motion .gallery-links a:nth-child(4){animation-delay:calc(var(--nav-delay) + 270ms)}
+  .hero-motion .gallery-languages{animation:gallery-reveal 600ms var(--intro-ease) var(--language-delay) both}
+  .hero-waiting .gallery-hero *,.hero-waiting .artwork-mount::after{animation-play-state:paused}
+  .hero-motion .gallery-brand:focus-visible,.hero-motion .menu-trigger:focus-visible,.hero-motion .gallery-links a:focus-visible,.hero-motion .gallery-languages:focus-within{animation:none;opacity:1}
+  @keyframes gallery-reveal{from{opacity:0}}
+  @keyframes gallery-light-reveal{from{opacity:1}}
+  @keyframes gallery-room-settle{from{transform:scale(1.035)}}
+  @keyframes gallery-title-reveal{from{opacity:0;transform:translateX(-50%) translateY(10px)}}
+}
+
+/* Original supplied logo: complete file, native proportions, no retouching. */
+.gallery-brand{position:relative;width:18vw;max-width:460px;height:3.19vw;min-height:40px}.gallery-brand img{position:absolute;left:0;top:50%;transform:translateY(-50%);width:8vw;min-width:100px;max-width:205px;height:auto}
+@media(max-width:999px){.gallery-brand{width:140px;height:50px}.gallery-brand img{width:110px;min-width:0}}
+@media(max-width:767px){.gallery-brand{width:120px;height:50px}.gallery-brand img{width:100px}}
