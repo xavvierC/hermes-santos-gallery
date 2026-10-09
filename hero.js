@@ -16,7 +16,7 @@ function setMenu(open, restoreFocus = false) {
   document.body.classList.toggle('menu-open', open);
   document.documentElement.classList.toggle('menu-open', open);
   if (open) pageBehindMenu.forEach(element => { element.inert = true; });
-  if (open) navigation.querySelector('a').focus();
+  if (open) navigation.focus({ preventScroll: true });
   else {
     navigation.classList.add('is-closing');
     closeTimer = setTimeout(() => {
