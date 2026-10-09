@@ -21,6 +21,29 @@
 @media(min-width:768px) and (max-width:1279px){.gallery-header{left:4%;right:4%}.gallery-brand img{width:7vw}.gallery-brand span{font-size:15px}.gallery-links{gap:2.2vw;font-size:19px}#gallery-navigation{gap:2vw}.gallery-languages{padding-left:2vw;min-height:42px}#artist-name{font-size:6.3vw}}
 @media(max-width:999px){.gallery-header{top:24px}.gallery-brand img{width:70px}.gallery-brand span{font-size:15px}.artwork-mount{top:14%;width:min(38vw,34cqh,340px)}#artist-name{font-size:7.6vw}.gallery-subtitle{font-size:21px}.gallery-bench{width:58%;height:auto;top:84%}.js .menu-trigger{display:block}.js #gallery-navigation{display:none;position:absolute;left:-4.35%;right:-4.35%;top:calc(100% + 18px);padding:28px 7%;background:#11100e;box-shadow:0 20px 35px #0008}.js #gallery-navigation.is-open{display:flex;align-items:flex-start;justify-content:space-between}.js .gallery-links{flex-direction:column;align-items:flex-start;gap:22px;font-size:24px}.gallery-languages{padding-left:22px;gap:12px;min-height:40px}.menu-open{overflow:hidden}}
 @media(max-width:767px){.gallery-header{left:6%;right:6%;top:24px;gap:12px}.gallery-brand{gap:12px}.gallery-brand img{width:56px}.gallery-brand span{font-size:13px}.artwork-mount{top:18%;width:min(66vw,36cqh,330px)}#artist-name{top:calc(55cqh - .22em);font-size:10.4vw;letter-spacing:.035em}.gallery-subtitle{top:calc(63cqh - .3em);font-size:clamp(14px,3.6vw,20px);letter-spacing:.46em;padding-left:.46em}.gallery-bench{width:76%;top:85%;height:auto}.room-plate{object-position:center}.room-shade{background:rgba(0,0,0,.2)}.js #gallery-navigation{left:-6.82%;right:-6.82%}html:not(.js) .gallery-header{flex-wrap:wrap}html:not(.js) #gallery-navigation{width:100%;gap:12px;justify-content:space-between}html:not(.js) .gallery-links{gap:14px;font-size:17px}html:not(.js) .gallery-languages{padding-left:12px;font-size:13px;gap:7px}}
+
+/* Compact navigation: the mobile menu is a quiet, full-viewport room-darkening overlay. */
+@media(max-width:999px){
+  .js .gallery-header{z-index:5}
+  .js .gallery-brand,.js .menu-trigger{position:relative;z-index:6}
+  .js .menu-trigger{min-width:74px;-webkit-tap-highlight-color:transparent}
+  .js #gallery-navigation{position:fixed;inset:0;width:100%;height:100dvh;min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:0 max(7vw,24px) calc(env(safe-area-inset-bottom) + 2rem);background:rgba(10,10,9,.97);box-shadow:none;visibility:hidden;opacity:0;pointer-events:none;overflow-y:auto;overscroll-behavior:contain;z-index:2;transition:opacity 450ms cubic-bezier(.22,.61,.36,1),visibility 0s linear 450ms}
+  .js #gallery-navigation::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 40% at 50% 0%,rgba(166,112,67,.08),transparent 70%)}
+  .js #gallery-navigation.is-open{display:flex;visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s}
+  .js #gallery-navigation.is-closing{visibility:visible;opacity:0;pointer-events:none;transition-duration:300ms;transition-delay:0s}
+  .js .gallery-links{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:clamp(1.25rem,3.5svh,2rem);width:100%;margin-top:clamp(35vh,44vh,46vh);font-size:clamp(1.75rem,7.5vw,2.25rem);line-height:1.2;white-space:normal}
+  .js .gallery-links a{display:flex;align-items:center;justify-content:center;min-height:48px;padding:4px 12px;opacity:0;transition:none}
+  .js #gallery-navigation.is-open .gallery-links a{animation:compact-menu-link-in 400ms cubic-bezier(.22,.61,.36,1) both}
+  .js #gallery-navigation.is-open .gallery-links a:nth-child(1){animation-delay:120ms}.js #gallery-navigation.is-open .gallery-links a:nth-child(2){animation-delay:190ms}.js #gallery-navigation.is-open .gallery-links a:nth-child(3){animation-delay:260ms}.js #gallery-navigation.is-open .gallery-links a:nth-child(4){animation-delay:330ms}
+  .js .gallery-languages{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 2rem);left:50%;transform:translateX(-50%);border:0;padding:0;min-height:48px;gap:12px;font-size:clamp(15px,4vw,18px);letter-spacing:.12em;opacity:0;z-index:1}
+  .js #gallery-navigation.is-open .gallery-languages{animation:compact-menu-link-in 400ms cubic-bezier(.22,.61,.36,1) 470ms both}
+  .js .gallery-languages a{min-height:48px;display:flex;align-items:center}
+  .js .gallery-languages span{opacity:.55}
+  .js .menu-open{overflow:hidden;overscroll-behavior:contain}
+}
+@media(max-width:999px) and (max-height:500px){.js .gallery-links{margin-top:22vh;gap:clamp(.5rem,2.5svh,1rem);font-size:clamp(1.5rem,5.5vw,2rem)}.js .gallery-languages{bottom:1rem}}
+@media(prefers-reduced-motion:reduce){.js #gallery-navigation{transition:none}.js #gallery-navigation.is-open .gallery-links a,.js #gallery-navigation.is-open .gallery-languages{animation:none;opacity:1}}
+@media(max-width:999px){@keyframes compact-menu-link-in{from{opacity:0}to{opacity:1}}}
 @media(max-width:339px){#artist-name{white-space:normal;font-size:16vw;max-width:90%;line-height:.95}#artist-name>span{display:block}.gallery-subtitle{top:72%;font-size:12px}}
 @media(max-height:500px) and (min-width:768px){.artwork-mount{width:min(38vw,34cqh,280px)}#artist-name{font-size:70px}.gallery-subtitle{font-size:21px}}
 
