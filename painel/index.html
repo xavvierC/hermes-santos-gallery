@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel da galeria — Hermes Santos</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400&display=swap">
+  <link rel="stylesheet" href="/painel/painel.css">
+  <script src="/painel/painel.js" defer></script>
+</head>
+<body>
+  <!-- entrar -->
+  <main class="entrar" id="telaEntrar">
+    <form class="cartao" id="formEntrar">
+      <img src="/assets/hermes-marca.png" alt="" width="186" height="96">
+      <h1>Painel da galeria</h1>
+      <p class="dica">Cadastre obras, exposições e matérias. O site se atualiza sozinho.</p>
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" autocomplete="current-password" required>
+      <button class="primario" type="submit">Entrar</button>
+      <p class="erro" id="erroEntrar" role="alert"></p>
+    </form>
+  </main>
+
+  <!-- painel -->
+  <div class="painel" id="telaPainel" hidden>
+    <header class="barra">
+      <strong class="marca">Painel da galeria</strong>
+      <nav class="abas" role="tablist" aria-label="Seções do painel">
+        <button type="button" role="tab" id="tabObras" aria-controls="abaObras" aria-selected="true">Obras</button>
+        <button type="button" role="tab" id="tabExpos" aria-controls="abaExpos" aria-selected="false">Exposições</button>
+        <button type="button" role="tab" id="tabImprensa" aria-controls="abaImprensa" aria-selected="false">Imprensa</button>
+      </nav>
+      <div class="barra-direita">
+        <a href="/" target="_blank" rel="noopener">Ver site ↗</a>
+        <button type="button" class="link" id="sair">Sair</button>
+      </div>
+    </header>
+    <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
+
+    <main>
+      <section id="abaObras" role="tabpanel" aria-labelledby="tabObras">
+        <div class="cab">
+          <div><h2>Obras</h2><p class="dica" id="resumoObras"></p></div>
+          <button type="button" class="primario" id="novaObra">+ Nova obra</button>
+        </div>
+        <ul class="lista" id="listaObras"></ul>
+      </section>
+      <section id="abaExpos" role="tabpanel" aria-labelledby="tabExpos" hidden>
+        <div class="cab">
+          <div><h2>Exposições e eventos</h2><p class="dica">Ficam em ordem de data no site.</p></div>
+          <button type="button" class="primario" id="novaExpo">+ Nova exposição</button>
+        </div>
+        <ul class="lista" id="listaExpos"></ul>
+      </section>
+      <section id="abaImprensa" role="tabpanel" aria-labelledby="tabImprensa" hidden>
+        <div class="cab">
+          <div><h2>Imprensa</h2><p class="dica">Matérias novas entram no topo da lista.</p></div>
+          <button type="button" class="primario" id="novaMateria">+ Nova matéria</button>
+        </div>
+        <ul class="lista" id="listaImprensa"></ul>
+      </section>
+    </main>
+  </div>
+
+  <!-- obra -->
+  <dialog class="janela" id="dlgObra" aria-labelledby="tituloDlgObra">
+    <form id="formObra" novalidate>
+      <h2 id="tituloDlgObra">Obra</h2>
+      <div class="grade-campos">
+        <label class="largo">Título<input name="titulo" required maxlength="120"></label>
+        <label>Ano<input name="ano" required maxlength="20" inputmode="numeric" placeholder="2026"></label>
+        <label>Técnica
+          <select name="tecnica"><option>Escultura</option><option>Pintura</option><option>Instalação</option><option>Colagem</option></select>
+        </label>
+        <label>Dimensões<input name="dimensoes" maxlength="120" placeholder="50 x 50 x 20 cm"></label>
+        <label>Destaque na página inicial
+          <select name="destaque"><option value="">Não</option><option value="1">1º</option><option value="2">2º</option><option value="3">3º</option><option value="4">4º</option><option value="5">5º</option><option value="6">6º</option></select>
+        </label>
+        <label class="largo">Material<input name="material" maxlength="200" placeholder="Aço inóx e latão"></label>
+      </div>
+      <fieldset class="fotos">
+        <legend>Fotos</legend>
+        <p class="dica">A primeira foto é a que aparece no site. Fotos grandes são reduzidas automaticamente.</p>
+        <ul class="fotos-lista" id="fotosObra"></ul>
+        <label class="botao">Adicionar fotos<input type="file" id="arquivosObra" accept="image/*" multiple></label>
+        <span class="dica" id="processando" aria-live="polite"></span>
+      </fieldset>
+      <p class="erro" id="erroObra" role="alert"></p>
+      <div class="acoes">
+        <button type="button" class="perigo" id="excluirObra">Excluir obra</button>
+        <span class="espaco"></span>
+        <button type="button" data-fechar>Cancelar</button>
+        <button type="submit" class="primario">Salvar no site</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- exposição -->
+  <dialog class="janela" id="dlgExpo" aria-labelledby="tituloDlgExpo">
+    <form id="formExpo" novalidate>
+      <h2 id="tituloDlgExpo">Exposição ou evento</h2>
+      <div class="grade-campos">
+        <label class="largo">Título<input name="titulo" required maxlength="200"></label>
+        <label class="largo">Título em inglês <small>(opcional)</small><input name="en" maxlength="200"></label>
+        <label class="largo">Local<input name="lugar" required maxlength="200" placeholder="Galeria, cidade"></label>
+        <label class="largo">Local em inglês <small>(opcional)</small><input name="lugarEn" maxlength="200"></label>
+        <label>Data <small>(opcional)</small><input name="data" type="date"></label>
+        <label>Ano<input name="ano" type="number" min="1900" max="2100" required></label>
+        <label class="marcar largo"><input name="intl" type="checkbox"> Evento internacional</label>
+      </div>
+      <p class="erro" id="erroExpo" role="alert"></p>
+      <div class="acoes">
+        <button type="button" class="perigo" id="excluirExpo">Excluir</button>
+        <span class="espaco"></span>
+        <button type="button" data-fechar>Cancelar</button>
+        <button type="submit" class="primario">Salvar no site</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- matéria -->
+  <dialog class="janela" id="dlgMateria" aria-labelledby="tituloDlgMateria">
+    <form id="formMateria" novalidate>
+      <h2 id="tituloDlgMateria">Matéria na imprensa</h2>
+      <div class="grade-campos">
+        <label>Veículo<input name="veiculo" required maxlength="80" placeholder="Veja"></label>
+        <label>Mês <small>(opcional)</small>
+          <select name="mes"><option value="">—</option><option value="1">janeiro</option><option value="2">fevereiro</option><option value="3">março</option><option value="4">abril</option><option value="5">maio</option><option value="6">junho</option><option value="7">julho</option><option value="8">agosto</option><option value="9">setembro</option><option value="10">outubro</option><option value="11">novembro</option><option value="12">dezembro</option></select>
+        </label>
+        <label>Ano<input name="ano" type="number" min="1900" max="2100" required></label>
+        <label class="largo">Título da matéria<input name="titulo" required maxlength="300"></label>
+        <label class="largo">Link<input name="url" type="url" required maxlength="500" placeholder="https://"></label>
+      </div>
+      <p class="erro" id="erroMateria" role="alert"></p>
+      <div class="acoes">
+        <button type="button" class="perigo" id="excluirMateria">Excluir</button>
+        <span class="espaco"></span>
+        <button type="button" data-fechar>Cancelar</button>
+        <button type="submit" class="primario">Salvar no site</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

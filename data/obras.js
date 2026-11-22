@@ -1,4 +1,4 @@
-/* Gerado por ferramentas/baixar_extras.py a partir de data/obras.json (fichas do site atual). */
+/* Gerado pelo painel (/painel). Para editar as obras, use o painel. */
 window.HERMES_OBRAS = [
  {
   "titulo": "Fusão celeste",
@@ -30,7 +30,8 @@ window.HERMES_OBRAS = [
     "w": 554,
     "h": 676
    }
-  ]
+  ],
+  "destaque": 3
  },
  {
   "titulo": "Amonite",
@@ -132,7 +133,8 @@ window.HERMES_OBRAS = [
     "w": 926,
     "h": 1800
    }
-  ]
+  ],
+  "destaque": 6
  },
  {
   "titulo": "Struggling",
@@ -188,7 +190,8 @@ window.HERMES_OBRAS = [
     "w": 1012,
     "h": 1800
    }
-  ]
+  ],
+  "destaque": 5
  },
  {
   "titulo": "Obra Solar",
@@ -210,7 +213,8 @@ window.HERMES_OBRAS = [
     "w": 1800,
     "h": 1623
    }
-  ]
+  ],
+  "destaque": 2
  },
  {
   "titulo": "Download",
@@ -532,7 +536,8 @@ window.HERMES_OBRAS = [
     "w": 960,
     "h": 1280
    }
-  ]
+  ],
+  "destaque": 4
  },
  {
   "titulo": "Poltrona Vênus",
@@ -632,7 +637,8 @@ window.HERMES_OBRAS = [
     "w": 851,
     "h": 1279
    }
-  ]
+  ],
+  "destaque": 1
  },
  {
   "titulo": "Muscle",

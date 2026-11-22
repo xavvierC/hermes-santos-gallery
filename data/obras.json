@@ -29,7 +29,8 @@
     "w": 554,
     "h": 676
    }
-  ]
+  ],
+  "destaque": 3
  },
  {
   "titulo": "Amonite",
@@ -131,7 +132,8 @@
     "w": 926,
     "h": 1800
    }
-  ]
+  ],
+  "destaque": 6
  },
  {
   "titulo": "Struggling",
@@ -187,7 +189,8 @@
     "w": 1012,
     "h": 1800
    }
-  ]
+  ],
+  "destaque": 5
  },
  {
   "titulo": "Obra Solar",
@@ -209,7 +212,8 @@
     "w": 1800,
     "h": 1623
    }
-  ]
+  ],
+  "destaque": 2
  },
  {
   "titulo": "Download",
@@ -531,7 +535,8 @@
     "w": 960,
     "h": 1280
    }
-  ]
+  ],
+  "destaque": 4
  },
  {
   "titulo": "Poltrona Vênus",
@@ -631,7 +636,8 @@
     "w": 851,
     "h": 1279
    }
-  ]
+  ],
+  "destaque": 1
  },
  {
   "titulo": "Muscle",

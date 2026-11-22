@@ -9,6 +9,7 @@
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const H = window.HERMES || {};
   const OBRAS = window.HERMES_OBRAS || [];
+  const AGENDA = window.HERMES_AGENDA || {}; // exposições e matérias (editadas pelo painel)
   const REDE = window.HERMES_REDE || {};
   const movimento = raiz.classList.contains('motion');
   const EN =new URLSearchParams(location.search).get('lang') === 'en';
@@ -435,8 +436,8 @@
   }
 
   /* ---------- obras em destaque ---------- */
-  // Whale abre a lista: com o botão de luz ela alterna entre a foto iluminada e a que brilha no escuro
-  const DESTAQUES = ['whale', 'obra-solar', 'ganesh', 'horse-power', 'resiliencia', 'jelly-fish'];
+  // obras marcadas no painel como destaque (1º a 6º); a Whale abre a lista porque alterna com o botão de luz
+  const DESTAQUES = OBRAS.filter(o => o.destaque).sort((a, b) => a.destaque - b.destaque).map(o => o.id);
   const PY = [80, -60, 100, -50];
   function destaques() {
     const cont = $('#placas');
@@ -558,7 +559,7 @@
 
   /* ---------- exposições ---------- */
   function exposicoes() {
-    const lista = H.exposicoes || [];
+    const lista = AGENDA.exposicoes || [];
     if (lista.length) {
       const de = Math.min(...lista.map(x => x.ano));
       $('#eNota').textContent = txt(`${lista.length} exposições e eventos desde ${de}.`, `${lista.length} exhibitions and events since ${de}.`);
@@ -616,13 +617,13 @@
   /* ---------- imprensa ---------- */
   function imprensa() {
     const ul = $('#materias');
-    (H.imprensa || []).forEach(m => {
+    (AGENDA.imprensa || []).forEach(m => {
       const li = el('li'); li.dataset.rv = 'up';
       const a = el('a'); a.href = m.url; a.target = '_blank'; a.rel = 'noopener';
       a.append(el('span', 'mt-veiculo', m.veiculo), el('span', 'mt-titulo', m.titulo), el('span', 'mt-data', EN ? m.dataEn : m.data));
       li.append(a); ul.append(li);
     });
-    const n = (H.imprensa || []).length;
+    const n = (AGENDA.imprensa || []).length;
     recolher($$('li', ul), 5, ul, txt(`Ver as ${n} matérias`, `See all ${n} articles`));
   }
 

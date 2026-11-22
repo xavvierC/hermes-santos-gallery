@@ -30,7 +30,9 @@ appears behind them. The button pulses once after the opening so visitors notice
 | `index.html` | Markup and PT text; head script starts the preloader with safety timers |
 | `site.css` | All styles (tokens at the top) |
 | `site.js` | Preloader, Lenis, PT/EN (`T` object), light switch, reveals, featured works, collection (images or list), artwork dialog, exhibitions, press, visit |
-| `data/conteudo.js` | Contact, exhibitions, honours, press and EN translations of techniques/materials — taken from hermessantos.com.br |
+| `data/conteudo.js` | Contact, honours and EN translations of techniques/materials — taken from hermessantos.com.br |
+| `data/agenda.json` / `data/agenda.js` | Exhibitions/events and press (edited in the panel) |
+| `api/painel.js`, `painel/` | The editing panel: server function and page |
 | `data/obras.json` / `data/obras.js` | 40 works (title, year, technique, dimensions, material, photos) from the current site |
 | `data/rede.js` | Voronoi line network (the pattern of the openwork sculptures) drawn behind the visit section |
 | `assets/og.jpg`, `ferramentas/og.html` | Link preview image (1200×630) for WhatsApp/Instagram/Facebook and the template it was rendered from |
@@ -40,12 +42,35 @@ appears behind them. The button pulses once after the opening so visitors notice
 | `assets/vendor/lenis.*` | Lenis 1.1.20 smooth scroll, vendored |
 | `ferramentas/` | Python scripts that regenerate the data and images (`baixar_obras.py`, `baixar_extras.py`, `gerar_rede.py`) |
 
+## Panel (`/painel`)
+
+Hermes edits works (with photos), exhibitions/events and press himself at `/painel` (password login, PT-BR,
+works on the phone). Each "Salvar no site" sends the full data to `api/painel.js`, which validates it and writes
+one commit to `main` through the GitHub API (data files + new photos; photos no longer used are deleted).
+Vercel then redeploys, so the change is live in about a minute. Photos are resized in the browser
+(up to 1600 px and 760 px, WebP or JPEG on older Safari) before upload.
+
+- Data it owns: `data/obras.json` + `data/obras.js` (works; `destaque: 1–6` = featured order on the home page)
+  and `data/agenda.json` + `data/agenda.js` (exhibitions and press). The `.js` files are generated: edit through
+  the panel, or edit the `.json` and the matching `.js` together.
+- Safety: password checked on the server, signed 12-hour session, strict validation of every field and photo path,
+  refuses to save if more than 3 items would disappear at once, and refuses stale saves (someone saved in between).
+- Setup on Vercel (Project → Settings → Environment Variables, Production), then redeploy:
+  - `PAINEL_SENHA`: the panel password (8+ characters).
+  - `GITHUB_TOKEN`: a fine-grained GitHub token for this repository only, permission "Contents: Read and write".
+  Without them the panel answers that it is not configured; the public site is not affected.
+- The panel commits to GitHub, so **run `git pull` before editing the site locally**.
+- Local test without GitHub: copy the site to another folder and run
+  `node ferramentas/servidor-painel.mjs <copy> 3197` with `PAINEL_SENHA` and `PAINEL_LOCAL_DIR=<copy>` set;
+  changes are written to the copy.
+
 ## Editing content
 
 - Portuguese text lives in `index.html`; English strings are in the `T` object at the top of `site.js`.
-- Exhibitions, press, contact: `data/conteudo.js`.
-- Works: edit `data/obras.json` and regenerate `data/obras.js` (`ferramentas/baixar_extras.py` does it), or edit `data/obras.js` directly.
-- Featured works: `DESTAQUES` list in `site.js` (6). Lit/glow photo pairs: `PARES` (only pairs with identical framing).
+- Works, exhibitions and press: through the panel (`/painel`).
+- Contact, honours and EN translations of techniques/materials: `data/conteudo.js`.
+- Featured works: the `destaque` field (1–6) set in the panel. Lit/glow photo pairs: `PARES` in `site.js` (only pairs with identical framing).
+- `ferramentas/baixar_obras.py` / `baixar_extras.py` were used once to import the old site; do not rerun them (they would overwrite panel edits).
 - Copy is deliberately short: one-line introduction, four-paragraph biography in a single text style. Exhibitions show the two latest years and press the five latest articles; a "see all" button opens the rest.
 - When the site moves to its own domain, update the absolute `og:url` and `og:image` addresses in `index.html`.
 
