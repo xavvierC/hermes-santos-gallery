@@ -48,7 +48,7 @@ main > section:not(.gallery-hero) img, .ficha img, .topo img, .rodape img, .prel
 .pl-logo img { width: 100%; height: auto; }
 .pl-brilho { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(236, 211, 162, .85) 50%, transparent 65%);
   mix-blend-mode: overlay; translate: -120% 0; animation: pl-brilho 1.6s var(--suave) .5s forwards;
-  -webkit-mask: url(assets/hermes-official-logo.png) center / contain no-repeat; mask: url(assets/hermes-official-logo.png) center / contain no-repeat; }
+  -webkit-mask: url(assets/hermes-logo-360.png) center / contain no-repeat; mask: url(assets/hermes-logo-360.png) center / contain no-repeat; }
 .pl-linha { width: 180px; height: 1px; background: var(--linha); overflow: hidden; }
 .pl-linha span { display: block; height: 100%; width: 100%; background: var(--latao); transform-origin: left; transform: scaleX(0); }
 .pl-conta { margin: 0; font: 400 12px var(--sans); letter-spacing: .3em; color: var(--marfim-3); font-variant-numeric: tabular-nums; }
