@@ -45,8 +45,10 @@
     'f.anterior': '← Previous', 'f.proxima': 'Next →',
     // versão enxuta
     'lede.c': 'Hermes Santos brings robotics, laser cutting and additive manufacturing from industry into sculpture.',
-    's.c1': 'A visual artist and designer, Hermes Santos trained in mechanics and spent more than three decades in automotive manufacturing.',
-    's.c2': 'Founder of Modefer, he brings the robotics, laser cutting and additive manufacturing of his industrial park to art. He lives and works in São Paulo.',
+    's.e1': 'Hermes Santos is a visual artist and designer. Trained in mechanics and with more than three decades in automotive manufacturing, he developed his artistic practice on his own, through direct observation of materials and experimentation with the processes that transform matter.',
+    's.e2': 'Founder of Modefer, a reference in the auto parts industry, he brings the technologies of his industrial park — robotics, laser cutting and additive manufacturing — to aesthetic ends.',
+    's.e3': 'He describes his method as that of a seeker: the discipline and precision of heavy industry meet an interest in organic forms, in works that explore the duality between technical rigidity and visual lightness.',
+    's.e4': 'He lives and works in São Paulo. His production includes steel and brass sculptures, paintings, glass works and multimedia installations, and is part of private collections and international exhibitions.',
   };
   const txt = (pt, en) => (EN ? en : pt);
   const MESES = EN ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']

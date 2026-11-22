@@ -431,6 +431,9 @@ html:not(.motion) .v-rede path { stroke-dashoffset: 0; transition: none; }
 .enxuto .acervo { padding: clamp(90px, 11vw, 160px) 0 clamp(80px, 9vw, 130px); }
 .enxuto .papel { padding-top: clamp(90px, 10vw, 150px); }
 .enxuto .sobre, .enxuto .expos { padding-bottom: clamp(90px, 10vw, 150px); }
+/* biografia: só título e texto corrido, todos os parágrafos iguais */
+.enxuto .sb-texto p { margin-bottom: 1.1em; font: 400 clamp(19px, 1.45vw, 22px)/1.65 var(--serif); color: var(--tinta); }
+.enxuto .sb-texto { align-self: center; }
 .enxuto .imprensa { padding-bottom: clamp(100px, 11vw, 160px); }
 .enxuto .honrarias { padding-top: clamp(48px, 6vw, 80px); }
 .enxuto .visita { padding-top: clamp(100px, 11vw, 160px); }
