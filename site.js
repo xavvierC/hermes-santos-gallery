@@ -20,7 +20,6 @@
   const T = {
     pular: 'Skip to content', inicio: 'Hermes Santos — home', secoes: 'Sections', menu: 'Menu', fechar: 'Close',
     'nav.obras': 'Works', 'nav.acervo': 'Collection', 'nav.sobre': 'About', 'nav.exposicoes': 'Exhibitions', 'nav.imprensa': 'Press', 'nav.visita': 'Visit',
-    'pl.nota': 'Sculpture, painting, installation',
     'ab.material': 'Strontium aluminate (glow) paint on carbon steel', 'ab.meta': 'Sculptor and visual artist<br>São Paulo, Brazil', 'ab.descer': 'See the works',
     'lede.aria': 'Introduction',
     'lede.texto': 'Hermes Santos brings the precision of industry to art: robotics, laser cutting and additive manufacturing in the service of sculptures in steel, brass, resin and Murano crystal.',
@@ -226,12 +225,10 @@
     if (!raiz.classList.contains('com-preloader') || !tela) { fimIntro(); return; }
     let jaViu = false;
     try { jaViu = sessionStorage.getItem('hs-intro') === '1'; sessionStorage.setItem('hs-intro', '1'); } catch (e) { /* sem armazenamento */ }
-    const rede = $('#plRede');
-    desenharRede(rede, REDE.preloader, jaViu ? 0.5 : 1.3);
-    requestAnimationFrame(() => requestAnimationFrame(() => rede && rede.classList.add('desenha')));
-    const num = $('#plNum');
+    const arco = $('#plArco'), trilho = $('#plTrilho'), anel = $('#plAnel'), fundo = $('.pl-fundo', tela);
+    const R = 96;
     const t0 = performance.now();
-    const minimo = jaViu ? 600 : 2100, maximo = 4200;
+    const minimo = jaViu ? 700 : 2300, maximo = 4400;
     let carregado = document.readyState === 'complete', valor = 0, saiu = false, limpo = false;
     window.addEventListener('load', () => { carregado = true; }, { once: true });
     // fim garantido: mesmo se a aba ficar em segundo plano, a página nunca fica presa sem rolagem
@@ -239,23 +236,35 @@
       if (limpo) return; limpo = true;
       raiz.classList.remove('com-preloader', 'preloader-sai'); tela.remove(); fimIntro(); if (lenis) lenis.start();
     };
-    const sair = () => {
+    // o anel aceso cresce até passar das bordas; o furo no fundo preto acompanha e mostra o site
+    const abrir = () => {
       if (saiu) return; saiu = true;
       raiz.classList.add('preloader-sai');
-      setTimeout(fimIntro, 250);
-      setTimeout(limpar, 1150);
+      setTimeout(fimIntro, 200);
+      const fim = Math.hypot(innerWidth, innerHeight) / 2 + 120; // a borda do furo é suave (80px)
+      const dur = jaViu ? 900 : 1500, t1 = performance.now();
+      const passo = t => {
+        const p = Math.min(1, (t - t1) / dur);
+        const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        const r = R + (fim - R) * e;
+        arco.setAttribute('r', r.toFixed(1)); trilho.setAttribute('r', r.toFixed(1));
+        fundo.style.setProperty('--furo', `${(r - R * Math.pow(1 - e, 2) - 80).toFixed(1)}px`);
+        anel.style.opacity = String(1 - Math.max(0, (p - 0.55) / 0.45));
+        if (p < 1) requestAnimationFrame(passo); else limpar();
+      };
+      requestAnimationFrame(passo);
     };
-    setTimeout(limpar, 6200);
+    setTimeout(limpar, 7500);
     let chegou = false;
     const quadro = t => {
       if (chegou) return;
       const decorrido = t - t0;
       const pronto = (carregado && decorrido > minimo) || decorrido > maximo;
-      const alvo = pronto ? 100 : Math.min(92, (decorrido / minimo) * 92);
-      valor += (alvo - valor) * (pronto ? 0.2 : 0.08);
-      if (pronto && valor > 99.4) valor = 100;
-      num.textContent = Math.floor(valor);
-      if (valor >= 100) { chegou = true; tela.classList.add('carregado'); setTimeout(sair, jaViu ? 250 : 700); return; }
+      const alvo = pronto ? 100 : Math.min(90, (decorrido / minimo) * 90);
+      valor += (alvo - valor) * (pronto ? 0.12 : 0.06);
+      if (pronto && valor > 99.6) valor = 100;
+      arco.style.strokeDashoffset = (1 - valor / 100).toFixed(4); // o arco cresce no sentido horário, a partir do topo
+      if (valor >= 100) { chegou = true; tela.classList.add('carregado'); setTimeout(abrir, jaViu ? 300 : 850); return; }
       requestAnimationFrame(quadro);
     };
     requestAnimationFrame(quadro);

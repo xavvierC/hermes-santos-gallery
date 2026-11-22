@@ -58,17 +58,27 @@ main:focus { outline: none; }
 }
 
 /* ---------- preloader ---------- */
+/* o fundo preto tem um furo circular (--furo) que cresce junto com o anel na saída */
 .preloader { display: none; }
-.com-preloader .preloader { display: block; position: fixed; inset: 0; z-index: 100; overflow: hidden; background: var(--noite); clip-path: inset(0); transition: clip-path 1.1s var(--sai); }
-.com-preloader.preloader-sai .preloader { clip-path: inset(0 0 100% 0); }
+.com-preloader .preloader { display: block; position: fixed; inset: 0; z-index: 100; overflow: hidden; pointer-events: none; }
 .com-preloader body { overflow: hidden; }
-.pl-rede { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .2; transition: opacity 1s var(--suave); }
-.pl-rede path, .v-rede path { fill: none; stroke: var(--luz-1); stroke-width: 1; stroke-linecap: round; }
-.preloader.carregado .pl-rede { opacity: .5; }
-.preloader.carregado .pl-rede path { stroke: var(--fosforo); }
-.pl-logo { position: absolute; left: 50%; top: 50%; width: 112px; height: auto; translate: -50% -50%; animation: pl-surge 1.3s var(--suave) both; }
-.pl-conta { position: absolute; left: var(--margem); bottom: clamp(14px, 3.6vh, 36px); font: 300 clamp(64px, 11vw, 170px)/.8 var(--serif); letter-spacing: -.03em; font-variant-numeric: lining-nums tabular-nums; }
-.pl-nota { position: absolute; right: var(--margem); bottom: clamp(20px, 4.4vh, 46px); font-size: 14px; color: var(--luz-2); }
+.pl-fundo { --furo: -120px; position: absolute; inset: 0; background: var(--noite); pointer-events: auto;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--furo), #000 calc(var(--furo) + 80px));
+  mask-image: radial-gradient(circle at 50% 50%, transparent var(--furo), #000 calc(var(--furo) + 80px)); }
+.pl-anel { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: pl-surge 1.4s var(--suave) backwards; transition: filter .9s var(--suave); }
+.pl-anel circle { fill: none; }
+.pl-trilho { stroke: rgba(238, 235, 228, .14); stroke-width: 1; transition: opacity .5s; }
+.pl-arco { stroke: var(--luz-1); stroke-width: 1.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transform: rotate(-90deg); transform-box: fill-box; transform-origin: center; }
+.preloader.carregado .pl-anel { filter: drop-shadow(0 0 3px rgba(255, 250, 240, .95)) drop-shadow(0 0 16px rgba(255, 245, 228, .5)); }
+.preloader-sai .pl-trilho { opacity: 0; }
+.pl-brilho { position: absolute; left: 50%; top: 50%; width: 420px; height: 420px; margin: -210px 0 0 -210px; border-radius: 50%; opacity: 0; scale: .5;
+  background: radial-gradient(circle, rgba(255, 247, 234, .2), rgba(255, 247, 234, .07) 42%, transparent 70%); transition: opacity 1s var(--suave), scale 1.3s var(--sai); }
+.preloader.carregado .pl-brilho { opacity: 1; scale: 1; }
+.preloader-sai .pl-brilho { opacity: 0; scale: 4.5; transition: opacity 1.1s var(--suave) .15s, scale 1.6s var(--sai); }
+.pl-logo { position: absolute; left: 50%; top: 50%; width: 116px; height: auto; translate: -50% -50%; animation: pl-surge 1.4s var(--suave) .15s backwards; transition: opacity .5s var(--suave), scale .8s var(--sai), filter .6s var(--suave); }
+.preloader.carregado .pl-logo { filter: drop-shadow(0 0 12px rgba(255, 250, 240, .4)); }
+.preloader-sai .pl-logo { opacity: 0; scale: .94; filter: blur(4px); }
+.v-rede path { fill: none; stroke: var(--luz-1); stroke-width: 1; stroke-linecap: round; }
 @keyframes pl-surge { from { opacity: 0; filter: blur(6px); } }
 
 /* ---------- topo ---------- */
@@ -397,8 +407,8 @@ main:focus { outline: none; }
 .palavra > span { display: inline-block; }
 .motion [data-rv='words'] .palavra > span { translate: 0 110%; transition: translate 1.2s var(--sai); transition-delay: calc(var(--i, 0) * 30ms); }
 .motion [data-rv='words'].visto .palavra > span { translate: 0 0; }
-.pl-rede path, .v-rede path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset var(--dur, 1.6s) var(--suave) var(--d, 0s), stroke .9s var(--suave); }
-.pl-rede.desenha path, .v-rede.desenha path { stroke-dashoffset: 0; }
+.v-rede path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset var(--dur, 1.6s) var(--suave) var(--d, 0s); }
+.v-rede.desenha path { stroke-dashoffset: 0; }
 html:not(.motion) .v-rede path { stroke-dashoffset: 0; transition: none; }
 .motion [data-rv='develop']::after { content: ''; position: absolute; inset: 0; z-index: 1; background: var(--papel); transform-origin: 50% 0; transition: transform 1.5s var(--sai); }
 .motion [data-rv='develop'] img { scale: 1.14; transition: scale 2.2s var(--sai); }

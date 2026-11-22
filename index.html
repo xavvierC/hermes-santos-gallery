@@ -34,12 +34,12 @@
 <body>
   <a class="pular" href="#conteudo" data-i18n="pular">Ir para o conteúdo</a>
 
-  <!-- preloader: a rede de linhas das esculturas vazadas se desenha e "carrega" de luz -->
+  <!-- preloader: um anel se completa em volta do logo, acende e se abre, levando para dentro do site -->
   <div class="preloader" id="preloader" aria-hidden="true">
-    <svg class="pl-rede" id="plRede" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice"></svg>
+    <div class="pl-fundo"></div>
+    <div class="pl-brilho"></div>
+    <svg class="pl-anel" id="plAnel"><circle class="pl-trilho" id="plTrilho" cx="50%" cy="50%" r="96"/><circle class="pl-arco" id="plArco" cx="50%" cy="50%" r="96" pathLength="1"/></svg>
     <img class="pl-logo" src="assets/hermes-logo-360.png" alt="" width="360" height="450">
-    <p class="pl-conta"><span id="plNum">0</span></p>
-    <p class="pl-nota" data-i18n="pl.nota">Escultura, pintura, instalação</p>
   </div>
 
   <header class="topo" id="topo">

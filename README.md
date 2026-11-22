@@ -42,7 +42,7 @@ appears behind the works. After the opening, the room goes dark on its own.
 
 ## Motion and fallbacks
 
-- Preloader: counter, network drawing that turns phosphor green when loaded, curtain. Shorter on the second load in the same tab session. `site.js` always ends it within ~6.2 s; if `site.js` never runs, the head script removes it at 6 s.
+- Preloader: the official logo with a thin ring that completes as the page loads; at 100 % the ring glows and then expands past the screen edges while a soft circular opening in the black background reveals the site. Shorter on the second load in the same tab session. `site.js` always ends it within ~7.5 s; if `site.js` never runs, the head script removes it at 6 s.
 - Reveals (`data-rv="up" | "words" | "develop"`), the paper block opening, caption parallax and the custom "View" cursor only run with the `motion` class, which is not added under `prefers-reduced-motion` (the light starts off and nothing animates).
 - WhatsApp buttons (artwork interest, book a visit) open `wa.me` with a prefilled message.
 
