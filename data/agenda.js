@@ -209,7 +209,7 @@ window.HERMES_AGENDA = {
    "veiculo": "Veja",
    "data": "mar 2026",
    "dataEn": "Mar 2026",
-   "titulo": "Artista Brasileiro expõe obras na Quinta Avenida em Nova York",
+   "titulo": "Artista brasileiro expõe obras na Quinta Avenida em Nova York",
    "url": "https://veja.abril.com.br/cultura/artista-brasileiro-expoe-obras-na-quinta-avenida-em-nova-york/"
   },
   {
