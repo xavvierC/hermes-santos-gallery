@@ -363,8 +363,9 @@ main:focus { outline: none; }
 @keyframes ficha-abre { from { opacity: 0; } }
 .f-caixa { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(340px, 1fr); height: 100%; }
 .f-fotos { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; }
-.f-palco { display: grid; place-items: center; min-height: 0; padding: clamp(20px, 4vw, 56px); overflow: hidden; }
-.f-palco img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; animation: f-foto .9s var(--sai); }
+/* a foto inteira cabe no palco (em pé ou deitada), sem cortes: medida fixa + object-fit contain */
+.f-palco { --p: clamp(20px, 4vw, 56px); position: relative; min-height: 0; overflow: hidden; }
+.f-palco img { position: absolute; top: var(--p); left: var(--p); width: calc(100% - 2 * var(--p)); height: calc(100% - 2 * var(--p)); max-width: none; object-fit: contain; animation: f-foto .9s var(--sai); }
 @keyframes f-foto { from { opacity: 0; scale: 1.03; } }
 .f-miniaturas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 0 20px 22px; }
 .f-miniaturas button { width: 60px; height: 60px; padding: 0; border: 1px solid var(--fio); background: none; cursor: pointer; opacity: .5; transition: opacity .3s, border-color .3s; }
@@ -388,7 +389,7 @@ main:focus { outline: none; }
   .f-caixa { grid-template-columns: minmax(0, 1fr); grid-template-rows: 56vh auto; overflow-y: auto; }
   .f-info { justify-content: flex-start; padding: 26px 22px 40px; border-left: 0; overflow: visible; }
   .f-fechar { position: fixed; top: 14px; right: 14px; z-index: 2; background: rgba(0, 0, 0, .6); }
-  .f-palco { padding: 16px; }
+  .f-palco { --p: 16px; }
 }
 
 /* ---------- cursor (só mouse, só sobre as obras) ---------- */
