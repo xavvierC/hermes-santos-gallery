@@ -4,13 +4,74 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Galeria Hermes Santos</title>
+  <meta name="description" content="Galeria Hermes Santos, em Alphaville (SP). Esculturas em aço, latão e vidro, pinturas e instalações do artista Hermes Santos.">
+  <meta name="theme-color" content="#0a0a09">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.png">
   <link rel="preload" href="assets/cormorant-garamond-300.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
   <link rel="stylesheet" href="hero.css">
-  <script>document.documentElement.classList.add('hero-motion');setTimeout(function(){document.documentElement.classList.remove('hero-waiting')},1500);document.documentElement.classList.add('hero-waiting');</script>
+  <link rel="stylesheet" href="site.css">
+  <script>
+    /* Preloader e intro: ligam antes do primeiro desenho. Travas: se o JS não rodar, tudo aparece. */
+    (function (d) {
+      var calmo = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      d.classList.add('js-site');
+      /* site.js marca window.__hsAssumiu ao começar; daí em diante ele mesmo garante o fim do preloader. */
+      var semSite = function (fn) { return function () { if (!window.__hsAssumiu) fn(); }; };
+      window.HermesIntro = new Promise(function (ok) { window.__fimIntro = ok; setTimeout(semSite(ok), 5000); });
+      if (!calmo) d.classList.add('com-preloader', 'motion');
+      d.classList.add('hero-motion', 'hero-waiting');
+      setTimeout(semSite(function () { d.classList.remove('com-preloader'); }), 6000);
+      setTimeout(semSite(function () { d.classList.remove('hero-waiting'); }), 7000);
+    })(document.documentElement);
+  </script>
+  <script src="data/conteudo.js" defer></script>
+  <script src="data/obras.js" defer></script>
+  <script src="data/rede.js" defer></script>
+  <script src="assets/vendor/lenis.min.js" defer></script>
   <script src="hero.js" defer></script>
+  <script src="site.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <a class="skip-link" href="#conteudo" data-i18n="pular">Ir para o conteúdo</a>
+
+  <!-- preloader: rede de linhas (o mesmo desenho das esculturas vazadas) se desenhando atrás do logo -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <svg class="pl-rede" id="plRede" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice"></svg>
+    <div class="pl-centro">
+      <div class="pl-logo"><img src="assets/hermes-official-logo.png" alt="" width="1122" height="1402"><span class="pl-brilho"></span></div>
+      <div class="pl-linha"><span id="plBarra"></span></div>
+      <p class="pl-conta"><span id="plNum">0</span>%</p>
+    </div>
+  </div>
+
+  <!-- topo fixo que aparece depois da primeira tela -->
+  <header class="topo" id="topo">
+    <a class="topo-marca" href="#conteudo" aria-label="Galeria Hermes Santos — início"><img src="assets/hermes-official-logo.png" alt="" width="1122" height="1402"></a>
+    <nav class="topo-links" aria-label="Seções">
+      <a href="#obras" data-i18n="nav.obras">Obras</a>
+      <a href="#sobre" data-i18n="nav.sobre">Sobre</a>
+      <a href="#exposicoes" data-i18n="nav.exposicoes">Exposições</a>
+      <a href="#imprensa" data-i18n="nav.imprensa">Imprensa</a>
+      <a href="#contato" data-i18n="nav.contato">Contato</a>
+    </nav>
+    <div class="topo-direita">
+      <a class="topo-idioma" href="?lang=en" data-idioma-troca>EN</a>
+      <button class="topo-menu" type="button" aria-expanded="false" aria-controls="menuCheio" data-i18n="menu">Menu</button>
+    </div>
+  </header>
+  <div class="menu-cheio" id="menuCheio" hidden>
+    <nav aria-label="Menu">
+      <a href="#obras" data-i18n="nav.obras">Obras</a>
+      <a href="#sobre" data-i18n="nav.sobre">Sobre</a>
+      <a href="#exposicoes" data-i18n="nav.exposicoes">Exposições</a>
+      <a href="#imprensa" data-i18n="nav.imprensa">Imprensa</a>
+      <a href="#contato" data-i18n="nav.contato">Contato</a>
+    </nav>
+  </div>
+
   <main id="conteudo">
     <section class="gallery-hero" aria-labelledby="artist-name">
       <div class="gallery-stage">
@@ -27,23 +88,167 @@
           <button class="menu-trigger" type="button" aria-expanded="false" aria-controls="gallery-navigation" aria-label="Abrir menu" hidden><span class="menu-label">Menu</span></button>
           <nav id="gallery-navigation" aria-label="Navegação principal" tabindex="-1">
             <div class="gallery-links">
-              <a href="#obras">Obras</a><a href="#exposicoes">Exposições</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a>
+              <a href="#obras" data-i18n="nav.obras">Obras</a><a href="#exposicoes" data-i18n="nav.exposicoes">Exposições</a><a href="#sobre" data-i18n="nav.sobre">Sobre</a><a href="#contato" data-i18n="nav.contato">Contato</a>
             </div>
-            <div class="gallery-languages" aria-label="Idioma"><a href="./" lang="pt-BR" aria-current="true"><span class="language-short">PT</span><span class="language-full">Português</span></a><span aria-hidden="true">|</span><a href="?lang=en" lang="en"><span class="language-short">EN</span><span class="language-full">English</span></a></div>
+            <div class="gallery-languages" aria-label="Idioma"><a href="./" lang="pt-BR" data-idioma="pt"><span class="language-short">PT</span><span class="language-full">Português</span></a><span aria-hidden="true">|</span><a href="?lang=en" lang="en" data-idioma="en"><span class="language-short">EN</span><span class="language-full">English</span></a></div>
           </nav>
         </header>
         <div class="gallery-center">
           <div class="artwork-mount artwork-contact" aria-hidden="true"></div>
           <div class="artwork-mount">
-            <img src="assets/artwork-placeholder-from-approved-hero.webp" width="370" height="370" alt="Obra de Hermes Santos: disco circular de fibras claras em torno de um centro escuro" fetchpriority="high">
+            <img src="assets/zona-neutra-hero.webp" width="740" height="740" alt="Zona Neutra, de Hermes Santos: disco de fibras claras em torno de um centro escuro" data-i18n-alt="hero.alt" fetchpriority="high">
           </div>
           <h1 id="artist-name" aria-label="Hermes Santos"><span>H<span class="small-caps">ermes</span></span> <span>S<span class="small-caps">antos</span></span></h1>
-          <p class="gallery-subtitle">GALERIA DE ARTE</p>
+          <p class="gallery-subtitle" data-i18n="hero.sub">GALERIA DE ARTE</p>
         </div>
         <img class="gallery-bench" src="assets/gallery-bench.webp" width="1390" height="223" alt="" aria-hidden="true">
         <div class="bench-edge-light" aria-hidden="true"></div>
+        <a class="rolar" href="#manifesto" aria-label="Rolar para o conteúdo" data-i18n-aria="rolar"><span></span></a>
+      </div>
+    </section>
+
+    <!-- manifesto -->
+    <section class="manifesto" id="manifesto" aria-labelledby="mTitulo">
+      <div class="feixes" aria-hidden="true"></div>
+      <p class="rotulo" data-rv="up" data-i18n="m.rotulo">Ateliê · Alphaville, São Paulo</p>
+      <h2 class="m-titulo" id="mTitulo" data-rv="words" data-i18n="m.titulo">Entre o aço e a <em class="ouro">poesia da forma.</em></h2>
+      <p class="m-texto" data-rv="up" data-i18n="m.texto">Três décadas de indústria transformadas em escultura, pintura, vidro e luz. Obras que nascem da precisão da máquina e terminam na leveza do gesto.</p>
+      <div class="m-acoes" data-rv="up">
+        <a class="btn3d" href="#obras"><span class="btn3d__in"><span class="btn3d__f btn3d__f--frente" data-i18n="m.cta">Conhecer as obras</span><span class="btn3d__f btn3d__f--topo" data-i18n="m.cta">Conhecer as obras</span></span></a>
+      </div>
+    </section>
+
+    <!-- destaques: rolagem horizontal -->
+    <section class="destaques" id="destaques" aria-labelledby="dTitulo">
+      <div class="d-fixo">
+        <div class="d-cab">
+          <p class="rotulo" data-i18n="d.rotulo">Obras em destaque</p>
+          <h2 id="dTitulo" class="sec-titulo" data-rv="words" data-i18n="d.titulo">Matéria que <em class="ouro">acende.</em></h2>
+          <p class="d-conta" aria-hidden="true"><span id="dAtual">01</span> / <span id="dTotal">08</span></p>
+        </div>
+        <div class="d-trilho" id="dTrilho"></div>
+        <div class="d-progresso" aria-hidden="true"><span id="dBarra"></span></div>
+      </div>
+    </section>
+
+    <!-- números -->
+    <section class="numeros" aria-label="Números" data-i18n-aria="n.aria">
+      <ul>
+        <li data-rv="up"><strong><span data-conta="40">40</span></strong><span data-i18n="n.obras">obras no acervo</span></li>
+        <li data-rv="up"><strong><span data-conta="29">29</span></strong><span data-i18n="n.eventos">exposições e eventos</span></li>
+        <li data-rv="up"><strong><span data-conta="3">3</span></strong><span data-i18n="n.paises">países: Brasil, EUA e Uruguai</span></li>
+        <li data-rv="up"><strong><span data-conta="30">30</span>+</strong><span data-i18n="n.anos">anos de indústria e engenharia</span></li>
+      </ul>
+    </section>
+
+    <!-- acervo completo -->
+    <section class="acervo" id="obras" aria-labelledby="aTitulo">
+      <div class="sec-cab">
+        <p class="rotulo" data-rv="up" data-i18n="a.rotulo">Acervo</p>
+        <h2 id="aTitulo" class="sec-titulo" data-rv="words" data-i18n="a.titulo">Todas as obras</h2>
+      </div>
+      <div class="filtros" role="group" aria-label="Filtrar por técnica" id="filtros" data-i18n-aria="a.filtrar"></div>
+      <ul class="grade" id="grade"></ul>
+    </section>
+
+    <!-- sobre -->
+    <section class="sobre" id="sobre" aria-labelledby="sTitulo">
+      <figure class="s-retrato" data-rv="develop">
+        <img src="assets/hermes-retrato.webp" alt="Retrato de Hermes Santos" data-i18n-alt="s.alt" width="900" height="1350" loading="lazy">
+      </figure>
+      <div class="s-texto">
+        <p class="rotulo" data-rv="up" data-i18n="s.rotulo">Sobre o artista</p>
+        <h2 id="sTitulo" class="sec-titulo" data-rv="words" data-i18n="s.titulo">Um <em class="ouro">buscador.</em></h2>
+        <p data-rv="up" data-i18n="s.p1">Hermes Santos é artista visual e designer, com uma trajetória marcada por uma formação singular. Com base técnica em mecânica e mais de três décadas na manufatura automotiva, desenvolveu sua prática artística de modo autodidata, a partir da observação direta dos materiais e da experimentação com os processos de transformação da matéria.</p>
+        <p data-rv="up" data-i18n="s.p2">Fundador da Modefer, referência no setor de autopeças, ele usa a experiência em gestão e engenharia para levar tecnologias do seu parque industrial — robótica, corte a laser e manufatura aditiva — para fins estéticos.</p>
+        <p data-rv="up" data-i18n="s.p3">Ele define seu método como o de um buscador. A disciplina e a precisão da indústria pesada se fundem ao interesse por formas orgânicas e pela fluidez, em obras que exploram a dualidade entre a rigidez técnica e a leveza visual.</p>
+        <p data-rv="up" data-i18n="s.p4">Vive e trabalha em São Paulo. Sua produção vai de esculturas em aço e latão a pinturas, trabalhos em vidro e instalações multimídia, e integra coleções privadas e exposições internacionais.</p>
+      </div>
+    </section>
+
+    <!-- exposições: linha do tempo -->
+    <section class="expos" id="exposicoes" aria-labelledby="eTitulo">
+      <div class="sec-cab">
+        <p class="rotulo" data-rv="up" data-i18n="e.rotulo">Exposições e prêmios</p>
+        <h2 id="eTitulo" class="sec-titulo" data-rv="words" data-i18n="e.titulo">De São Paulo a <em class="ouro">Nova York.</em></h2>
+      </div>
+      <div class="linha-tempo" id="linhaTempo">
+        <div class="lt-eixo" aria-hidden="true"><span id="ltBarra"></span></div>
+        <div id="ltAnos"></div>
+      </div>
+      <div class="honrarias" data-rv="up">
+        <h3 data-i18n="e.honrarias">Honrarias</h3>
+        <ul id="honrarias"></ul>
+      </div>
+    </section>
+
+    <!-- imprensa -->
+    <section class="imprensa" id="imprensa" aria-labelledby="iTitulo">
+      <div class="faixa" aria-hidden="true"><div class="faixa-in" id="faixa"></div></div>
+      <div class="sec-cab">
+        <p class="rotulo" data-rv="up" data-i18n="i.rotulo">Imprensa</p>
+        <h2 id="iTitulo" class="sec-titulo" data-rv="words" data-i18n="i.titulo">Na imprensa</h2>
+      </div>
+      <ul class="materias" id="materias"></ul>
+    </section>
+
+    <!-- visita -->
+    <section class="visita" id="contato" aria-labelledby="vTitulo">
+      <svg class="v-rede" id="vRede" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+      <p class="rotulo" data-rv="up" data-i18n="v.rotulo">Galeria Hermes Santos</p>
+      <h2 id="vTitulo" class="v-titulo" data-rv="words" data-i18n="v.titulo">Visite a <em class="ouro">galeria.</em></h2>
+      <div class="v-grade">
+        <div data-rv="up">
+          <h3 data-i18n="v.endereco">Endereço</h3>
+          <p id="vEndereco"></p>
+          <a class="v-link" id="vMapa" target="_blank" rel="noopener" data-i18n="v.mapa">Como chegar ↗</a>
+        </div>
+        <div data-rv="up">
+          <h3 data-i18n="v.horario">Horário</h3>
+          <p data-i18n="v.horas">Segunda a sexta, das 9h às 18h<br>Sábado, das 9h às 13h</p>
+        </div>
+        <div data-rv="up">
+          <h3 data-i18n="v.contato">Contato</h3>
+          <p><a id="vEmail"></a><br><a id="vTel" target="_blank" rel="noopener"></a></p>
+          <p><a id="vInsta1" target="_blank" rel="noopener"></a> · <a id="vInsta2" target="_blank" rel="noopener"></a></p>
+        </div>
+      </div>
+      <div class="v-acoes" data-rv="up">
+        <a class="btn3d btn3d--cheio" id="vAgendar" target="_blank" rel="noopener"><span class="btn3d__in"><span class="btn3d__f btn3d__f--frente" data-i18n="v.agendar">Agendar uma visita</span><span class="btn3d__f btn3d__f--topo" data-i18n="v.agendar">Agendar uma visita</span></span></a>
       </div>
     </section>
   </main>
+
+  <footer class="rodape">
+    <img src="assets/hermes-official-logo.png" alt="Galeria Hermes Santos" width="1122" height="1402" loading="lazy">
+    <p>© <span id="ano">2026</span> Galeria Hermes Santos · Calçada dos Cravos, 63 — Alphaville Comercial, Barueri – SP</p>
+  </footer>
+
+  <!-- ficha da obra -->
+  <dialog class="ficha" id="ficha" aria-labelledby="fTitulo">
+    <div class="f-caixa">
+      <div class="f-fotos">
+        <div class="f-palco" id="fPalco"></div>
+        <div class="f-miniaturas" id="fMinis"></div>
+      </div>
+      <div class="f-info">
+        <button class="f-fechar" type="button" data-fechar aria-label="Fechar" data-i18n-aria="fechar">×</button>
+        <p class="rotulo" id="fTecnica"></p>
+        <h2 id="fTitulo"></h2>
+        <dl class="f-dados">
+          <div><dt data-i18n="f.ano">Ano</dt><dd id="fAno"></dd></div>
+          <div><dt data-i18n="f.dimensoes">Dimensões</dt><dd id="fDim"></dd></div>
+          <div class="f-mat"><dt data-i18n="f.material">Material</dt><dd id="fMat"></dd></div>
+        </dl>
+        <a class="btn3d btn3d--cheio" id="fInteresse" target="_blank" rel="noopener"><span class="btn3d__in"><span class="btn3d__f btn3d__f--frente" data-i18n="f.interesse">Tenho interesse</span><span class="btn3d__f btn3d__f--topo" data-i18n="f.interesse">Tenho interesse</span></span></a>
+        <div class="f-nav">
+          <button type="button" id="fAnt" data-i18n="f.anterior">← Anterior</button>
+          <button type="button" id="fProx" data-i18n="f.proxima">Próxima →</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="cursor" id="cursor" aria-hidden="true"><span id="cursorTexto"></span></div>
 </body>
 </html>

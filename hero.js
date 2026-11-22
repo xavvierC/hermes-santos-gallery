@@ -3,14 +3,17 @@ const trigger = document.querySelector('.menu-trigger');
 const navigation = document.querySelector('#gallery-navigation');
 const menuLabel = trigger.querySelector('.menu-label');
 const compact = matchMedia('(max-width: 999px)');
+const english = new URLSearchParams(location.search).get('lang') === 'en';
+const labels = english ? { open: 'Open menu', close: 'Close menu', closeShort: 'Close' } : { open: 'Abrir menu', close: 'Fechar menu', closeShort: 'Fechar' };
+trigger.setAttribute('aria-label', labels.open);
 trigger.hidden = false;
 const pageBehindMenu = [...document.querySelector('.gallery-stage').children].filter(element => element !== document.querySelector('.gallery-header'));
 let closeTimer;
 function setMenu(open, restoreFocus = false) {
   clearTimeout(closeTimer);
   trigger.setAttribute('aria-expanded', String(open));
-  trigger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-  menuLabel.textContent = open ? 'Fechar' : 'Menu';
+  trigger.setAttribute('aria-label', open ? labels.close : labels.open);
+  menuLabel.textContent = open ? labels.closeShort : 'Menu';
   navigation.classList.toggle('is-open', open);
   navigation.classList.remove('is-closing');
   document.body.classList.toggle('menu-open', open);
@@ -50,7 +53,8 @@ const hero = document.querySelector('.gallery-hero');
 const motionPreference = matchMedia('(prefers-reduced-motion: no-preference)');
 const heroImages = [...hero.querySelectorAll('img')];
 const readyImages = Promise.allSettled(heroImages.map(image => image.decode()));
-readyImages.then(() => heroRoot.classList.remove('hero-waiting'));
+// With the preloader on, the room only starts lighting up as the curtain lifts.
+Promise.all([readyImages, window.HermesIntro]).then(() => heroRoot.classList.remove('hero-waiting'));
 hero.addEventListener('animationend', event => {
   if (event.animationName === 'gallery-room-settle') heroRoot.classList.remove('hero-motion');
 });

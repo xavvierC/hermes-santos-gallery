@@ -1,0 +1,960 @@
+[
+ {
+  "titulo": "Fusão celeste",
+  "ano": "2025",
+  "tecnica": "Pintura",
+  "dimensoes": "50 x 50 x 2 cm",
+  "material": "Tinta vitral sobre Murano",
+  "id": "fusao-celeste",
+  "fotos": [
+   {
+    "g": "assets/obras/fusao-celeste-1-g.webp",
+    "p": "assets/obras/fusao-celeste-1-p.webp",
+    "w": 1600,
+    "h": 1600
+   }
+  ]
+ },
+ {
+  "titulo": "Ganesh",
+  "ano": "2016",
+  "tecnica": "Escultura",
+  "dimensoes": "4 x 55 x 18.6 cm",
+  "material": "PS e resina Epóxi",
+  "id": "ganesh",
+  "fotos": [
+   {
+    "g": "assets/obras/ganesh-1-g.webp",
+    "p": "assets/obras/ganesh-1-p.webp",
+    "w": 554,
+    "h": 676
+   }
+  ]
+ },
+ {
+  "titulo": "Amonite",
+  "ano": "2015",
+  "tecnica": "Escultura",
+  "dimensoes": "58.4 x 86.8 x 15 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS e resina Epóxi",
+  "id": "amonite",
+  "fotos": [
+   {
+    "g": "assets/obras/amonite-1-g.webp",
+    "p": "assets/obras/amonite-1-p.webp",
+    "w": 1279,
+    "h": 851
+   },
+   {
+    "g": "assets/obras/amonite-2-g.webp",
+    "p": "assets/obras/amonite-2-p.webp",
+    "w": 1800,
+    "h": 1199
+   },
+   {
+    "g": "assets/obras/amonite-3-g.webp",
+    "p": "assets/obras/amonite-3-p.webp",
+    "w": 1800,
+    "h": 1199
+   },
+   {
+    "g": "assets/obras/amonite-4-g.webp",
+    "p": "assets/obras/amonite-4-p.webp",
+    "w": 1800,
+    "h": 1199
+   }
+  ]
+ },
+ {
+  "titulo": "Cavalo Marinho",
+  "ano": "2016",
+  "tecnica": "Escultura",
+  "dimensoes": "7 x 27.2 x 24.7 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS e resina Epóxi",
+  "id": "cavalo-marinho",
+  "fotos": [
+   {
+    "g": "assets/obras/cavalo-marinho-1-g.webp",
+    "p": "assets/obras/cavalo-marinho-1-p.webp",
+    "w": 851,
+    "h": 1279
+   },
+   {
+    "g": "assets/obras/cavalo-marinho-2-g.webp",
+    "p": "assets/obras/cavalo-marinho-2-p.webp",
+    "w": 1213,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/cavalo-marinho-3-g.webp",
+    "p": "assets/obras/cavalo-marinho-3-p.webp",
+    "w": 1205,
+    "h": 1800
+   }
+  ]
+ },
+ {
+  "titulo": "Jelly Fish",
+  "ano": "2018",
+  "tecnica": "Instalação",
+  "dimensoes": "94 x 25 x 26 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS, resina Epóxi, circuito eletrônico e LEDs",
+  "id": "jelly-fish",
+  "fotos": [
+   {
+    "g": "assets/obras/jelly-fish-1-g.webp",
+    "p": "assets/obras/jelly-fish-1-p.webp",
+    "w": 960,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/jelly-fish-2-g.webp",
+    "p": "assets/obras/jelly-fish-2-p.webp",
+    "w": 1198,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/jelly-fish-3-g.webp",
+    "p": "assets/obras/jelly-fish-3-p.webp",
+    "w": 948,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/jelly-fish-4-g.webp",
+    "p": "assets/obras/jelly-fish-4-p.webp",
+    "w": 926,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/jelly-fish-5-g.webp",
+    "p": "assets/obras/jelly-fish-5-p.webp",
+    "w": 926,
+    "h": 1800
+   }
+  ]
+ },
+ {
+  "titulo": "Struggling",
+  "ano": "2020",
+  "tecnica": "Instalação",
+  "dimensoes": "140 x 120 x 25 cm",
+  "material": "Tinta de aluminato de estrôncio sobre madeira e resina ABS",
+  "id": "struggling",
+  "fotos": [
+   {
+    "g": "assets/obras/struggling-1-g.webp",
+    "p": "assets/obras/struggling-1-p.webp",
+    "w": 1556,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/struggling-2-g.webp",
+    "p": "assets/obras/struggling-2-p.webp",
+    "w": 1543,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/struggling-3-g.webp",
+    "p": "assets/obras/struggling-3-p.webp",
+    "w": 1598,
+    "h": 1800
+   }
+  ]
+ },
+ {
+  "titulo": "Resiliência",
+  "ano": "2021",
+  "tecnica": "Escultura",
+  "dimensoes": "27.5 x 27 x 19.5 cm",
+  "material": "Murano italiano (Cristal) e latão",
+  "id": "resiliencia",
+  "fotos": [
+   {
+    "g": "assets/obras/resiliencia-1-g.webp",
+    "p": "assets/obras/resiliencia-1-p.webp",
+    "w": 1340,
+    "h": 1600
+   },
+   {
+    "g": "assets/obras/resiliencia-2-g.webp",
+    "p": "assets/obras/resiliencia-2-p.webp",
+    "w": 1016,
+    "h": 1024
+   },
+   {
+    "g": "assets/obras/resiliencia-3-g.webp",
+    "p": "assets/obras/resiliencia-3-p.webp",
+    "w": 1012,
+    "h": 1800
+   }
+  ]
+ },
+ {
+  "titulo": "Obra Solar",
+  "ano": "2021",
+  "tecnica": "Escultura",
+  "dimensoes": "80 x 80 x 80 cm",
+  "material": "Resina ABS",
+  "id": "obra-solar",
+  "fotos": [
+   {
+    "g": "assets/obras/obra-solar-1-g.webp",
+    "p": "assets/obras/obra-solar-1-p.webp",
+    "w": 1800,
+    "h": 1623
+   },
+   {
+    "g": "assets/obras/obra-solar-2-g.webp",
+    "p": "assets/obras/obra-solar-2-p.webp",
+    "w": 1800,
+    "h": 1623
+   }
+  ]
+ },
+ {
+  "titulo": "Download",
+  "ano": "2020",
+  "tecnica": "Escultura",
+  "dimensoes": "94 x 25 x 26 cm",
+  "material": "Murano italiano (Cristal)",
+  "id": "download",
+  "fotos": [
+   {
+    "g": "assets/obras/download-1-g.webp",
+    "p": "assets/obras/download-1-p.webp",
+    "w": 1012,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/download-2-g.webp",
+    "p": "assets/obras/download-2-p.webp",
+    "w": 1247,
+    "h": 1800
+   }
+  ]
+ },
+ {
+  "titulo": "Pássaros",
+  "ano": "2015",
+  "tecnica": "Instalação",
+  "dimensoes": "47 x 47 x 9 cm",
+  "material": "Murano italiano (Cristal)",
+  "id": "passaros",
+  "fotos": [
+   {
+    "g": "assets/obras/passaros-1-g.webp",
+    "p": "assets/obras/passaros-1-p.webp",
+    "w": 1800,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/passaros-2-g.webp",
+    "p": "assets/obras/passaros-2-p.webp",
+    "w": 1800,
+    "h": 868
+   }
+  ]
+ },
+ {
+  "titulo": "Inferno de Dante",
+  "ano": "2017",
+  "tecnica": "Instalação",
+  "dimensoes": "122 x 130 x 16.5 cm",
+  "material": "Técnica mista sobre PS e resina Epóxi",
+  "id": "inferno-de-dante",
+  "fotos": [
+   {
+    "g": "assets/obras/inferno-de-dante-1-g.webp",
+    "p": "assets/obras/inferno-de-dante-1-p.webp",
+    "w": 1198,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/inferno-de-dante-2-g.webp",
+    "p": "assets/obras/inferno-de-dante-2-p.webp",
+    "w": 851,
+    "h": 1279
+   }
+  ]
+ },
+ {
+  "titulo": "Origem",
+  "ano": "2020",
+  "tecnica": "Escultura",
+  "dimensoes": "34.3 x 17 x 13.5 cm",
+  "material": "Latão",
+  "id": "origem",
+  "fotos": [
+   {
+    "g": "assets/obras/origem-1-g.webp",
+    "p": "assets/obras/origem-1-p.webp",
+    "w": 1053,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/origem-2-g.webp",
+    "p": "assets/obras/origem-2-p.webp",
+    "w": 1198,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/origem-3-g.webp",
+    "p": "assets/obras/origem-3-p.webp",
+    "w": 1053,
+    "h": 1800
+   }
+  ]
+ },
+ {
+  "titulo": "Fênix",
+  "ano": "2025",
+  "tecnica": "Escultura",
+  "dimensoes": "132 x 160 x 112 cm",
+  "material": "Tinta acrílica sobre aço carbono",
+  "id": "fenix",
+  "fotos": [
+   {
+    "g": "assets/obras/fenix-1-g.webp",
+    "p": "assets/obras/fenix-1-p.webp",
+    "w": 1350,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/fenix-2-g.webp",
+    "p": "assets/obras/fenix-2-p.webp",
+    "w": 1800,
+    "h": 1350
+   }
+  ]
+ },
+ {
+  "titulo": "O Emissor",
+  "ano": "2025",
+  "tecnica": "Escultura",
+  "dimensoes": "160 x 120 x 115 cm",
+  "material": "Aço cortem, aço carbono e aço Inóx",
+  "id": "o-emissor",
+  "fotos": [
+   {
+    "g": "assets/obras/o-emissor-1-g.webp",
+    "p": "assets/obras/o-emissor-1-p.webp",
+    "w": 720,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Opera",
+  "ano": "2021",
+  "tecnica": "Escultura",
+  "dimensoes": "65 x 40 x 40 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS e acrílico",
+  "id": "opera",
+  "fotos": [
+   {
+    "g": "assets/obras/opera-1-g.webp",
+    "p": "assets/obras/opera-1-p.webp",
+    "w": 902,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Owl",
+  "ano": "2017",
+  "tecnica": "Escultura",
+  "dimensoes": "50 x 50 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS e resina Epóxi",
+  "id": "owl",
+  "fotos": [
+   {
+    "g": "assets/obras/owl-1-g.webp",
+    "p": "assets/obras/owl-1-p.webp",
+    "w": 1279,
+    "h": 847
+   },
+   {
+    "g": "assets/obras/owl-2-g.webp",
+    "p": "assets/obras/owl-2-p.webp",
+    "w": 1279,
+    "h": 847
+   }
+  ]
+ },
+ {
+  "titulo": "Monterey Bay",
+  "ano": "2016",
+  "tecnica": "Escultura",
+  "dimensoes": "20 x 46.5 x 41 cm",
+  "material": "PS e resina Epóxi",
+  "id": "monterey-bay",
+  "fotos": [
+   {
+    "g": "assets/obras/monterey-bay-1-g.webp",
+    "p": "assets/obras/monterey-bay-1-p.webp",
+    "w": 1279,
+    "h": 851
+   },
+   {
+    "g": "assets/obras/monterey-bay-2-g.webp",
+    "p": "assets/obras/monterey-bay-2-p.webp",
+    "w": 1279,
+    "h": 851
+   },
+   {
+    "g": "assets/obras/monterey-bay-3-g.webp",
+    "p": "assets/obras/monterey-bay-3-p.webp",
+    "w": 1280,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/monterey-bay-4-g.webp",
+    "p": "assets/obras/monterey-bay-4-p.webp",
+    "w": 1280,
+    "h": 1012
+   }
+  ]
+ },
+ {
+  "titulo": "Série Nebulosas",
+  "ano": "2017-2019",
+  "tecnica": "Pintura",
+  "dimensoes": "112 x 112 x 26 e 60 x 60 x 26 cm",
+  "material": "Tinta vitral sobre aço Inóx",
+  "id": "serie-nebulosas",
+  "fotos": [
+   {
+    "g": "assets/obras/serie-nebulosas-1-g.webp",
+    "p": "assets/obras/serie-nebulosas-1-p.webp",
+    "w": 1279,
+    "h": 851
+   },
+   {
+    "g": "assets/obras/serie-nebulosas-2-g.webp",
+    "p": "assets/obras/serie-nebulosas-2-p.webp",
+    "w": 1279,
+    "h": 851
+   },
+   {
+    "g": "assets/obras/serie-nebulosas-3-g.webp",
+    "p": "assets/obras/serie-nebulosas-3-p.webp",
+    "w": 1280,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/serie-nebulosas-4-g.webp",
+    "p": "assets/obras/serie-nebulosas-4-p.webp",
+    "w": 960,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Fúria de Poseidon",
+  "ano": "2018",
+  "tecnica": "Escultura",
+  "dimensoes": "125 x 139 x 32 cm",
+  "material": "Técnica mista sobre PS e resina Epóxi",
+  "id": "furia-de-poseidon",
+  "fotos": [
+   {
+    "g": "assets/obras/furia-de-poseidon-1-g.webp",
+    "p": "assets/obras/furia-de-poseidon-1-p.webp",
+    "w": 926,
+    "h": 1279
+   },
+   {
+    "g": "assets/obras/furia-de-poseidon-2-g.webp",
+    "p": "assets/obras/furia-de-poseidon-2-p.webp",
+    "w": 1600,
+    "h": 1594
+   }
+  ]
+ },
+ {
+  "titulo": "Estrelas",
+  "ano": "2021",
+  "tecnica": "Instalação",
+  "dimensoes": "15 a 25 cm (⌀)",
+  "material": "Tinta de aluminato de estrôncio sobre PS, resina Epóxi e componentes eletrônicos",
+  "id": "estrelas",
+  "fotos": [
+   {
+    "g": "assets/obras/estrelas-1-g.webp",
+    "p": "assets/obras/estrelas-1-p.webp",
+    "w": 960,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/estrelas-2-g.webp",
+    "p": "assets/obras/estrelas-2-p.webp",
+    "w": 959,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Horse Power",
+  "ano": "2016",
+  "tecnica": "Escultura",
+  "dimensoes": "130 x 85 x 31 cm",
+  "material": "PS, resina Epóxi, fibra de vidro e gesso sobre metal",
+  "id": "horse-power",
+  "fotos": [
+   {
+    "g": "assets/obras/horse-power-1-g.webp",
+    "p": "assets/obras/horse-power-1-p.webp",
+    "w": 1198,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/horse-power-2-g.webp",
+    "p": "assets/obras/horse-power-2-p.webp",
+    "w": 1198,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/horse-power-3-g.webp",
+    "p": "assets/obras/horse-power-3-p.webp",
+    "w": 1404,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/horse-power-4-g.webp",
+    "p": "assets/obras/horse-power-4-p.webp",
+    "w": 960,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/horse-power-5-g.webp",
+    "p": "assets/obras/horse-power-5-p.webp",
+    "w": 960,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Poltrona Vênus",
+  "ano": "2018",
+  "tecnica": "Escultura",
+  "dimensoes": "110 x 200 x 200 cm",
+  "material": "Tinta automotiva sobre fibra de vidro",
+  "id": "poltrona-venus",
+  "fotos": [
+   {
+    "g": "assets/obras/poltrona-venus-1-g.webp",
+    "p": "assets/obras/poltrona-venus-1-p.webp",
+    "w": 1280,
+    "h": 1216
+   },
+   {
+    "g": "assets/obras/poltrona-venus-2-g.webp",
+    "p": "assets/obras/poltrona-venus-2-p.webp",
+    "w": 960,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Gravidade",
+  "ano": "2019",
+  "tecnica": "Escultura",
+  "dimensoes": "193 x 100 x 80 cm",
+  "material": "Tinta automotiva sobre PS e resina Epóxi",
+  "id": "gravidade",
+  "fotos": [
+   {
+    "g": "assets/obras/gravidade-1-g.webp",
+    "p": "assets/obras/gravidade-1-p.webp",
+    "w": 1192,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/gravidade-2-g.webp",
+    "p": "assets/obras/gravidade-2-p.webp",
+    "w": 768,
+    "h": 1024
+   },
+   {
+    "g": "assets/obras/gravidade-3-g.webp",
+    "p": "assets/obras/gravidade-3-p.webp",
+    "w": 1192,
+    "h": 1800
+   },
+   {
+    "g": "assets/obras/gravidade-4-g.webp",
+    "p": "assets/obras/gravidade-4-p.webp",
+    "w": 1280,
+    "h": 960
+   }
+  ]
+ },
+ {
+  "titulo": "Merkabah",
+  "ano": "2025",
+  "tecnica": "Escultura",
+  "dimensoes": "185 x 170 x 170 cm",
+  "material": "Aço carbono, vidro e LED",
+  "id": "merkabah",
+  "fotos": [
+   {
+    "g": "assets/obras/merkabah-1-g.webp",
+    "p": "assets/obras/merkabah-1-p.webp",
+    "w": 1800,
+    "h": 1350
+   },
+   {
+    "g": "assets/obras/merkabah-2-g.webp",
+    "p": "assets/obras/merkabah-2-p.webp",
+    "w": 1280,
+    "h": 851
+   }
+  ]
+ },
+ {
+  "titulo": "Whale",
+  "ano": "2017",
+  "tecnica": "Escultura",
+  "dimensoes": "150 x 110 cm",
+  "material": "Tinta de aluminato de estrôncio sobre aço carbono",
+  "id": "whale",
+  "fotos": [
+   {
+    "g": "assets/obras/whale-1-g.webp",
+    "p": "assets/obras/whale-1-p.webp",
+    "w": 851,
+    "h": 1279
+   },
+   {
+    "g": "assets/obras/whale-2-g.webp",
+    "p": "assets/obras/whale-2-p.webp",
+    "w": 851,
+    "h": 1279
+   }
+  ]
+ },
+ {
+  "titulo": "Muscle",
+  "ano": "2020",
+  "tecnica": "Escultura",
+  "dimensoes": "670 cm (altura)",
+  "material": "Aço Inóx polido",
+  "id": "muscle",
+  "fotos": [
+   {
+    "g": "assets/obras/muscle-1-g.webp",
+    "p": "assets/obras/muscle-1-p.webp",
+    "w": 719,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/muscle-2-g.webp",
+    "p": "assets/obras/muscle-2-p.webp",
+    "w": 719,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/muscle-3-g.webp",
+    "p": "assets/obras/muscle-3-p.webp",
+    "w": 719,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Sem título",
+  "ano": "2025",
+  "tecnica": "Pintura",
+  "dimensoes": "120 x 200 cm",
+  "material": "Tinta acrílica sobre tela",
+  "id": "sem-titulo",
+  "fotos": [
+   {
+    "g": "assets/obras/sem-titulo-1-g.webp",
+    "p": "assets/obras/sem-titulo-1-p.webp",
+    "w": 1280,
+    "h": 960
+   },
+   {
+    "g": "assets/obras/sem-titulo-2-g.webp",
+    "p": "assets/obras/sem-titulo-2-p.webp",
+    "w": 960,
+    "h": 1280
+   }
+  ]
+ },
+ {
+  "titulo": "Cocoon",
+  "ano": "2018",
+  "tecnica": "Escultura",
+  "dimensoes": "220 x 80 x 80 cm",
+  "material": "Tinta de aluminato de estrôncio sobre cedro rosa e aço Inóx",
+  "id": "cocoon",
+  "fotos": [
+   {
+    "g": "assets/obras/cocoon-1-g.webp",
+    "p": "assets/obras/cocoon-1-p.webp",
+    "w": 1195,
+    "h": 1191
+   },
+   {
+    "g": "assets/obras/cocoon-2-g.webp",
+    "p": "assets/obras/cocoon-2-p.webp",
+    "w": 960,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/cocoon-3-g.webp",
+    "p": "assets/obras/cocoon-3-p.webp",
+    "w": 986,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/cocoon-4-g.webp",
+    "p": "assets/obras/cocoon-4-p.webp",
+    "w": 1259,
+    "h": 1259
+   }
+  ]
+ },
+ {
+  "titulo": "Touro Lambo",
+  "ano": "2018",
+  "tecnica": "Escultura",
+  "dimensoes": "33 x 50 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS, resina Epóxi, resina Cristal e cedro rosa",
+  "id": "touro-lambo",
+  "fotos": [
+   {
+    "g": "assets/obras/touro-lambo-1-g.webp",
+    "p": "assets/obras/touro-lambo-1-p.webp",
+    "w": 1800,
+    "h": 1198
+   },
+   {
+    "g": "assets/obras/touro-lambo-2-g.webp",
+    "p": "assets/obras/touro-lambo-2-p.webp",
+    "w": 1800,
+    "h": 1245
+   },
+   {
+    "g": "assets/obras/touro-lambo-3-g.webp",
+    "p": "assets/obras/touro-lambo-3-p.webp",
+    "w": 1800,
+    "h": 1245
+   }
+  ]
+ },
+ {
+  "titulo": "Whale in the Net",
+  "ano": "2016",
+  "tecnica": "Escultura",
+  "dimensoes": "30 x 56.3 x 14 cm",
+  "material": "PS e resina Epóxi",
+  "id": "whale-in-the-net",
+  "fotos": [
+   {
+    "g": "assets/obras/whale-in-the-net-1-g.webp",
+    "p": "assets/obras/whale-in-the-net-1-p.webp",
+    "w": 1800,
+    "h": 1232
+   },
+   {
+    "g": "assets/obras/whale-in-the-net-2-g.webp",
+    "p": "assets/obras/whale-in-the-net-2-p.webp",
+    "w": 1800,
+    "h": 1232
+   },
+   {
+    "g": "assets/obras/whale-in-the-net-3-g.webp",
+    "p": "assets/obras/whale-in-the-net-3-p.webp",
+    "w": 1800,
+    "h": 1232
+   }
+  ]
+ },
+ {
+  "titulo": "Turtle",
+  "ano": "2017",
+  "tecnica": "Escultura",
+  "dimensoes": "160 x 80 x 70 cm",
+  "material": "Aço Inóx",
+  "id": "turtle",
+  "fotos": [
+   {
+    "g": "assets/obras/turtle-1-g.webp",
+    "p": "assets/obras/turtle-1-p.webp",
+    "w": 851,
+    "h": 1279
+   }
+  ]
+ },
+ {
+  "titulo": "O Caos",
+  "ano": "2025",
+  "tecnica": "Pintura",
+  "dimensoes": "60 x 80 cm",
+  "material": "Tinta acrílica sobre tela",
+  "id": "o-caos",
+  "fotos": [
+   {
+    "g": "assets/obras/o-caos-1-g.webp",
+    "p": "assets/obras/o-caos-1-p.webp",
+    "w": 1272,
+    "h": 1600
+   }
+  ]
+ },
+ {
+  "titulo": "Maui",
+  "ano": "2016",
+  "tecnica": "Escultura",
+  "dimensoes": "50 x 30 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS e resina epóxi",
+  "id": "maui",
+  "fotos": [
+   {
+    "g": "assets/obras/maui-1-g.webp",
+    "p": "assets/obras/maui-1-p.webp",
+    "w": 910,
+    "h": 1600
+   }
+  ]
+ },
+ {
+  "titulo": "Florescer",
+  "ano": "2025",
+  "tecnica": "Pintura",
+  "dimensoes": "60 x 80 cm",
+  "material": "Tinta acrílica sobre tela",
+  "id": "florescer",
+  "fotos": [
+   {
+    "g": "assets/obras/florescer-1-g.webp",
+    "p": "assets/obras/florescer-1-p.webp",
+    "w": 1270,
+    "h": 1600
+   }
+  ]
+ },
+ {
+  "titulo": "Zona Neutra",
+  "ano": "2024",
+  "tecnica": "Colagem",
+  "dimensoes": "110 x 110 cm",
+  "material": "Fibra de vidro sobre aço Inóx",
+  "id": "zona-neutra",
+  "fotos": [
+   {
+    "g": "assets/obras/zona-neutra-1-g.webp",
+    "p": "assets/obras/zona-neutra-1-p.webp",
+    "w": 1466,
+    "h": 1600
+   }
+  ]
+ },
+ {
+  "titulo": "Correnteza interior",
+  "ano": "2025",
+  "tecnica": "Pintura",
+  "dimensoes": "120 x 120 cm",
+  "material": "Tinta acrílica sobre tela",
+  "id": "correnteza-interior",
+  "fotos": [
+   {
+    "g": "assets/obras/correnteza-interior-1-g.webp",
+    "p": "assets/obras/correnteza-interior-1-p.webp",
+    "w": 1574,
+    "h": 1600
+   }
+  ]
+ },
+ {
+  "titulo": "Éter",
+  "ano": "2025",
+  "tecnica": "Escultura",
+  "dimensoes": "30 x 6 cm",
+  "material": "Latão e aço Inóx",
+  "id": "eter",
+  "fotos": [
+   {
+    "g": "assets/obras/eter-1-g.webp",
+    "p": "assets/obras/eter-1-p.webp",
+    "w": 1200,
+    "h": 1600
+   }
+  ]
+ },
+ {
+  "titulo": "Frequência",
+  "ano": "2019",
+  "tecnica": "Pintura",
+  "dimensoes": "110 x 110 cm",
+  "material": "Tinta vitral sobre aço Inóx",
+  "id": "frequencia",
+  "fotos": [
+   {
+    "g": "assets/obras/frequencia-1-g.webp",
+    "p": "assets/obras/frequencia-1-p.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "titulo": "Sea Dragon",
+  "ano": "2016",
+  "tecnica": "Escultura",
+  "dimensoes": "80 x 130 x 50 cm",
+  "material": "Tinta de aluminato de estrôncio sobre PS e resina Epóxi",
+  "id": "sea-dragon",
+  "fotos": [
+   {
+    "g": "assets/obras/sea-dragon-1-g.webp",
+    "p": "assets/obras/sea-dragon-1-p.webp",
+    "w": 1800,
+    "h": 1625
+   },
+   {
+    "g": "assets/obras/sea-dragon-2-g.webp",
+    "p": "assets/obras/sea-dragon-2-p.webp",
+    "w": 1800,
+    "h": 1198
+   },
+   {
+    "g": "assets/obras/sea-dragon-3-g.webp",
+    "p": "assets/obras/sea-dragon-3-p.webp",
+    "w": 1800,
+    "h": 1625
+   }
+  ]
+ },
+ {
+  "titulo": "Crustule",
+  "ano": "2022",
+  "tecnica": "Escultura",
+  "dimensoes": "175 x 105 x 60 cm",
+  "material": "Latão e pedra sabão",
+  "id": "crustule",
+  "fotos": [
+   {
+    "g": "assets/obras/crustule-1-g.webp",
+    "p": "assets/obras/crustule-1-p.webp",
+    "w": 960,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/crustule-2-g.webp",
+    "p": "assets/obras/crustule-2-p.webp",
+    "w": 960,
+    "h": 1280
+   },
+   {
+    "g": "assets/obras/crustule-3-g.webp",
+    "p": "assets/obras/crustule-3-p.webp",
+    "w": 960,
+    "h": 1280
+   }
+  ]
+ }
+]
