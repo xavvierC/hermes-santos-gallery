@@ -27,8 +27,8 @@ window.HERMES_AGENDA = {
    "ano": 2026,
    "data": "06/03",
    "lugar": "Saphira & Ventura Gallery, Nova York",
-   "lugarEn": "Saphira & Ventura Gallery, New York",
    "titulo": "Beyond Translations",
+   "lugarEn": "Saphira & Ventura Gallery, New York",
    "intl": true
   },
   {
@@ -137,8 +137,8 @@ window.HERMES_AGENDA = {
    "ano": 2017,
    "data": "15/09",
    "lugar": "Estande do AquaRio, Rio de Janeiro",
-   "lugarEn": "AquaRio stand, Rio de Janeiro",
-   "titulo": "Rock in Rio 2017"
+   "titulo": "Rock in Rio 2017",
+   "lugarEn": "AquaRio stand, Rio de Janeiro"
   },
   {
    "ano": 2017,
@@ -193,8 +193,8 @@ window.HERMES_AGENDA = {
    "ano": 2017,
    "data": "29/03",
    "lugar": "Aeroporto Internacional Tom Jobim, Rio de Janeiro",
-   "lugarEn": "Tom Jobim International Airport, Rio de Janeiro",
-   "titulo": "International Brazil Air Show"
+   "titulo": "International Brazil Air Show",
+   "lugarEn": "Tom Jobim International Airport, Rio de Janeiro"
   },
   {
    "ano": 2017,
@@ -209,7 +209,7 @@ window.HERMES_AGENDA = {
    "veiculo": "Veja",
    "data": "mar 2026",
    "dataEn": "Mar 2026",
-   "titulo": "Artista brasileiro expõe obras na Quinta Avenida em Nova York",
+   "titulo": "Artista Brasileiro expõe obras na Quinta Avenida em Nova York",
    "url": "https://veja.abril.com.br/cultura/artista-brasileiro-expoe-obras-na-quinta-avenida-em-nova-york/"
   },
   {
