@@ -455,6 +455,13 @@ html:not(.motion) .v-rede path { stroke-dashoffset: 0; transition: none; }
 
 [hidden] { display: none !important; }
 
+/* ---------- folhas: a seção de cima fica parada, desfoca e some enquanto a próxima sobe (site.js) ---------- */
+.folha { padding-bottom: var(--t, 0px); margin-bottom: calc(var(--t, 0px) * -1); }
+.folhas .pagina { position: relative; background: var(--noite); }
+.folhas .folha > .pagina { position: sticky; }
+.folhas .papel.pagina, .folhas .papel .pagina { background: var(--papel); }
+.folhas .sala-palco { translate: none; }
+
 /* ---------- botão "ver todas" (exposições e imprensa) ---------- */
 .mais { display: flex; width: max-content; margin: 30px var(--margem) 0; }
 .papel .mais { color: var(--tinta); }

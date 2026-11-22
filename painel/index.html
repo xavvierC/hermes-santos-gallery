@@ -14,10 +14,9 @@
 <body>
   <!-- entrar -->
   <main class="entrar" id="telaEntrar">
-    <form class="cartao" id="formEntrar">
-      <img src="/assets/hermes-marca.png" alt="" width="186" height="96">
+    <form class="entrar-caixa" id="formEntrar">
+      <p class="marca"><img src="/assets/hermes-marca.png" alt="" width="186" height="96"><span>Hermes Santos</span></p>
       <h1>Painel da galeria</h1>
-      <p class="dica">Cadastre obras, exposições e matérias. O site se atualiza sozinho.</p>
       <label for="senha">Senha</label>
       <input id="senha" type="password" autocomplete="current-password" required>
       <button class="primario" type="submit">Entrar</button>
@@ -28,120 +27,137 @@
   <!-- painel -->
   <div class="painel" id="telaPainel" hidden>
     <header class="barra">
-      <strong class="marca">Painel da galeria</strong>
+      <p class="marca"><img src="/assets/hermes-marca.png" alt="" width="186" height="96"><span>Hermes Santos</span></p>
       <nav class="abas" role="tablist" aria-label="Seções do painel">
-        <button type="button" role="tab" id="tabObras" aria-controls="abaObras" aria-selected="true">Obras</button>
-        <button type="button" role="tab" id="tabExpos" aria-controls="abaExpos" aria-selected="false">Exposições</button>
-        <button type="button" role="tab" id="tabImprensa" aria-controls="abaImprensa" aria-selected="false">Imprensa</button>
+        <button type="button" role="tab" id="tabObras" aria-controls="abaObras" aria-selected="true">Obras <span class="conta" id="contaObras"></span></button>
+        <button type="button" role="tab" id="tabExpos" aria-controls="abaExpos" aria-selected="false" tabindex="-1">Exposições <span class="conta" id="contaExpos"></span></button>
+        <button type="button" role="tab" id="tabImprensa" aria-controls="abaImprensa" aria-selected="false" tabindex="-1">Imprensa <span class="conta" id="contaImprensa"></span></button>
       </nav>
       <div class="barra-direita">
         <a href="/" target="_blank" rel="noopener">Ver site ↗</a>
         <button type="button" class="link" id="sair">Sair</button>
       </div>
     </header>
-    <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
 
     <main>
       <section id="abaObras" role="tabpanel" aria-labelledby="tabObras">
-        <div class="cab">
-          <div><h2>Obras</h2><p class="dica" id="resumoObras"></p></div>
-          <button type="button" class="primario" id="novaObra">+ Nova obra</button>
+        <div class="ferramentas">
+          <input type="search" id="buscaObras" placeholder="Buscar obra" aria-label="Buscar obra" autocomplete="off">
+          <button type="button" class="primario" id="novaObra">Nova obra</button>
         </div>
-        <ul class="lista" id="listaObras"></ul>
+        <ul class="obras" id="listaObras"></ul>
+        <p class="vazio" id="vazioObras" hidden>Nenhuma obra encontrada.</p>
       </section>
       <section id="abaExpos" role="tabpanel" aria-labelledby="tabExpos" hidden>
-        <div class="cab">
-          <div><h2>Exposições e eventos</h2><p class="dica">Ficam em ordem de data no site.</p></div>
-          <button type="button" class="primario" id="novaExpo">+ Nova exposição</button>
+        <div class="ferramentas">
+          <input type="search" id="buscaExpos" placeholder="Buscar exposição ou local" aria-label="Buscar exposição ou local" autocomplete="off">
+          <button type="button" class="primario" id="novaExpo">Nova exposição</button>
         </div>
-        <ul class="lista" id="listaExpos"></ul>
+        <ul class="linhas" id="listaExpos"></ul>
+        <p class="vazio" id="vazioExpos" hidden>Nenhuma exposição encontrada.</p>
       </section>
       <section id="abaImprensa" role="tabpanel" aria-labelledby="tabImprensa" hidden>
-        <div class="cab">
-          <div><h2>Imprensa</h2><p class="dica">Matérias novas entram no topo da lista.</p></div>
-          <button type="button" class="primario" id="novaMateria">+ Nova matéria</button>
+        <div class="ferramentas">
+          <input type="search" id="buscaImprensa" placeholder="Buscar matéria ou veículo" aria-label="Buscar matéria ou veículo" autocomplete="off">
+          <button type="button" class="primario" id="novaMateria">Nova matéria</button>
         </div>
-        <ul class="lista" id="listaImprensa"></ul>
+        <ul class="linhas" id="listaImprensa"></ul>
+        <p class="vazio" id="vazioImprensa" hidden>Nenhuma matéria encontrada.</p>
       </section>
     </main>
   </div>
 
+  <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
+
   <!-- obra -->
-  <dialog class="janela" id="dlgObra" aria-labelledby="tituloDlgObra">
+  <dialog class="gaveta" id="dlgObra" aria-labelledby="tituloDlgObra">
     <form id="formObra" novalidate>
-      <h2 id="tituloDlgObra">Obra</h2>
-      <div class="grade-campos">
-        <label class="largo">Título<input name="titulo" required maxlength="120"></label>
-        <label>Ano<input name="ano" required maxlength="20" inputmode="numeric" placeholder="2026"></label>
-        <label>Técnica
-          <select name="tecnica"><option>Escultura</option><option>Pintura</option><option>Instalação</option><option>Colagem</option></select>
-        </label>
-        <label>Dimensões<input name="dimensoes" maxlength="120" placeholder="50 x 50 x 20 cm"></label>
-        <label>Destaque na página inicial
-          <select name="destaque"><option value="">Não</option><option value="1">1º</option><option value="2">2º</option><option value="3">3º</option><option value="4">4º</option><option value="5">5º</option><option value="6">6º</option></select>
-        </label>
-        <label class="largo">Material<input name="material" maxlength="200" placeholder="Aço inóx e latão"></label>
+      <header class="g-cab">
+        <h2 id="tituloDlgObra">Obra</h2>
+        <button type="button" class="fechar" data-fechar aria-label="Fechar">×</button>
+      </header>
+      <div class="g-corpo">
+        <section class="fotos" id="zonaFotos" aria-labelledby="rotuloFotos">
+          <h3 id="rotuloFotos">Fotos <small>a primeira aparece no site</small></h3>
+          <ul class="fotos-lista" id="fotosObra"></ul>
+          <span class="dica" id="processando" aria-live="polite"></span>
+        </section>
+        <div class="campos">
+          <label class="largo">Título<input name="titulo" required maxlength="120"></label>
+          <label>Ano<input name="ano" required maxlength="20" inputmode="numeric" placeholder="2026"></label>
+          <label>Técnica
+            <select name="tecnica"><option>Escultura</option><option>Pintura</option><option>Instalação</option><option>Colagem</option></select>
+          </label>
+          <label>Dimensões<input name="dimensoes" maxlength="120" placeholder="50 x 50 x 20 cm"></label>
+          <label>Destaque no início
+            <select name="destaque" aria-describedby="dicaDestaque"><option value="">Não</option><option value="1">1º</option><option value="2">2º</option><option value="3">3º</option><option value="4">4º</option><option value="5">5º</option><option value="6">6º</option></select>
+          </label>
+          <label class="largo">Material<input name="material" maxlength="200" placeholder="Aço inox e latão"></label>
+          <p class="dica largo" id="dicaDestaque">Ao escolher uma posição de destaque, a obra que estava nela sai do destaque.</p>
+        </div>
+        <p class="erro" id="erroObra" role="alert"></p>
       </div>
-      <fieldset class="fotos">
-        <legend>Fotos</legend>
-        <p class="dica">A primeira foto é a que aparece no site. Fotos grandes são reduzidas automaticamente.</p>
-        <ul class="fotos-lista" id="fotosObra"></ul>
-        <label class="botao">Adicionar fotos<input type="file" id="arquivosObra" accept="image/*" multiple></label>
-        <span class="dica" id="processando" aria-live="polite"></span>
-      </fieldset>
-      <p class="erro" id="erroObra" role="alert"></p>
-      <div class="acoes">
+      <footer class="g-pe">
         <button type="button" class="perigo" id="excluirObra">Excluir obra</button>
-        <span class="espaco"></span>
-        <button type="button" data-fechar>Cancelar</button>
         <button type="submit" class="primario">Salvar no site</button>
-      </div>
+      </footer>
     </form>
   </dialog>
 
   <!-- exposição -->
-  <dialog class="janela" id="dlgExpo" aria-labelledby="tituloDlgExpo">
+  <dialog class="gaveta" id="dlgExpo" aria-labelledby="tituloDlgExpo">
     <form id="formExpo" novalidate>
-      <h2 id="tituloDlgExpo">Exposição ou evento</h2>
-      <div class="grade-campos">
-        <label class="largo">Título<input name="titulo" required maxlength="200"></label>
-        <label class="largo">Título em inglês <small>(opcional)</small><input name="en" maxlength="200"></label>
-        <label class="largo">Local<input name="lugar" required maxlength="200" placeholder="Galeria, cidade"></label>
-        <label class="largo">Local em inglês <small>(opcional)</small><input name="lugarEn" maxlength="200"></label>
-        <label>Data <small>(opcional)</small><input name="data" type="date"></label>
-        <label>Ano<input name="ano" type="number" min="1900" max="2100" required></label>
-        <label class="marcar largo"><input name="intl" type="checkbox"> Evento internacional</label>
+      <header class="g-cab">
+        <h2 id="tituloDlgExpo">Exposição ou evento</h2>
+        <button type="button" class="fechar" data-fechar aria-label="Fechar">×</button>
+      </header>
+      <div class="g-corpo">
+        <div class="campos">
+          <label class="largo">Título<input name="titulo" required maxlength="200"></label>
+          <label class="largo">Local<input name="lugar" required maxlength="200" placeholder="Galeria, cidade"></label>
+          <label>Data <small>opcional</small><input name="data" type="date"></label>
+          <label>Ano<input name="ano" type="number" min="1900" max="2100" required></label>
+          <label class="marcar largo"><input name="intl" type="checkbox"> Evento internacional</label>
+        </div>
+        <details class="ingles">
+          <summary>Versão em inglês <small>opcional</small></summary>
+          <div class="campos">
+            <label class="largo">Título em inglês<input name="en" maxlength="200"></label>
+            <label class="largo">Local em inglês<input name="lugarEn" maxlength="200"></label>
+          </div>
+        </details>
+        <p class="erro" id="erroExpo" role="alert"></p>
       </div>
-      <p class="erro" id="erroExpo" role="alert"></p>
-      <div class="acoes">
+      <footer class="g-pe">
         <button type="button" class="perigo" id="excluirExpo">Excluir</button>
-        <span class="espaco"></span>
-        <button type="button" data-fechar>Cancelar</button>
         <button type="submit" class="primario">Salvar no site</button>
-      </div>
+      </footer>
     </form>
   </dialog>
 
   <!-- matéria -->
-  <dialog class="janela" id="dlgMateria" aria-labelledby="tituloDlgMateria">
+  <dialog class="gaveta" id="dlgMateria" aria-labelledby="tituloDlgMateria">
     <form id="formMateria" novalidate>
-      <h2 id="tituloDlgMateria">Matéria na imprensa</h2>
-      <div class="grade-campos">
-        <label>Veículo<input name="veiculo" required maxlength="80" placeholder="Veja"></label>
-        <label>Mês <small>(opcional)</small>
-          <select name="mes"><option value="">—</option><option value="1">janeiro</option><option value="2">fevereiro</option><option value="3">março</option><option value="4">abril</option><option value="5">maio</option><option value="6">junho</option><option value="7">julho</option><option value="8">agosto</option><option value="9">setembro</option><option value="10">outubro</option><option value="11">novembro</option><option value="12">dezembro</option></select>
-        </label>
-        <label>Ano<input name="ano" type="number" min="1900" max="2100" required></label>
-        <label class="largo">Título da matéria<input name="titulo" required maxlength="300"></label>
-        <label class="largo">Link<input name="url" type="url" required maxlength="500" placeholder="https://"></label>
+      <header class="g-cab">
+        <h2 id="tituloDlgMateria">Matéria na imprensa</h2>
+        <button type="button" class="fechar" data-fechar aria-label="Fechar">×</button>
+      </header>
+      <div class="g-corpo">
+        <div class="campos">
+          <label class="largo">Título da matéria<input name="titulo" required maxlength="300"></label>
+          <label class="largo">Veículo<input name="veiculo" required maxlength="80" placeholder="Veja"></label>
+          <label>Mês <small>opcional</small>
+            <select name="mes"><option value="">—</option><option value="1">janeiro</option><option value="2">fevereiro</option><option value="3">março</option><option value="4">abril</option><option value="5">maio</option><option value="6">junho</option><option value="7">julho</option><option value="8">agosto</option><option value="9">setembro</option><option value="10">outubro</option><option value="11">novembro</option><option value="12">dezembro</option></select>
+          </label>
+          <label>Ano<input name="ano" type="number" min="1900" max="2100" required></label>
+          <label class="largo">Link<input name="url" type="url" required maxlength="500" placeholder="https://"></label>
+        </div>
+        <p class="erro" id="erroMateria" role="alert"></p>
       </div>
-      <p class="erro" id="erroMateria" role="alert"></p>
-      <div class="acoes">
+      <footer class="g-pe">
         <button type="button" class="perigo" id="excluirMateria">Excluir</button>
-        <span class="espaco"></span>
-        <button type="button" data-fechar>Cancelar</button>
         <button type="submit" class="primario">Salvar no site</button>
-      </div>
+      </footer>
     </form>
   </dialog>
 </body>

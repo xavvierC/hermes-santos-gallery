@@ -14,8 +14,18 @@
 
   const el = (tag, cls, texto) => { const e = document.createElement(tag); if (cls) e.className = cls; if (texto != null) e.textContent = texto; return e; };
   const copia = v => JSON.parse(JSON.stringify(v));
-  const botao = (rotulo, aria, fn) => { const b = el('button', null, rotulo); b.type = 'button'; if (aria) b.setAttribute('aria-label', aria); b.addEventListener('click', fn); return b; };
-  function aviso(msg, tipo) { const a = $('#aviso'); a.textContent = msg || ''; a.className = `aviso${tipo ? ` ${tipo}` : ''}`; }
+  const botao = (rotulo, aria, fn, cls) => { const b = el('button', cls, rotulo); b.type = 'button'; if (aria) b.setAttribute('aria-label', aria); b.addEventListener('click', fn); return b; };
+  const normal = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const confere = (busca, ...campos) => !busca || normal(campos.join(' ')).includes(busca);
+
+  // aviso flutuante: "Publicando…" fica até terminar; "Salvo" some sozinho
+  let someAviso = 0;
+  function aviso(msg, tipo) {
+    const a = $('#aviso');
+    clearTimeout(someAviso);
+    a.textContent = msg || ''; a.className = `aviso${tipo ? ` ${tipo}` : ''}`;
+    if (tipo === 'ok') someAviso = setTimeout(() => { a.textContent = ''; }, 7000);
+  }
 
   async function api(corpo) {
     let r;
@@ -45,7 +55,7 @@
   function sair() {
     token = ''; estado = null;
     try { sessionStorage.removeItem('hs-painel'); } catch (e) { /* sem armazenamento */ }
-    $$('dialog[open]').forEach(d => d.close());
+    $$('dialog[open]').forEach(d => { d.dataset.livre = '1'; d.close(); });
     $('#telaPainel').hidden = true; $('#telaEntrar').hidden = false; aviso('');
   }
   $('#sair').addEventListener('click', sair);
@@ -54,14 +64,53 @@
     $('#telaEntrar').hidden = true; $('#telaPainel').hidden = false;
     desenharTudo();
   }
-  const desenharTudo = () => { desenharObras(); desenharExpos(); desenharImprensa(); };
+  const desenharTudo = () => {
+    desenharObras(); desenharExpos(); desenharImprensa();
+    $('#contaObras').textContent = estado.obras.length;
+    $('#contaExpos').textContent = estado.agenda.exposicoes.length;
+    $('#contaImprensa').textContent = estado.agenda.imprensa.length;
+  };
 
-  /* abas */
+  /* abas (setas do teclado trocam de aba) */
   const ABAS = [['tabObras', 'abaObras'], ['tabExpos', 'abaExpos'], ['tabImprensa', 'abaImprensa']];
-  ABAS.forEach(([aba]) => $(`#${aba}`).addEventListener('click', () => ABAS.forEach(([t, painel]) => {
-    $(`#${t}`).setAttribute('aria-selected', String(t === aba)); $(`#${painel}`).hidden = t !== aba;
-  })));
-  $$('[data-fechar]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+  const abrirAba = aba => ABAS.forEach(([t, painel]) => {
+    const sim = t === aba;
+    $(`#${t}`).setAttribute('aria-selected', String(sim)); $(`#${t}`).tabIndex = sim ? 0 : -1; $(`#${painel}`).hidden = !sim;
+  });
+  ABAS.forEach(([aba], i) => {
+    const b = $(`#${aba}`);
+    b.addEventListener('click', () => abrirAba(aba));
+    b.addEventListener('keydown', e => {
+      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      const prox = ABAS[(i + d + ABAS.length) % ABAS.length][0];
+      abrirAba(prox); $(`#${prox}`).focus();
+    });
+  });
+
+  /* ---------- gavetas de edição: fechar com cuidado, Ctrl+S salva ---------- */
+  const assinatura = form => JSON.stringify([...new FormData(form)]) + (form === formObra ? JSON.stringify(fotosEdicao.map(f => f.g || f.previa)) : '');
+  function abrirGaveta(dlg) {
+    const form = $('form', dlg);
+    dlg.dataset.livre = '';
+    dlg.showModal();
+    form.dataset.inicio = assinatura(form);
+  }
+  function tentarFechar(dlg) {
+    const form = $('form', dlg);
+    if (dlg.dataset.livre || assinatura(form) === form.dataset.inicio || confirm('Fechar sem salvar? As alterações feitas aqui serão perdidas.')) {
+      dlg.dataset.livre = '1'; dlg.close(); return true;
+    }
+    return false;
+  }
+  $$('dialog.gaveta').forEach(dlg => {
+    $$('[data-fechar]', dlg).forEach(b => b.addEventListener('click', () => tentarFechar(dlg)));
+    dlg.addEventListener('cancel', e => { e.preventDefault(); tentarFechar(dlg); }); // tecla Esc
+    dlg.addEventListener('click', e => { if (e.target === dlg) tentarFechar(dlg); }); // clique fora
+    dlg.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); $('form', dlg).requestSubmit(); }
+    });
+  });
 
   /* ---------- publicar ---------- */
   async function publicar(obras, agenda, fotos, mensagem) {
@@ -72,45 +121,57 @@
     aviso('Salvo. O site se atualiza em cerca de 1 minuto.', 'ok');
   }
   async function enviar(form, erro, fn) {
-    const botoes = $$('button', form);
+    const botoes = $$('button', form), salvar = $('button[type=submit]', form), rotulo = salvar.textContent;
     botoes.forEach(b => { b.disabled = true; });
+    salvar.textContent = 'Publicando…';
     erro.textContent = '';
-    try { await fn(); form.closest('dialog').close(); } catch (err) { erro.textContent = err.message; aviso(''); } finally { botoes.forEach(b => { b.disabled = false; }); }
+    try {
+      await fn();
+      const dlg = form.closest('dialog'); dlg.dataset.livre = '1'; dlg.close();
+    } catch (err) { erro.textContent = err.message; aviso(err.message, 'ruim'); }
+    finally { botoes.forEach(b => { b.disabled = false; }); salvar.textContent = rotulo; }
   }
 
   /* ---------- obras ---------- */
   const srcFoto = caminho => previas.get(caminho) || `/${caminho}`;
+  const buscaObras = $('#buscaObras');
   function desenharObras() {
     const ul = $('#listaObras'); ul.textContent = '';
-    const destaques = estado.obras.filter(o => o.destaque).length;
-    $('#resumoObras').textContent = `${estado.obras.length} obras, ${destaques} em destaque na página inicial. Obras novas aparecem primeiro no acervo.`;
+    const busca = normal(buscaObras.value.trim());
+    let n = 0;
     estado.obras.forEach((o, i) => {
-      const li = el('li');
-      const img = el('img'); img.src = srcFoto(o.fotos[0].p); img.alt = ''; img.loading = 'lazy'; img.width = 64; img.height = 64;
-      const texto = el('div'), nome = el('strong', null, o.titulo);
-      if (o.destaque) nome.append(el('span', 'selo', `Destaque ${o.destaque}º`));
-      texto.append(nome, el('span', 'linha2', [o.ano, o.tecnica, o.material].filter(Boolean).join(' · ')));
-      li.append(img, texto, botao('Editar', `Editar ${o.titulo}`, () => abrirObra(i)));
-      ul.append(li);
+      if (!confere(busca, o.titulo, o.ano, o.tecnica, o.material, o.dimensoes)) return;
+      n++;
+      const li = el('li'), b = botao(null, null, () => abrirObra(i), 'obra');
+      const caixa = el('span', 'obra-foto');
+      const img = el('img'); img.src = srcFoto(o.fotos[0].p); img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; img.width = 240; img.height = 240;
+      caixa.append(img);
+      if (o.destaque) caixa.append(el('span', 'selo', `Destaque ${o.destaque}º`));
+      const texto = el('span', 'obra-texto');
+      texto.append(el('strong', null, o.titulo), el('span', null, [o.ano, o.tecnica].filter(Boolean).join(' · ')));
+      b.append(caixa, texto);
+      li.append(b); ul.append(li);
     });
+    $('#vazioObras').hidden = n > 0;
   }
+  buscaObras.addEventListener('input', desenharObras);
 
   const dlgObra = $('#dlgObra'), formObra = $('#formObra');
   let editando = -1, fotosEdicao = [];
   function abrirObra(i) {
     editando = i;
     const o = i >= 0 ? estado.obras[i] : null;
-    $('#tituloDlgObra').textContent = o ? 'Editar obra' : 'Nova obra';
+    $('#tituloDlgObra').textContent = o ? o.titulo : 'Nova obra';
     formObra.reset(); $('#erroObra').textContent = ''; $('#processando').textContent = '';
     if (o) {
       ['titulo', 'ano', 'tecnica', 'dimensoes', 'material'].forEach(k => { formObra.elements[k].value = o[k] || ''; });
       formObra.elements.destaque.value = o.destaque ? String(o.destaque) : '';
-    }
+    } else formObra.elements.ano.value = new Date().getFullYear();
     fotosEdicao = o ? o.fotos.map(f => ({ ...f })) : [];
     $('#excluirObra').hidden = !o;
     desenharFotos();
-    dlgObra.showModal();
-    formObra.elements.titulo.focus();
+    abrirGaveta(dlgObra);
+    if (!o) formObra.elements.titulo.focus();
   }
   $('#novaObra').addEventListener('click', () => abrirObra(-1));
 
@@ -124,10 +185,16 @@
       const troca = j => { [fotosEdicao[i], fotosEdicao[j]] = [fotosEdicao[j], fotosEdicao[i]]; desenharFotos(); };
       const esq = botao('←', `Mover foto ${i + 1} para a esquerda`, () => troca(i - 1)); esq.disabled = i === 0;
       const dir = botao('→', `Mover foto ${i + 1} para a direita`, () => troca(i + 1)); dir.disabled = i === fotosEdicao.length - 1;
-      const tirar = botao('Tirar', `Tirar foto ${i + 1}`, () => { fotosEdicao.splice(i, 1); desenharFotos(); });
+      const tirar = botao('Tirar', `Tirar foto ${i + 1}`, () => { fotosEdicao.splice(i, 1); desenharFotos(); }, 'tirar');
       const mover = el('div', 'mover'); mover.append(esq, tirar, dir);
       li.append(mover); ul.append(li);
     });
+    if (fotosEdicao.length < 12) {
+      const li = el('li', 'vaga'), rotulo = el('label', 'add-foto', fotosEdicao.length ? 'Adicionar' : 'Adicionar fotos');
+      const input = el('input'); input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
+      input.addEventListener('change', e => { const arquivos = [...e.target.files]; e.target.value = ''; receberFotos(arquivos); });
+      rotulo.append(input); li.append(rotulo); ul.append(li);
+    }
   }
 
   // fotos são reduzidas no navegador: versão grande (até 1600 px) e pequena (até 760 px)
@@ -150,18 +217,23 @@
     const g = await reduzir(fonte, w0, h0, 1600, 0.82), p = await reduzir(fonte, w0, h0, 760, 0.8);
     return { novo: true, gBlob: g.blob, gExt: g.ext, pBlob: p.blob, pExt: p.ext, w: g.w, h: g.h, previa: URL.createObjectURL(p.blob) };
   }
-  $('#arquivosObra').addEventListener('change', async e => {
-    const arquivos = [...e.target.files]; e.target.value = '';
+  async function receberFotos(arquivos) {
     const status = $('#processando'), erro = $('#erroObra');
-    for (const [k, arquivo] of arquivos.entries()) {
+    erro.textContent = '';
+    for (const [k, arquivo] of arquivos.filter(a => a.type.startsWith('image/')).entries()) {
       if (fotosEdicao.length >= 12) { erro.textContent = 'Cada obra pode ter até 12 fotos.'; break; }
       status.textContent = `Preparando foto ${k + 1} de ${arquivos.length}…`;
       try { fotosEdicao.push(await prepararFoto(arquivo)); desenharFotos(); } catch (err) { erro.textContent = `Não consegui abrir "${arquivo.name}". Use uma foto JPG, PNG ou WebP.`; }
     }
     status.textContent = '';
-  });
+  }
+  // arrastar fotos do computador para a área de fotos
+  const zona = $('#zonaFotos');
+  ['dragenter', 'dragover'].forEach(t => zona.addEventListener(t, e => { if ([...e.dataTransfer.types].includes('Files')) { e.preventDefault(); zona.classList.add('soltar'); } }));
+  zona.addEventListener('dragleave', e => { if (!zona.contains(e.relatedTarget)) zona.classList.remove('soltar'); });
+  zona.addEventListener('drop', e => { e.preventDefault(); zona.classList.remove('soltar'); receberFotos([...e.dataTransfer.files]); });
 
-  const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50) || 'obra';
+  const slug = s => normal(s).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50) || 'obra';
   const base64 = blob => new Promise((ok, falha) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = falha; r.readAsDataURL(blob); });
   const numeroDaFoto = caminho => { const m = /-(\d+)-[gp]\.\w+$/.exec(caminho); return m ? +m[1] : 0; };
 
@@ -208,28 +280,40 @@
 
   /* ---------- exposições ---------- */
   const chaveExpo = x => x.ano * 10000 + (x.data ? +x.data.slice(3, 5) * 100 + +x.data.slice(0, 2) : 1300); // sem data: topo do ano
+  const buscaExpos = $('#buscaExpos');
   function desenharExpos() {
     const ul = $('#listaExpos'); ul.textContent = '';
+    const busca = normal(buscaExpos.value.trim());
+    let ano = null, n = 0;
     estado.agenda.exposicoes.forEach((x, i) => {
-      const li = el('li', 'sem-foto'), texto = el('div');
-      texto.append(el('strong', null, x.titulo), el('span', 'linha2', [x.data ? `${x.data}/${x.ano}` : String(x.ano), x.lugar].join(' · ')));
-      li.append(texto, botao('Editar', `Editar ${x.titulo}`, () => abrirExpo(i)));
-      ul.append(li);
+      if (!confere(busca, x.titulo, x.lugar, x.ano, x.en, x.lugarEn)) return;
+      n++;
+      if (x.ano !== ano) { ano = x.ano; ul.append(el('li', 'ano', String(ano))); }
+      const li = el('li'), b = botao(null, null, () => abrirExpo(i), 'linha');
+      const [d, m] = (x.data || '').split('/');
+      const texto = el('span', 'linha-texto');
+      texto.append(el('strong', null, x.titulo), el('span', null, x.lugar));
+      b.append(el('span', 'linha-lado', x.data ? `${d} ${MESES_PT[+m - 1]}` : 'sem data'), texto);
+      li.append(b); ul.append(li);
     });
+    $('#vazioExpos').hidden = n > 0;
   }
+  buscaExpos.addEventListener('input', desenharExpos);
   const dlgExpo = $('#dlgExpo'), formExpo = $('#formExpo');
   let editandoExpo = -1;
   function abrirExpo(i) {
     editandoExpo = i;
     const x = i >= 0 ? estado.agenda.exposicoes[i] : null, f = formExpo.elements;
-    $('#tituloDlgExpo').textContent = x ? 'Editar exposição ou evento' : 'Nova exposição ou evento';
+    $('#tituloDlgExpo').textContent = x ? 'Editar exposição' : 'Nova exposição';
     formExpo.reset(); $('#erroExpo').textContent = '';
     if (x) {
       f.titulo.value = x.titulo; f.en.value = x.en || ''; f.lugar.value = x.lugar; f.lugarEn.value = x.lugarEn || '';
       f.ano.value = x.ano; f.data.value = x.data ? `${x.ano}-${x.data.slice(3, 5)}-${x.data.slice(0, 2)}` : ''; f.intl.checked = !!x.intl;
     } else f.ano.value = new Date().getFullYear();
+    $('.ingles', formExpo).open = !!(x && (x.en || x.lugarEn));
     $('#excluirExpo').hidden = !x;
-    dlgExpo.showModal(); f.titulo.focus();
+    abrirGaveta(dlgExpo);
+    if (!x) f.titulo.focus();
   }
   $('#novaExpo').addEventListener('click', () => abrirExpo(-1));
   formExpo.elements.data.addEventListener('change', e => { if (e.target.value) formExpo.elements.ano.value = e.target.value.slice(0, 4); });
@@ -256,15 +340,23 @@
   });
 
   /* ---------- imprensa ---------- */
+  const buscaImprensa = $('#buscaImprensa');
   function desenharImprensa() {
     const ul = $('#listaImprensa'); ul.textContent = '';
+    const busca = normal(buscaImprensa.value.trim());
+    let n = 0;
     estado.agenda.imprensa.forEach((m, i) => {
-      const li = el('li', 'sem-foto'), texto = el('div');
-      texto.append(el('strong', null, m.titulo), el('span', 'linha2', [m.veiculo, m.data].filter(Boolean).join(' · ')));
-      li.append(texto, botao('Editar', `Editar ${m.titulo}`, () => abrirMateria(i)));
-      ul.append(li);
+      if (!confere(busca, m.titulo, m.veiculo, m.data)) return;
+      n++;
+      const li = el('li'), b = botao(null, null, () => abrirMateria(i), 'linha');
+      const texto = el('span', 'linha-texto');
+      texto.append(el('strong', null, m.titulo), el('span', null, m.veiculo));
+      b.append(el('span', 'linha-lado', m.data || ''), texto);
+      li.append(b); ul.append(li);
     });
+    $('#vazioImprensa').hidden = n > 0;
   }
+  buscaImprensa.addEventListener('input', desenharImprensa);
   const dlgMateria = $('#dlgMateria'), formMateria = $('#formMateria');
   let editandoMateria = -1;
   function abrirMateria(i) {
@@ -278,14 +370,15 @@
       if (partes) { f.mes.value = String(MESES_PT.indexOf(partes[1]) + 1); f.ano.value = partes[2]; } else if (soAno) f.ano.value = soAno[1];
     } else f.ano.value = new Date().getFullYear();
     $('#excluirMateria').hidden = !m;
-    dlgMateria.showModal(); f.veiculo.focus();
+    abrirGaveta(dlgMateria);
+    if (!m) f.titulo.focus();
   }
   $('#novaMateria').addEventListener('click', () => abrirMateria(-1));
   formMateria.addEventListener('submit', async e => {
     e.preventDefault();
     const f = formMateria.elements, erro = $('#erroMateria');
     const ano = +f.ano.value, mes = +f.mes.value, url = f.url.value.trim();
-    if (!f.veiculo.value.trim() || !f.titulo.value.trim() || !(ano >= 1900 && ano <= 2100)) { erro.textContent = 'Preencha veículo, título e ano.'; return; }
+    if (!f.veiculo.value.trim() || !f.titulo.value.trim() || !(ano >= 1900 && ano <= 2100)) { erro.textContent = 'Preencha título, veículo e ano.'; return; }
     if (!/^https?:\/\/\S+$/i.test(url)) { erro.textContent = 'Cole o link completo da matéria, começando com https://'; return; }
     const m = { veiculo: f.veiculo.value.trim(), data: mes ? `${MESES_PT[mes - 1]} ${ano}` : String(ano), dataEn: mes ? `${MESES_EN[mes - 1]} ${ano}` : String(ano),
       titulo: f.titulo.value.trim(), url };

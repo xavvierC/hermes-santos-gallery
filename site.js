@@ -289,12 +289,94 @@
       if (!alvo) return;
       e.preventDefault();
       fecharMenu();
-      const deslocamento = alvo.id === 'conteudo' ? 0 : -84;
-      if (lenis) lenis.scrollTo(alvo, { offset: deslocamento, duration: 1.6 });
-      else alvo.scrollIntoView({ behavior: movimento ? 'smooth' : 'auto' });
+      const y = Math.max(0, topoReal(alvo) + (alvo.id === 'conteudo' ? 0 : -84));
+      if (lenis) lenis.scrollTo(y, { duration: 1.6 });
+      else scrollTo({ top: y, behavior: movimento ? 'smooth' : 'auto' });
       if (id === '#conteudo') alvo.focus({ preventScroll: true });
       else history.replaceState(null, '', location.search + id);
     });
+  }
+
+  /* ---------- folhas: a seção de cima fica parada, desfoca e some enquanto a próxima sobe por cima ---------- */
+  const folhas = [];
+  let alturaTela = innerHeight;
+  const estreita = matchMedia('(max-width: 767px)');
+  // quanto a folha já foi coberta pela seguinte (0 a 1)
+  const progresso = f => Math.min(1, Math.max(0, (f.topo - f.el.getBoundingClientRect().top) / f.T));
+  // posição de um elemento no fluxo da página, sem o deslocamento das folhas presas (âncoras e menu)
+  function topoReal(alvo) {
+    let f = null;
+    for (const g of folhas) if (g.pg.contains(alvo) && (!f || f.pg.contains(g.pg))) f = g;
+    if (!f) return alvo.getBoundingClientRect().top + scrollY;
+    return topoReal(f.el) + (alvo.getBoundingClientRect().top - f.pg.getBoundingClientRect().top) / f.escala;
+  }
+  function prepararFolhas() {
+    const main = $('#conteudo'), papel = $('#papel');
+    if (!movimento || !main || !('ResizeObserver' in window)) return;
+    // a prévia da lista segue o cursor com position: fixed; fora das folhas ela não sofre com o desfoque
+    const previa = $('#previa'); if (previa) document.body.append(previa);
+    [[...main.children], papel ? [...papel.children] : []].forEach(filhos => {
+      const pgs = filhos.filter(n => n.matches('section, .papel'));
+      pgs.forEach((pg, i) => {
+        pg.classList.add('pagina');
+        if (i === pgs.length - 1) return; // a última de cada grupo só cobre a anterior
+        const el = document.createElement('div');
+        el.className = 'folha';
+        pg.before(el); el.append(pg);
+        folhas.push({ el, pg, T: 1, topo: 0, p: -1, escala: 1 });
+      });
+    });
+    if (!folhas.length) return;
+    raiz.classList.add('folhas');
+    const sonda = document.createElement('div');
+    sonda.setAttribute('aria-hidden', 'true');
+    sonda.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none';
+    document.body.append(sonda);
+    let pedido = 0;
+    const medir = () => {
+      pedido = 0;
+      alturaTela = sonda.offsetHeight || innerHeight;
+      folhas.forEach(f => {
+        const H = f.pg.offsetHeight;
+        f.T = Math.max(1, Math.min(H, alturaTela)); // a próxima leva uma tela (ou a altura da folha) para cobrir
+        f.topo = Math.min(0, alturaTela - H); // folha alta prende quando o fim dela chega ao pé da tela
+        f.el.style.setProperty('--t', `${f.T}px`);
+        f.pg.style.top = `${f.topo}px`;
+        f.p = -1;
+      });
+      pedirQuadro();
+    };
+    const remedir = () => { if (!pedido) pedido = requestAnimationFrame(medir); };
+    const ro = new ResizeObserver(remedir);
+    folhas.forEach(f => ro.observe(f.pg));
+    addEventListener('resize', remedir);
+    medir();
+    aoRolar(() => {
+      const borrao = estreita.matches ? 8 : 14;
+      folhas.forEach(f => {
+        const p = Math.round(progresso(f) * 1000) / 1000;
+        if (p === f.p) return;
+        f.p = p;
+        const s = f.pg.style;
+        if (p === 0) { s.filter = s.opacity = s.transform = s.transformOrigin = s.willChange = ''; f.escala = 1; return; }
+        f.escala = 1 - 0.05 * p;
+        s.transformOrigin = `50% ${Math.round(alturaTela / 2 - f.topo)}px`; // encolhe a partir do meio do que está visível
+        s.transform = `scale(${f.escala.toFixed(4)})`;
+        if (p === 1) { s.filter = s.willChange = ''; s.opacity = '0'; return; } // coberta: não precisa mais desenhar
+        s.willChange = 'filter, opacity, transform';
+        s.filter = `blur(${(p * borrao).toFixed(2)}px)`;
+        s.opacity = (1 - Math.pow(p, 1.4)).toFixed(3);
+      });
+    });
+    // quem navega pelo teclado não pode cair numa folha coberta
+    document.addEventListener('focusin', e => requestAnimationFrame(() => {
+      const n = e.target;
+      if (!n.matches || !n.matches(':focus-visible') || !folhas.some(f => f.pg.contains(n))) return;
+      const r = n.getBoundingClientRect();
+      if (r.top >= 0 && r.bottom <= innerHeight && !folhas.some(f => f.pg.contains(n) && progresso(f) > 0.02)) return;
+      const y = Math.max(0, topoReal(n) - alturaTela * 0.35);
+      if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else scrollTo(0, y);
+    }));
   }
 
   /* ---------- topo, menu e papel ---------- */
@@ -308,12 +390,14 @@
     if (lenis) lenis.start();
   }
   function topoEMenu() {
-    const papel = $('#papel');
-    // sobre o papel claro, o topo fica escuro
+    const papel = $('#papel'), visitaSec = $('#contato');
+    const folhaPapel = folhas.find(f => f.pg === papel);
+    // sobre o papel claro, o topo fica escuro (no fim, o papel escurece e a visita sobe por cima)
     aoRolar(() => {
       if (!papel) return;
       const r = papel.getBoundingClientRect();
-      topo.classList.toggle('claro', r.top <= 34 && r.bottom > 34);
+      const coberto = (visitaSec && visitaSec.getBoundingClientRect().top <= 34) || (folhaPapel && progresso(folhaPapel) > 0.3);
+      topo.classList.toggle('claro', r.top <= 34 && r.bottom > 34 && !coberto);
     });
     menuBtn.addEventListener('click', () => {
       if (!menuCheio.hidden) { fecharMenu(); return; }
@@ -328,14 +412,17 @@
     // link da seção atual (o acervo conta como "Obras")
     const links = $$('.topo-links a');
     const mapa = { obras: 'destaques' };
-    if (observador) {
-      const io = new IntersectionObserver(es => es.forEach(e => {
-        if (!e.isIntersecting) return;
-        const id = mapa[e.target.id] || e.target.id;
-        links.forEach(a => (a.getAttribute('href') === `#${id}` ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
-      }), { rootMargin: '-45% 0px -50% 0px' });
-      ['inicio', 'destaques', 'obras', 'sobre', 'exposicoes', 'imprensa', 'contato'].forEach(id => { const s = $(`#${id}`); if (s) io.observe(s); });
-    }
+    // pela posição no fluxo: as folhas presas continuam "na tela" mesmo cobertas
+    const secoes = ['inicio', 'destaques', 'obras', 'sobre', 'exposicoes', 'imprensa', 'contato'].map(id => $(`#${id}`)).filter(Boolean);
+    let atual = '';
+    aoRolar(() => {
+      const linha = scrollY + innerHeight * 0.46;
+      let id = '';
+      secoes.forEach(s => { if (topoReal(s) <= linha) id = mapa[s.id] || s.id; });
+      if (id === atual) return;
+      atual = id;
+      links.forEach(a => (a.getAttribute('href') === `#${id}` ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+    });
     // o papel abre de um cartão para a largura toda quando entra na tela
     if (movimento && papel) {
       let ultimo = -1;
@@ -607,7 +694,7 @@
       if (lenis) lenis.resize();
       // ao recolher, volta para o começo da lista (a página encolhe de uma vez)
       if (!abrir) {
-        if (lenis) lenis.scrollTo(depoisDe, { offset: -140, immediate: true });
+        if (lenis) lenis.scrollTo(topoReal(depoisDe) - 140, { immediate: true });
         else depoisDe.scrollIntoView();
       }
     });
@@ -670,6 +757,7 @@
   tentar('idioma', traduzir);
   tentar('idiomas', idiomas);
   tentar('rolagem', rolagem);
+  tentar('folhas', prepararFolhas);
   tentar('preloader', preloader);
   tentar('luz', luz);
   tentar('abertura', abertura);
@@ -687,6 +775,6 @@
   // se o endereço já vier com #secao, vai até ela depois de montar tudo
   if (location.hash.length > 1) {
     const alvo = $(location.hash);
-    if (alvo) intro.then(() => setTimeout(() => (lenis ? lenis.scrollTo(alvo, { immediate: true }) : alvo.scrollIntoView()), 50));
+    if (alvo) intro.then(() => setTimeout(() => (lenis ? lenis.scrollTo(topoReal(alvo), { immediate: true }) : alvo.scrollIntoView()), 50));
   }
 })();

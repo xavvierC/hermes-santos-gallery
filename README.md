@@ -45,7 +45,10 @@ appears behind them. The button pulses once after the opening so visitors notice
 ## Panel (`/painel`)
 
 Hermes edits works (with photos), exhibitions/events and press himself at `/painel` (password login, PT-BR,
-works on the phone). Each "Salvar no site" sends the full data to `api/painel.js`, which validates it and writes
+works on the phone). Works show as a photo grid, exhibitions grouped by year, press as a list; each tab has a
+search box and a count. Clicking an item opens a side drawer (full screen on phones) with "Salvar no site" always
+visible; Ctrl/Cmd+S saves, Esc or clicking outside closes and asks first if something changed, and photos can be
+dragged onto the photo area. Each "Salvar no site" sends the full data to `api/painel.js`, which validates it and writes
 one commit to `main` through the GitHub API (data files + new photos; photos no longer used are deleted).
 Vercel then redeploys, so the change is live in about a minute. Photos are resized in the browser
 (up to 1600 px and 760 px, WebP or JPEG on older Safari) before upload.
@@ -77,6 +80,11 @@ Vercel then redeploys, so the change is live in about a minute. Photos are resiz
 ## Motion and fallbacks
 
 - Preloader: the official logo with a thin ring that completes as the page loads; at 100 % the ring glows and then expands past the screen edges while a soft circular opening in the black background reveals the site. About 3 s on the first visit, shorter on the second load in the same tab session. `site.js` always ends it within ~7.5 s; if `site.js` never runs, the head script removes it at 6 s.
+- Section transitions ("folhas", `prepararFolhas` in `site.js`): each section of `main` (and of the paper block)
+  is wrapped in a `.folha` and made sticky, so it holds still while the next one slides up over it; as it is
+  covered it blurs, shrinks slightly and fades. Tall sections stick when their bottom reaches the bottom of the
+  screen. Anchors and the top-bar highlight use `topoReal()` (position in the flow, ignoring the sticky offset).
+  Not applied with reduced motion.
 - Reveals (`data-rv="up" | "words" | "develop"`), the paper block opening, caption parallax and the custom "View" cursor only run with the `motion` class, which is not added under `prefers-reduced-motion` (the light starts off and nothing animates).
 - WhatsApp buttons (artwork interest, book a visit) open `wa.me` with a prefilled message.
 
