@@ -11,7 +11,9 @@
   const OBRAS = window.HERMES_OBRAS || [];
   const REDE = window.HERMES_REDE || {};
   const movimento = raiz.classList.contains('motion');
-  const EN = new URLSearchParams(location.search).get('lang') === 'en';
+  // teste.html: versão enxuta (menos texto, listas resumidas, movimento mais rápido)
+  const ENXUTO = raiz.classList.contains('enxuto');
+  const EN =new URLSearchParams(location.search).get('lang') === 'en';
   const intro = window.HermesIntro || Promise.resolve();
   const fimIntro = () => window.__fimIntro && window.__fimIntro();
   window.__hsAssumiu = true;
@@ -41,6 +43,10 @@
     'r.endereco': 'Calçada dos Cravos, 63 — Alphaville Comercial, Barueri, SP, Brazil', 'r.topo': 'Back to top',
     'f.ano': 'Year', 'f.dimensoes': 'Dimensions', 'f.material': 'Material', 'f.interesse': 'I’m interested',
     'f.anterior': '← Previous', 'f.proxima': 'Next →',
+    // versão enxuta
+    'lede.c': 'Hermes Santos brings robotics, laser cutting and additive manufacturing from industry into sculpture.',
+    's.c1': 'A visual artist and designer, Hermes Santos trained in mechanics and spent more than three decades in automotive manufacturing.',
+    's.c2': 'Founder of Modefer, he brings the robotics, laser cutting and additive manufacturing of his industrial park to art. He lives and works in São Paulo.',
   };
   const txt = (pt, en) => (EN ? en : pt);
   const MESES = EN ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -60,7 +66,7 @@
     const troca = $('[data-idioma-troca]');
     if (!troca) return;
     troca.textContent = EN ? 'PT' : 'EN';
-    troca.href = EN ? './' : '?lang=en';
+    troca.href = EN ? location.pathname : `${location.pathname}?lang=en`; // fica na mesma página (início ou teste)
     troca.lang = EN ? 'pt-BR' : 'en';
     troca.setAttribute('aria-label', EN ? 'Ver em português' : 'View in English');
   }
@@ -126,7 +132,7 @@
     const b = $('#luz');
     if (b) b.addEventListener('click', () => { mexeuNaLuz = true; definirLuz(!apagada()); });
     // depois da abertura, a sala apaga e as obras de aluminato de estrôncio aparecem brilhando
-    intro.then(() => setTimeout(() => { if (!mexeuNaLuz) definirLuz(true); }, movimento ? 1900 : 0));
+    intro.then(() => setTimeout(() => { if (!mexeuNaLuz) definirLuz(true); }, movimento ? (ENXUTO ? 1100 : 1900) : 0));
   }
 
   /* foto de uma obra; se ela tiver par, leva as duas versões sobrepostas */
@@ -228,7 +234,7 @@
     const arco = $('#plArco'), trilho = $('#plTrilho'), anel = $('#plAnel'), fundo = $('.pl-fundo', tela);
     const R = 96;
     const t0 = performance.now();
-    const minimo = jaViu ? 700 : 2300, maximo = 4400;
+    const minimo = jaViu ? 700 : (ENXUTO ? 1500 : 2300), maximo = ENXUTO ? 3600 : 4400;
     let carregado = document.readyState === 'complete', valor = 0, saiu = false, limpo = false;
     window.addEventListener('load', () => { carregado = true; }, { once: true });
     // fim garantido: mesmo se a aba ficar em segundo plano, a página nunca fica presa sem rolagem
@@ -242,7 +248,7 @@
       raiz.classList.add('preloader-sai');
       setTimeout(fimIntro, 200);
       const fim = Math.hypot(innerWidth, innerHeight) / 2 + 120; // a borda do furo é suave (80px)
-      const dur = jaViu ? 900 : 1500, t1 = performance.now();
+      const dur = jaViu ? 900 : (ENXUTO ? 1150 : 1500), t1 = performance.now();
       const passo = t => {
         const p = Math.min(1, (t - t1) / dur);
         const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
@@ -264,7 +270,7 @@
       valor += (alvo - valor) * (pronto ? 0.12 : 0.06);
       if (pronto && valor > 99.6) valor = 100;
       arco.style.strokeDashoffset = (1 - valor / 100).toFixed(4); // o arco cresce no sentido horário, a partir do topo
-      if (valor >= 100) { chegou = true; tela.classList.add('carregado'); setTimeout(abrir, jaViu ? 300 : 850); return; }
+      if (valor >= 100) { chegou = true; tela.classList.add('carregado'); setTimeout(abrir, jaViu ? 300 : (ENXUTO ? 500 : 850)); return; }
       requestAnimationFrame(quadro);
     };
     requestAnimationFrame(quadro);
@@ -433,7 +439,9 @@
   }
 
   /* ---------- obras em destaque ---------- */
-  const DESTAQUES = ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'gravidade', 'sea-dragon', 'jelly-fish'];
+  const DESTAQUES = ENXUTO
+    ? ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'jelly-fish']
+    : ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'gravidade', 'sea-dragon', 'jelly-fish'];
   const PY = [80, -60, 100, -50];
   function destaques() {
     const cont = $('#placas');
@@ -451,7 +459,8 @@
       const leg = el('div', 'placa-leg'); leg.dataset.py = PY[i % PY.length];
       const titulo = el('h3', null, o.titulo); titulo.id = `placa-${o.id}`;
       const dados = el('p', 'placa-dados');
-      dados.append(`${o.ano} · ${tecnica(o.tecnica)}`, el('br'), material(o.material), el('br'), dimensoes(o.dimensoes));
+      dados.append(`${o.ano} · ${tecnica(o.tecnica)}`);
+      if (!ENXUTO) dados.append(el('br'), material(o.material), el('br'), dimensoes(o.dimensoes)); // na enxuta, material e medidas ficam na ficha
       const ver = el('button', 'link-seta', txt('Ver ficha', 'View details')); ver.type = 'button';
       ver.setAttribute('aria-label', `${txt('Ver ficha de', 'View details of')} ${o.titulo}`);
       ver.addEventListener('click', () => abrirFicha(obras, i));
@@ -468,7 +477,8 @@
     const anos = OBRAS.map(o => parseInt(o.ano, 10)).filter(Boolean);
     if (anos.length) {
       const de = Math.min(...anos), ate = Math.max(...anos);
-      $('#aNota').textContent = txt(`${OBRAS.length} obras, de ${de} a ${ate}.`, `${OBRAS.length} works, ${de} to ${ate}.`);
+      $('#aNota').textContent = ENXUTO ? txt(`${OBRAS.length} obras.`, `${OBRAS.length} works.`)
+        : txt(`${OBRAS.length} obras, de ${de} a ${ate}.`, `${OBRAS.length} works, ${de} to ${ate}.`);
     }
     const tecnicas = ['Escultura', 'Pintura', 'Instalação', 'Colagem'].filter(t => OBRAS.some(o => o.tecnica === t));
     let ativa = '', vista = 'grade';
@@ -563,7 +573,8 @@
     const anos = lista.map(x => x.ano);
     if (anos.length) {
       const de = Math.min(...anos), ate = Math.max(...anos);
-      $('#eNota').textContent = txt(`${lista.length} exposições, prêmios e eventos, de ${de} a ${ate}.`, `${lista.length} exhibitions, awards and events, ${de} to ${ate}.`);
+      $('#eNota').textContent = ENXUTO ? txt(`${lista.length} exposições e eventos desde ${de}.`, `${lista.length} exhibitions and events since ${de}.`)
+        : txt(`${lista.length} exposições, prêmios e eventos, de ${de} a ${ate}.`, `${lista.length} exhibitions, awards and events, ${de} to ${ate}.`);
     }
     const cv = $('#cv');
     const grupos = new Map();
@@ -582,14 +593,37 @@
       cv.append(bloco);
       observar(bloco);
     });
+    recolher($$('.cv-ano', cv), 2, cv, txt(`Ver todas as ${lista.length}`, `See all ${lista.length}`));
     const hon = $('#honrarias');
     (H.honrarias || []).forEach(h => {
       const [titulo, ...resto] = (EN ? h.en : h.pt).split(' — ');
       const li = el('li', null, titulo);
-      li.append(el('span', null, [resto.join(' — '), h.ano].filter(Boolean).join(', ')));
+      li.append(el('span', null, ENXUTO ? String(h.ano) : [resto.join(' — '), h.ano].filter(Boolean).join(', ')));
       li.dataset.rv = 'up';
       hon.append(li);
     });
+  }
+
+  /* versão enxuta: mostra só os primeiros itens e um botão para abrir o resto */
+  function recolher(itens, limite, depoisDe, rotulo) {
+    if (!ENXUTO || itens.length <= limite) return;
+    const extras = itens.slice(limite);
+    extras.forEach(x => { x.hidden = true; });
+    const b = el('button', 'link-seta mais', rotulo); b.type = 'button';
+    b.setAttribute('aria-expanded', 'false');
+    b.addEventListener('click', () => {
+      const abrir = b.getAttribute('aria-expanded') !== 'true';
+      extras.forEach(x => { x.hidden = !abrir; if (abrir) x.classList.add('visto'); });
+      b.setAttribute('aria-expanded', String(abrir));
+      b.textContent = abrir ? txt('Mostrar menos', 'Show less') : rotulo;
+      if (lenis) lenis.resize();
+      // ao recolher, volta para o começo da lista (a página encolhe de uma vez)
+      if (!abrir) {
+        if (lenis) lenis.scrollTo(depoisDe, { offset: -140, immediate: true });
+        else depoisDe.scrollIntoView();
+      }
+    });
+    depoisDe.after(b);
   }
 
   /* ---------- imprensa ---------- */
@@ -601,6 +635,8 @@
       a.append(el('span', 'mt-veiculo', m.veiculo), el('span', 'mt-titulo', m.titulo), el('span', 'mt-data', EN ? m.dataEn : m.data));
       li.append(a); ul.append(li);
     });
+    const n = (H.imprensa || []).length;
+    recolher($$('li', ul), 5, ul, txt(`Ver as ${n} matérias`, `See all ${n} articles`));
   }
 
   /* ---------- visita ---------- */
