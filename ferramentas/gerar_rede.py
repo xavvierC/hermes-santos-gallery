@@ -35,7 +35,7 @@ def rede(n, semente):
     linhas.sort()
     return [s for _, s in linhas]
 
-dados = {'preloader': rede(150, 7), 'visita': rede(120, 63)}
+dados = {'visita': rede(120, 63)}  # só a seção Visita usa a rede (o preloader agora é o anel)
 with open(os.path.join(RAIZ, 'data', 'rede.js'), 'w', encoding='utf-8') as f:
     f.write('/* Gerado por ferramentas/gerar_rede.py: rede Voronoi das esculturas vazadas, 1600x1000. */\n')
     f.write('window.HERMES_REDE = ' + json.dumps(dados, separators=(',', ':')) + ';\n')

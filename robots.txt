@@ -1,2 +1,16 @@
+# Site em aprovação: fora dos buscadores, mas os robôs que montam a prévia do link
+# (WhatsApp, Facebook/Instagram, X, LinkedIn) podem ler a página.
+User-agent: WhatsApp
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
 User-agent: *
 Disallow: /

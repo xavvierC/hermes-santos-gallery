@@ -11,8 +11,6 @@
   const OBRAS = window.HERMES_OBRAS || [];
   const REDE = window.HERMES_REDE || {};
   const movimento = raiz.classList.contains('motion');
-  // teste.html: versão enxuta (menos texto, listas resumidas, movimento mais rápido)
-  const ENXUTO = raiz.classList.contains('enxuto');
   const EN =new URLSearchParams(location.search).get('lang') === 'en';
   const intro = window.HermesIntro || Promise.resolve();
   const fimIntro = () => window.__fimIntro && window.__fimIntro();
@@ -22,29 +20,21 @@
   const T = {
     pular: 'Skip to content', inicio: 'Hermes Santos — home', secoes: 'Sections', menu: 'Menu', fechar: 'Close',
     'nav.obras': 'Works', 'nav.acervo': 'Collection', 'nav.sobre': 'About', 'nav.exposicoes': 'Exhibitions', 'nav.imprensa': 'Press', 'nav.visita': 'Visit',
-    'ab.material': 'Strontium aluminate (glow) paint on carbon steel', 'ab.meta': 'Sculptor and visual artist<br>São Paulo, Brazil', 'ab.descer': 'See the works',
+    'ab.meta': 'Sculptor and visual artist<br>São Paulo, Brazil', 'ab.descer': 'See the works',
     'lede.aria': 'Introduction',
-    'lede.texto': 'Hermes Santos brings the precision of industry to art: robotics, laser cutting and additive manufacturing in the service of sculptures in steel, brass, resin and Murano crystal.',
-    'lede.lado': 'Trained in mechanics, with more than three decades in automotive manufacturing, he developed his work on his own. He also paints, works with glass and creates multimedia installations.',
+    'lede.c': 'Hermes Santos brings robotics, laser cutting and additive manufacturing from industry into sculpture.',
     'lede.link': 'About the artist',
-    'd.titulo': 'Featured', 'd.nota': 'Eight works from the collection. Select one to see its full record.',
+    'd.titulo': 'Featured',
     'a.titulo': 'Collection', 'a.filtrar': 'Filter by technique', 'a.vista': 'Display', 'a.imagens': 'Images', 'a.lista': 'List',
     's.titulo': 'About the artist', 's.alt': 'Portrait of Hermes Santos',
-    's.p1': 'Hermes Santos is a visual artist and designer with a singular background.',
-    's.p2': 'Trained in mechanics and with more than three decades in automotive manufacturing, he developed his artistic practice on his own, through direct observation of materials and experimentation with the processes that transform matter.',
-    's.p3': 'Founder of Modefer, a reference in the auto parts industry, he draws on his experience in management and engineering to bring the technologies of his industrial park — robotics, laser cutting and additive manufacturing — to aesthetic ends.',
-    's.p4': 'He describes his method as that of a seeker.',
-    's.p5': 'The discipline and precision of heavy industry merge with an interest in organic forms and fluidity, in works that explore the duality between technical rigidity and visual lightness.',
-    's.p6': 'He lives and works in São Paulo. His production ranges from steel and brass sculptures to paintings, glass works and multimedia installations, and is part of private collections and international exhibitions.',
     'e.titulo': 'Exhibitions', 'e.honrarias': 'Honours',
-    'i.titulo': 'Press', 'i.nota': 'Articles published about the artist. Links open each outlet’s website.',
+    'i.titulo': 'Press',
     'v.titulo': 'Visit the gallery', 'v.endereco': 'Address', 'v.mapa': 'Get directions', 'v.horario': 'Opening hours',
     'v.horas': 'Monday to Friday, 9 am to 6 pm<br>Saturday, 9 am to 1 pm', 'v.contato': 'Contact', 'v.agendar': 'Book a visit',
     'r.endereco': 'Calçada dos Cravos, 63 — Alphaville Comercial, Barueri, SP, Brazil', 'r.topo': 'Back to top',
     'f.ano': 'Year', 'f.dimensoes': 'Dimensions', 'f.material': 'Material', 'f.interesse': 'I’m interested',
     'f.anterior': '← Previous', 'f.proxima': 'Next →',
-    // versão enxuta
-    'lede.c': 'Hermes Santos brings robotics, laser cutting and additive manufacturing from industry into sculpture.',
+    // biografia
     's.e1': 'Hermes Santos is a visual artist and designer. Trained in mechanics and with more than three decades in automotive manufacturing, he developed his artistic practice on his own, through direct observation of materials and experimentation with the processes that transform matter.',
     's.e2': 'Founder of Modefer, a reference in the auto parts industry, he brings the technologies of his industrial park — robotics, laser cutting and additive manufacturing — to aesthetic ends.',
     's.e3': 'He describes his method as that of a seeker: the discipline and precision of heavy industry meet an interest in organic forms, in works that explore the duality between technical rigidity and visual lightness.',
@@ -134,7 +124,12 @@
     const b = $('#luz');
     if (b) b.addEventListener('click', () => { mexeuNaLuz = true; definirLuz(!apagada()); });
     // depois da abertura, a sala apaga e as obras de aluminato de estrôncio aparecem brilhando
-    intro.then(() => setTimeout(() => { if (!mexeuNaLuz) definirLuz(true); }, movimento ? (ENXUTO ? 1100 : 1900) : 0));
+    intro.then(() => setTimeout(() => {
+      if (mexeuNaLuz) return;
+      definirLuz(true);
+      // um pulso discreto mostra que a luz pode ser acesa de novo
+      if (movimento && b) { b.classList.add('chama'); setTimeout(() => b.classList.remove('chama'), 2700); }
+    }, movimento ? 1100 : 0));
   }
 
   /* foto de uma obra; se ela tiver par, leva as duas versões sobrepostas */
@@ -236,7 +231,7 @@
     const arco = $('#plArco'), trilho = $('#plTrilho'), anel = $('#plAnel'), fundo = $('.pl-fundo', tela);
     const R = 96;
     const t0 = performance.now();
-    const minimo = jaViu ? 700 : (ENXUTO ? 1500 : 2300), maximo = ENXUTO ? 3600 : 4400;
+    const minimo = jaViu ? 700 : 1500, maximo = 3600;
     let carregado = document.readyState === 'complete', valor = 0, saiu = false, limpo = false;
     window.addEventListener('load', () => { carregado = true; }, { once: true });
     // fim garantido: mesmo se a aba ficar em segundo plano, a página nunca fica presa sem rolagem
@@ -250,7 +245,7 @@
       raiz.classList.add('preloader-sai');
       setTimeout(fimIntro, 200);
       const fim = Math.hypot(innerWidth, innerHeight) / 2 + 120; // a borda do furo é suave (80px)
-      const dur = jaViu ? 900 : (ENXUTO ? 1150 : 1500), t1 = performance.now();
+      const dur = jaViu ? 900 : 1150, t1 = performance.now();
       const passo = t => {
         const p = Math.min(1, (t - t1) / dur);
         const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
@@ -272,7 +267,7 @@
       valor += (alvo - valor) * (pronto ? 0.12 : 0.06);
       if (pronto && valor > 99.6) valor = 100;
       arco.style.strokeDashoffset = (1 - valor / 100).toFixed(4); // o arco cresce no sentido horário, a partir do topo
-      if (valor >= 100) { chegou = true; tela.classList.add('carregado'); setTimeout(abrir, jaViu ? 300 : (ENXUTO ? 500 : 850)); return; }
+      if (valor >= 100) { chegou = true; tela.classList.add('carregado'); setTimeout(abrir, jaViu ? 300 : 500); return; }
       requestAnimationFrame(quadro);
     };
     requestAnimationFrame(quadro);
@@ -441,9 +436,7 @@
   }
 
   /* ---------- obras em destaque ---------- */
-  const DESTAQUES = ENXUTO
-    ? ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'jelly-fish']
-    : ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'gravidade', 'sea-dragon', 'jelly-fish'];
+  const DESTAQUES = ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'jelly-fish'];
   const PY = [80, -60, 100, -50];
   function destaques() {
     const cont = $('#placas');
@@ -461,8 +454,7 @@
       const leg = el('div', 'placa-leg'); leg.dataset.py = PY[i % PY.length];
       const titulo = el('h3', null, o.titulo); titulo.id = `placa-${o.id}`;
       const dados = el('p', 'placa-dados');
-      dados.append(`${o.ano} · ${tecnica(o.tecnica)}`);
-      if (!ENXUTO) dados.append(el('br'), material(o.material), el('br'), dimensoes(o.dimensoes)); // na enxuta, material e medidas ficam na ficha
+      dados.append(`${o.ano} · ${tecnica(o.tecnica)}`); // material e medidas ficam na ficha
       const ver = el('button', 'link-seta', txt('Ver ficha', 'View details')); ver.type = 'button';
       ver.setAttribute('aria-label', `${txt('Ver ficha de', 'View details of')} ${o.titulo}`);
       ver.addEventListener('click', () => abrirFicha(obras, i));
@@ -476,12 +468,7 @@
   /* ---------- acervo ---------- */
   function acervo() {
     const filtros = $('#filtros'), grade = $('#grade'), indice = $('#indice'), previa = $('#previa');
-    const anos = OBRAS.map(o => parseInt(o.ano, 10)).filter(Boolean);
-    if (anos.length) {
-      const de = Math.min(...anos), ate = Math.max(...anos);
-      $('#aNota').textContent = ENXUTO ? txt(`${OBRAS.length} obras.`, `${OBRAS.length} works.`)
-        : txt(`${OBRAS.length} obras, de ${de} a ${ate}.`, `${OBRAS.length} works, ${de} to ${ate}.`);
-    }
+    $('#aNota').textContent = txt(`${OBRAS.length} obras.`, `${OBRAS.length} works.`);
     const tecnicas = ['Escultura', 'Pintura', 'Instalação', 'Colagem'].filter(t => OBRAS.some(o => o.tecnica === t));
     let ativa = '', vista = 'grade';
     const botao = (rotulo, valor, total) => {
@@ -572,11 +559,9 @@
   /* ---------- exposições ---------- */
   function exposicoes() {
     const lista = H.exposicoes || [];
-    const anos = lista.map(x => x.ano);
-    if (anos.length) {
-      const de = Math.min(...anos), ate = Math.max(...anos);
-      $('#eNota').textContent = ENXUTO ? txt(`${lista.length} exposições e eventos desde ${de}.`, `${lista.length} exhibitions and events since ${de}.`)
-        : txt(`${lista.length} exposições, prêmios e eventos, de ${de} a ${ate}.`, `${lista.length} exhibitions, awards and events, ${de} to ${ate}.`);
+    if (lista.length) {
+      const de = Math.min(...lista.map(x => x.ano));
+      $('#eNota').textContent = txt(`${lista.length} exposições e eventos desde ${de}.`, `${lista.length} exhibitions and events since ${de}.`);
     }
     const cv = $('#cv');
     const grupos = new Map();
@@ -598,17 +583,17 @@
     recolher($$('.cv-ano', cv), 2, cv, txt(`Ver todas as ${lista.length}`, `See all ${lista.length}`));
     const hon = $('#honrarias');
     (H.honrarias || []).forEach(h => {
-      const [titulo, ...resto] = (EN ? h.en : h.pt).split(' — ');
+      const [titulo] = (EN ? h.en : h.pt).split(' — ');
       const li = el('li', null, titulo);
-      li.append(el('span', null, ENXUTO ? String(h.ano) : [resto.join(' — '), h.ano].filter(Boolean).join(', ')));
+      li.append(el('span', null, String(h.ano)));
       li.dataset.rv = 'up';
       hon.append(li);
     });
   }
 
-  /* versão enxuta: mostra só os primeiros itens e um botão para abrir o resto */
+  /* listas longas: mostra só os primeiros itens e um botão para abrir o resto */
   function recolher(itens, limite, depoisDe, rotulo) {
-    if (!ENXUTO || itens.length <= limite) return;
+    if (itens.length <= limite) return;
     const extras = itens.slice(limite);
     extras.forEach(x => { x.hidden = true; });
     const b = el('button', 'link-seta mais', rotulo); b.type = 'button';

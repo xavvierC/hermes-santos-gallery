@@ -27,7 +27,9 @@ appears behind the works. After the opening, the room goes dark on its own.
 | `site.js` | Preloader, Lenis, PT/EN (`T` object), light switch, reveals, featured works, collection (images or list), artwork dialog, exhibitions, press, visit |
 | `data/conteudo.js` | Contact, exhibitions, honours, press and EN translations of techniques/materials — taken from hermessantos.com.br |
 | `data/obras.json` / `data/obras.js` | 40 works (title, year, technique, dimensions, material, photos) from the current site |
-| `data/rede.js` | Voronoi line network (the pattern of the openwork sculptures) drawn in the preloader and the visit section |
+| `data/rede.js` | Voronoi line network (the pattern of the openwork sculptures) drawn behind the visit section |
+| `assets/og.jpg`, `ferramentas/og.html` | Link preview image (1200×630) for WhatsApp/Instagram/Facebook and the template it was rendered from |
+| `robots.txt` | Keeps search engines out while the site is in approval, but lets link-preview bots read the page |
 | `assets/obras/` | Artwork photos as WebP: `-g` (up to 1800 px) and `-p` (up to 760 px) |
 | `assets/hermes-marca.png` | Swoosh cropped from the official logo, used in the top bar |
 | `assets/vendor/lenis.*` | Lenis 1.1.20 smooth scroll, vendored |
@@ -38,11 +40,13 @@ appears behind the works. After the opening, the room goes dark on its own.
 - Portuguese text lives in `index.html`; English strings are in the `T` object at the top of `site.js`.
 - Exhibitions, press, contact: `data/conteudo.js`.
 - Works: edit `data/obras.json` and regenerate `data/obras.js` (`ferramentas/baixar_extras.py` does it), or edit `data/obras.js` directly.
-- Featured works: `DESTAQUES` list in `site.js`. Lit/glow photo pairs: `PARES` (only pairs with identical framing).
+- Featured works: `DESTAQUES` list in `site.js` (6). Lit/glow photo pairs: `PARES` (only pairs with identical framing).
+- Copy is deliberately short: one-line introduction, four-paragraph biography in a single text style. Exhibitions show the two latest years and press the five latest articles; a "see all" button opens the rest.
+- When the site moves to its own domain, update the absolute `og:url` and `og:image` addresses in `index.html`.
 
 ## Motion and fallbacks
 
-- Preloader: the official logo with a thin ring that completes as the page loads; at 100 % the ring glows and then expands past the screen edges while a soft circular opening in the black background reveals the site. Shorter on the second load in the same tab session. `site.js` always ends it within ~7.5 s; if `site.js` never runs, the head script removes it at 6 s.
+- Preloader: the official logo with a thin ring that completes as the page loads; at 100 % the ring glows and then expands past the screen edges while a soft circular opening in the black background reveals the site. About 3 s on the first visit, shorter on the second load in the same tab session. `site.js` always ends it within ~7.5 s; if `site.js` never runs, the head script removes it at 6 s.
 - Reveals (`data-rv="up" | "words" | "develop"`), the paper block opening, caption parallax and the custom "View" cursor only run with the `motion` class, which is not added under `prefers-reduced-motion` (the light starts off and nothing animates).
 - WhatsApp buttons (artwork interest, book a visit) open `wa.me` with a prefilled message.
 
