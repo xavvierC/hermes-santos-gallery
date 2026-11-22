@@ -1,6 +1,7 @@
-/* Galeria Hermes Santos — comportamento do site.
-   Preloader com a rede se desenhando, rolagem suave (Lenis), PT/EN, revelações na rolagem,
-   destaques em rolagem horizontal, acervo com filtros e ficha da obra, linha do tempo, imprensa e visita.
+/* Hermes Santos — comportamento do site.
+   Preloader (a rede das esculturas se desenha e acende), rolagem suave (Lenis), PT/EN, luz da galeria
+   (as obras com par de fotos trocam entre a foto com luz e a foto brilhando no escuro), revelações na rolagem,
+   obras em destaque, acervo em imagens ou lista, ficha da obra, exposições, imprensa e visita.
    Os dados vêm de data/conteudo.js, data/obras.js e data/rede.js. */
 (() => {
   const raiz = document.documentElement;
@@ -11,32 +12,34 @@
   const REDE = window.HERMES_REDE || {};
   const movimento = raiz.classList.contains('motion');
   const EN = new URLSearchParams(location.search).get('lang') === 'en';
+  const intro = window.HermesIntro || Promise.resolve();
   const fimIntro = () => window.__fimIntro && window.__fimIntro();
   window.__hsAssumiu = true;
 
-  /* ---------- textos em inglês (o português já está no HTML) ---------- */
+  /* ---------- textos em inglês (o português está no HTML) ---------- */
   const T = {
-    pular: 'Skip to content', menu: 'Menu', fechar: 'Close', rolar: 'Scroll to content',
-    'nav.obras': 'Works', 'nav.sobre': 'About', 'nav.exposicoes': 'Exhibitions', 'nav.imprensa': 'Press', 'nav.contato': 'Contact',
-    'hero.sub': 'ART GALLERY', 'hero.alt': 'Zona Neutra, by Hermes Santos: a disc of light fibres around a dark centre',
-    'm.rotulo': 'Studio · Alphaville, São Paulo',
-    'm.titulo': 'Between steel and the <em class="ouro">poetry of form.</em>',
-    'm.texto': 'Three decades of industry turned into sculpture, painting, glass and light. Works born from the precision of the machine that end in the lightness of the gesture.',
-    'm.cta': 'Explore the works',
-    'd.rotulo': 'Featured works', 'd.titulo': 'Matter that <em class="ouro">glows.</em>',
-    'n.aria': 'In numbers', 'n.obras': 'works in the collection', 'n.eventos': 'exhibitions and events',
-    'n.paises': 'countries: Brazil, USA and Uruguay', 'n.anos': 'years of industry and engineering',
-    'a.rotulo': 'Collection', 'a.titulo': 'All works', 'a.filtrar': 'Filter by technique',
-    's.rotulo': 'About the artist', 's.titulo': 'A <em class="ouro">seeker.</em>', 's.alt': 'Portrait of Hermes Santos',
-    's.p1': 'Hermes Santos is a visual artist and designer with a singular background. Trained in mechanics and with more than three decades in automotive manufacturing, he developed his artistic practice on his own, through direct observation of materials and experimentation with the processes that transform matter.',
-    's.p2': 'Founder of Modefer, a reference in the auto parts industry, he draws on his experience in management and engineering to bring the technologies of his industrial park — robotics, laser cutting and additive manufacturing — to aesthetic ends.',
-    's.p3': 'He describes his method as that of a seeker. The discipline and precision of heavy industry merge with an interest in organic forms and fluidity, in works that explore the duality between technical rigidity and visual lightness.',
-    's.p4': 'He lives and works in São Paulo. His production ranges from steel and brass sculptures to paintings, glass works and multimedia installations, and is part of private collections and international exhibitions.',
-    'e.rotulo': 'Exhibitions and awards', 'e.titulo': 'From São Paulo to <em class="ouro">New York.</em>', 'e.honrarias': 'Honours',
-    'i.rotulo': 'Press', 'i.titulo': 'In the press',
-    'v.rotulo': 'Galeria Hermes Santos', 'v.titulo': 'Visit the <em class="ouro">gallery.</em>',
-    'v.endereco': 'Address', 'v.mapa': 'Get directions ↗', 'v.horario': 'Opening hours',
+    pular: 'Skip to content', inicio: 'Hermes Santos — home', secoes: 'Sections', menu: 'Menu', fechar: 'Close',
+    'nav.obras': 'Works', 'nav.acervo': 'Collection', 'nav.sobre': 'About', 'nav.exposicoes': 'Exhibitions', 'nav.imprensa': 'Press', 'nav.visita': 'Visit',
+    'pl.nota': 'Sculpture, painting, installation',
+    'ab.material': 'Strontium aluminate (glow) paint on carbon steel', 'ab.meta': 'Sculptor and visual artist<br>São Paulo, Brazil', 'ab.descer': 'See the works',
+    'lede.aria': 'Introduction',
+    'lede.texto': 'Hermes Santos brings the precision of industry to art: robotics, laser cutting and additive manufacturing in the service of sculptures in steel, brass, resin and Murano crystal.',
+    'lede.lado': 'Trained in mechanics, with more than three decades in automotive manufacturing, he developed his work on his own. He also paints, works with glass and creates multimedia installations.',
+    'lede.link': 'About the artist',
+    'd.titulo': 'Featured', 'd.nota': 'Eight works from the collection. Select one to see its full record.',
+    'a.titulo': 'Collection', 'a.filtrar': 'Filter by technique', 'a.vista': 'Display', 'a.imagens': 'Images', 'a.lista': 'List',
+    's.titulo': 'About the artist', 's.alt': 'Portrait of Hermes Santos',
+    's.p1': 'Hermes Santos is a visual artist and designer with a singular background.',
+    's.p2': 'Trained in mechanics and with more than three decades in automotive manufacturing, he developed his artistic practice on his own, through direct observation of materials and experimentation with the processes that transform matter.',
+    's.p3': 'Founder of Modefer, a reference in the auto parts industry, he draws on his experience in management and engineering to bring the technologies of his industrial park — robotics, laser cutting and additive manufacturing — to aesthetic ends.',
+    's.p4': 'He describes his method as that of a seeker.',
+    's.p5': 'The discipline and precision of heavy industry merge with an interest in organic forms and fluidity, in works that explore the duality between technical rigidity and visual lightness.',
+    's.p6': 'He lives and works in São Paulo. His production ranges from steel and brass sculptures to paintings, glass works and multimedia installations, and is part of private collections and international exhibitions.',
+    'e.titulo': 'Exhibitions', 'e.honrarias': 'Honours',
+    'i.titulo': 'Press', 'i.nota': 'Articles published about the artist. Links open each outlet’s website.',
+    'v.titulo': 'Visit the gallery', 'v.endereco': 'Address', 'v.mapa': 'Get directions', 'v.horario': 'Opening hours',
     'v.horas': 'Monday to Friday, 9 am to 6 pm<br>Saturday, 9 am to 1 pm', 'v.contato': 'Contact', 'v.agendar': 'Book a visit',
+    'r.endereco': 'Calçada dos Cravos, 63 — Alphaville Comercial, Barueri, SP, Brazil', 'r.topo': 'Back to top',
     'f.ano': 'Year', 'f.dimensoes': 'Dimensions', 'f.material': 'Material', 'f.interesse': 'I’m interested',
     'f.anterior': '← Previous', 'f.proxima': 'Next →',
   };
@@ -47,28 +50,36 @@
   function traduzir() {
     if (!EN) return;
     raiz.lang = 'en';
+    document.title = 'Hermes Santos — sculptor and visual artist';
     const desc = $('meta[name="description"]');
-    if (desc) desc.content = 'Galeria Hermes Santos in Alphaville, São Paulo. Steel, brass and glass sculptures, paintings and installations by the artist Hermes Santos.';
-    $$('[data-i18n]').forEach(el => { const v = T[el.dataset.i18n]; if (v) el.innerHTML = v; });
-    $$('[data-i18n-alt]').forEach(el => { const v = T[el.dataset.i18nAlt]; if (v) el.alt = v; });
-    $$('[data-i18n-aria]').forEach(el => { const v = T[el.dataset.i18nAria]; if (v) el.setAttribute('aria-label', v); });
-    const brand = $('.gallery-brand'); if (brand) brand.href = '?lang=en';
+    if (desc) desc.content = 'Hermes Santos, sculptor and visual artist. Sculptures in steel, brass, resin and Murano crystal, paintings and installations. Gallery in Alphaville, Barueri (São Paulo).';
+    $$('[data-i18n]').forEach(e => { const v = T[e.dataset.i18n]; if (v) e.innerHTML = v; });
+    $$('[data-i18n-alt]').forEach(e => { const v = T[e.dataset.i18nAlt]; if (v) e.alt = v; });
+    $$('[data-i18n-aria]').forEach(e => { const v = T[e.dataset.i18nAria]; if (v) e.setAttribute('aria-label', v); });
   }
-
   function idiomas() {
     const troca = $('[data-idioma-troca]');
-    if (troca) { troca.textContent = EN ? 'PT' : 'EN'; troca.href = EN ? './' : '?lang=en'; troca.lang = EN ? 'pt-BR' : 'en'; }
-    $$('[data-idioma]').forEach(a => {
-      if ((a.dataset.idioma === 'en') === EN) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
-    });
+    if (!troca) return;
+    troca.textContent = EN ? 'PT' : 'EN';
+    troca.href = EN ? './' : '?lang=en';
+    troca.lang = EN ? 'pt-BR' : 'en';
+    troca.setAttribute('aria-label', EN ? 'Ver em português' : 'View in English');
   }
 
   /* ---------- utilidades ---------- */
   const el = (tag, cls, texto) => { const e = document.createElement(tag); if (cls) e.className = cls; if (texto != null) e.textContent = texto; return e; };
   const tecnica = t => (EN ? (H.tecnicaEn || {})[t] || t : t);
   const material = m => {
-    if (!EN || !m) return m;
+    if (!m) return '—';
+    if (!EN) return m;
     return (H.materialEn || []).reduce((s, [a, b]) => s.split(a).join(b), m);
+  };
+  const dimensoes = d => {
+    if (!d) return '—';
+    let s = d.replace(/\s*x\s*/g, ' × ');
+    if (EN) s = s.replace('(altura)', '(height)').replace(' e ', ' and ').replace(' a ', ' to ');
+    else s = s.replace(/(\d)\.(\d)/g, '$1,$2');
+    return s;
   };
   const zap = msg => `https://wa.me/${(H.contato || {}).whatsapp}?text=${encodeURIComponent(msg)}`;
   const dataCurta = d => {
@@ -79,14 +90,70 @@
   };
   const srcset = f => `${f.p} 760w, ${f.g} ${Math.min(f.w, 1800)}w`;
 
+  /* uma única fila de tarefas por quadro para tudo que depende da rolagem */
+  const tarefas = [];
+  let pedidoRol = 0;
+  const rodarTarefas = () => { pedidoRol = 0; tarefas.forEach(f => f()); };
+  const pedirQuadro = () => { if (!pedidoRol) pedidoRol = requestAnimationFrame(rodarTarefas); };
+  addEventListener('scroll', pedirQuadro, { passive: true });
+  addEventListener('resize', pedirQuadro);
+  const aoRolar = f => { tarefas.push(f); f(); };
+
+  /* ---------- luz da galeria ---------- */
+  // obras fotografadas com luz e no escuro: [foto com luz, foto no escuro] (índices em data/obras.js)
+  // (só pares com o mesmo enquadramento; Amonite e Owl foram fotografadas de ângulos diferentes)
+  const PARES = { whale: [1, 0], 'obra-solar': [1, 0] };
+  const apagada = () => raiz.classList.contains('luz-apagada');
+  const fotoInicial = o => { const p = PARES[o.id]; return p ? p[apagada() ? 1 : 0] : 0; };
+  let mexeuNaLuz = false, tempoLuz = 0;
+  function rotuloLuz() {
+    const t = $('#luzTexto');
+    if (t) t.textContent = apagada() ? txt('Acender a luz', 'Lights on') : txt('Apagar a luz', 'Lights off');
+  }
+  function definirLuz(apagar) {
+    if (apagada() === apagar) return;
+    raiz.classList.remove('apagando', 'acendendo');
+    if (movimento) {
+      void raiz.offsetWidth;
+      raiz.classList.add(apagar ? 'apagando' : 'acendendo');
+      clearTimeout(tempoLuz);
+      tempoLuz = setTimeout(() => raiz.classList.remove('apagando', 'acendendo'), 2000);
+    }
+    raiz.classList.toggle('luz-apagada', apagar);
+    rotuloLuz();
+  }
+  function luz() {
+    rotuloLuz();
+    const b = $('#luz');
+    if (b) b.addEventListener('click', () => { mexeuNaLuz = true; definirLuz(!apagada()); });
+    // depois da abertura, a sala apaga e as obras de aluminato de estrôncio aparecem brilhando
+    intro.then(() => setTimeout(() => { if (!mexeuNaLuz) definirLuz(true); }, movimento ? 1900 : 0));
+  }
+
+  /* foto de uma obra; se ela tiver par, leva as duas versões sobrepostas */
+  function foto(o, sizes) {
+    const par = PARES[o.id];
+    const caixa = el('span', par ? 'foto par' : 'foto');
+    const base = o.fotos[par ? par[1] : 0];
+    caixa.style.setProperty('--ar', (base.w / base.h).toFixed(4));
+    const img = (f, cls) => {
+      const i = el('img', cls);
+      i.src = f.p; i.srcset = srcset(f); i.sizes = sizes; i.alt = '';
+      i.width = f.w; i.height = f.h; i.loading = 'lazy'; i.decoding = 'async';
+      return i;
+    };
+    if (par) caixa.append(img(o.fotos[par[0]], 'v-acesa'), img(o.fotos[par[1]], 'v-apagada'));
+    else caixa.append(img(o.fotos[0]));
+    return caixa;
+  }
+
   /* ---------- palavras sob máscara ---------- */
   let contaPalavra = 0;
-  function dividir(no, ouro) {
+  function dividir(no) {
     [...no.childNodes].forEach(filho => {
       if (filho.nodeType === 3) {
-        const partes = filho.textContent.split(/(\s+)/);
         const frag = document.createDocumentFragment();
-        partes.forEach(p => {
+        filho.textContent.split(/(\s+)/).forEach(p => {
           if (!p) return;
           if (/^\s+$/.test(p)) { frag.append(document.createTextNode(' ')); return; }
           const caixa = el('span', 'palavra');
@@ -96,19 +163,19 @@
           frag.append(caixa);
         });
         filho.replaceWith(frag);
-      } else if (filho.nodeType === 1 && filho.tagName !== 'BR') {
-        if (filho.classList.contains('ouro')) filho.classList.add('dividido');
-        dividir(filho, ouro || filho.classList.contains('ouro'));
-      }
+      } else if (filho.nodeType === 1 && filho.tagName !== 'BR') dividir(filho);
     });
   }
   function prepararPalavras() {
     if (!movimento) return;
     $$('[data-rv="words"]').forEach(t => {
       contaPalavra = 0;
-      t.setAttribute('aria-label', t.textContent.replace(/\s+/g, ' ').trim());
+      const texto = t.textContent.replace(/\s+/g, ' ').trim();
       dividir(t);
-      $$('.palavra', t).forEach(p => p.setAttribute('aria-hidden', 'true'));
+      // leitores de tela leem a frase inteira; as palavras soltas ficam só para a animação
+      const visivel = el('span'); visivel.setAttribute('aria-hidden', 'true');
+      visivel.append(...t.childNodes);
+      t.append(el('span', 'sr', texto), visivel);
     });
   }
 
@@ -120,8 +187,9 @@
       observador.unobserve(e.target);
       if (e.target.__aoVer) e.target.__aoVer();
     });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: .12 }) : null;
+  }, { rootMargin: '0px 0px -8% 0px', threshold: .1 }) : null;
   const observar = (alvo, aoVer) => {
+    if (!alvo) return;
     if (aoVer) alvo.__aoVer = aoVer;
     if (observador && movimento) observador.observe(alvo);
     else { alvo.classList.add('visto'); if (aoVer) aoVer(); }
@@ -130,28 +198,13 @@
     $$('[data-rv]').forEach(alvo => {
       if (alvo.dataset.rv === 'up') {
         const irmaos = [...alvo.parentElement.children].filter(x => x.dataset.rv === 'up');
-        alvo.style.setProperty('--atraso', `${Math.min(irmaos.indexOf(alvo), 5) * 0.09}s`);
+        alvo.style.setProperty('--atraso', `${Math.min(irmaos.indexOf(alvo), 5) * 0.08}s`);
       }
       observar(alvo);
     });
-    const manifesto = $('#manifesto'); if (manifesto) observar(manifesto);
-    $$('[data-conta]').forEach(n => {
-      const fim = +n.dataset.conta;
-      if (!movimento) return;
-      n.textContent = '0';
-      observar(n, () => {
-        const t0 = performance.now(), dur = 1800;
-        const passo = t => {
-          const p = Math.min(1, (t - t0) / dur);
-          n.textContent = Math.round(fim * (1 - Math.pow(2, -10 * p)));
-          if (p < 1) requestAnimationFrame(passo); else n.textContent = fim;
-        };
-        requestAnimationFrame(passo);
-      });
-    });
   }
 
-  /* ---------- rede de linhas (Voronoi das esculturas) ---------- */
+  /* ---------- rede de linhas (Voronoi das esculturas vazadas) ---------- */
   function desenharRede(svg, caminhos, durMax) {
     if (!svg || !caminhos || !caminhos.length) return;
     const ns = 'http://www.w3.org/2000/svg';
@@ -167,6 +220,7 @@
   }
 
   /* ---------- preloader ---------- */
+  let lenis = null;
   function preloader() {
     const tela = $('#preloader');
     if (!raiz.classList.contains('com-preloader') || !tela) { fimIntro(); return; }
@@ -175,7 +229,7 @@
     const rede = $('#plRede');
     desenharRede(rede, REDE.preloader, jaViu ? 0.5 : 1.3);
     requestAnimationFrame(() => requestAnimationFrame(() => rede && rede.classList.add('desenha')));
-    const num = $('#plNum'), barra = $('#plBarra');
+    const num = $('#plNum');
     const t0 = performance.now();
     const minimo = jaViu ? 600 : 2100, maximo = 4200;
     let carregado = document.readyState === 'complete', valor = 0, saiu = false, limpo = false;
@@ -189,26 +243,25 @@
       if (saiu) return; saiu = true;
       raiz.classList.add('preloader-sai');
       setTimeout(fimIntro, 250);
-      setTimeout(limpar, 1050);
+      setTimeout(limpar, 1150);
     };
-    setTimeout(limpar, 5600);
+    setTimeout(limpar, 6200);
+    let chegou = false;
     const quadro = t => {
-      if (saiu) return;
+      if (chegou) return;
       const decorrido = t - t0;
       const pronto = (carregado && decorrido > minimo) || decorrido > maximo;
       const alvo = pronto ? 100 : Math.min(92, (decorrido / minimo) * 92);
       valor += (alvo - valor) * (pronto ? 0.2 : 0.08);
       if (pronto && valor > 99.4) valor = 100;
       num.textContent = Math.floor(valor);
-      barra.style.transform = `scaleX(${valor / 100})`;
-      if (valor >= 100) { setTimeout(sair, 180); return; }
+      if (valor >= 100) { chegou = true; tela.classList.add('carregado'); setTimeout(sair, jaViu ? 250 : 700); return; }
       requestAnimationFrame(quadro);
     };
     requestAnimationFrame(quadro);
   }
 
   /* ---------- rolagem suave ---------- */
-  let lenis = null;
   function rolagem() {
     if (movimento && window.Lenis) {
       lenis = new window.Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 0.95 });
@@ -224,48 +277,92 @@
       if (!alvo) return;
       e.preventDefault();
       fecharMenu();
-      if (lenis) lenis.scrollTo(alvo, { offset: alvo.id === 'conteudo' ? 0 : -20, duration: 1.6 });
+      const deslocamento = alvo.id === 'conteudo' ? 0 : -84;
+      if (lenis) lenis.scrollTo(alvo, { offset: deslocamento, duration: 1.6 });
       else alvo.scrollIntoView({ behavior: movimento ? 'smooth' : 'auto' });
-      if (id !== '#conteudo') history.replaceState(null, '', location.search + id);
+      if (id === '#conteudo') alvo.focus({ preventScroll: true });
+      else history.replaceState(null, '', location.search + id);
     });
   }
 
-  /* ---------- topo fixo e menu ---------- */
+  /* ---------- topo, menu e papel ---------- */
   const topo = $('#topo'), menuBtn = $('.topo-menu'), menuCheio = $('#menuCheio');
   function fecharMenu() {
     if (!menuCheio || menuCheio.hidden) return;
     menuCheio.hidden = true;
+    raiz.classList.remove('menu-aberto');
     menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.textContent = EN ? 'Menu' : 'Menu';
+    menuBtn.textContent = 'Menu';
     if (lenis) lenis.start();
   }
   function topoEMenu() {
-    const hero = $('.gallery-hero');
-    const mostrar = v => { topo.classList.toggle('ver', v); topo.inert = !v; };
-    mostrar(false);
-    if (observador) {
-      new IntersectionObserver(([e]) => mostrar(!e.isIntersecting && e.boundingClientRect.top < 0), { threshold: 0, rootMargin: '-80px 0px 0px 0px' }).observe(hero);
-    } else mostrar(true);
+    const papel = $('#papel');
+    // sobre o papel claro, o topo fica escuro
+    aoRolar(() => {
+      if (!papel) return;
+      const r = papel.getBoundingClientRect();
+      topo.classList.toggle('claro', r.top <= 34 && r.bottom > 34);
+    });
     menuBtn.addEventListener('click', () => {
-      const abrir = menuCheio.hidden;
-      if (!abrir) { fecharMenu(); return; }
+      if (!menuCheio.hidden) { fecharMenu(); return; }
       menuCheio.hidden = false;
+      raiz.classList.add('menu-aberto');
       menuBtn.setAttribute('aria-expanded', 'true');
-      menuBtn.textContent = EN ? 'Close' : 'Fechar';
+      menuBtn.textContent = txt('Fechar', 'Close');
       if (lenis) lenis.stop();
       const primeiro = $('a', menuCheio); if (primeiro) primeiro.focus();
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menuCheio.hidden) { fecharMenu(); menuBtn.focus(); } });
-    // link da seção atual
+    // link da seção atual (o acervo conta como "Obras")
     const links = $$('.topo-links a');
-    const secoes = links.map(a => $(a.getAttribute('href'))).filter(Boolean);
+    const mapa = { obras: 'destaques' };
     if (observador) {
       const io = new IntersectionObserver(es => es.forEach(e => {
         if (!e.isIntersecting) return;
-        links.forEach(a => (a.getAttribute('href') === `#${e.target.id}` ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+        const id = mapa[e.target.id] || e.target.id;
+        links.forEach(a => (a.getAttribute('href') === `#${id}` ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
       }), { rootMargin: '-45% 0px -50% 0px' });
-      secoes.forEach(s => io.observe(s));
+      ['inicio', 'destaques', 'obras', 'sobre', 'exposicoes', 'imprensa', 'contato'].forEach(id => { const s = $(`#${id}`); if (s) io.observe(s); });
     }
+    // o papel abre de um cartão para a largura toda quando entra na tela
+    if (movimento && papel) {
+      let ultimo = -1;
+      aoRolar(() => {
+        const topoPapel = papel.getBoundingClientRect().top;
+        const p = Math.min(1, Math.max(0, (innerHeight - topoPapel) / (innerHeight * 0.85)));
+        const fecha = +(1 - p).toFixed(3);
+        if (fecha !== ultimo) { ultimo = fecha; papel.style.setProperty('--fecha', fecha); }
+      });
+    }
+  }
+
+  /* ---------- abertura ---------- */
+  function abertura() {
+    intro.then(() => raiz.classList.remove('intro-espera'));
+    const ab = $('#inicio');
+    if (!ab || !movimento) return;
+    let ultimo = -1;
+    aoRolar(() => {
+      const y = Math.round(Math.min(scrollY, innerHeight * 1.2));
+      if (y !== ultimo) { ultimo = y; ab.style.setProperty('--rol', y); }
+    });
+  }
+
+  /* ---------- legendas que andam um pouco mais rápido que as fotos ---------- */
+  function paralaxe() {
+    if (!movimento) return;
+    const largo = matchMedia('(min-width: 768px)');
+    const alvos = $$('[data-py]');
+    aoRolar(() => {
+      if (!largo.matches) return;
+      const h = innerHeight;
+      alvos.forEach(a => {
+        const r = a.parentElement.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > h + 200) return;
+        const c = (r.top + r.height / 2 - h / 2) / h;
+        a.style.setProperty('--py', `${(c * +a.dataset.py).toFixed(1)}px`);
+      });
+    });
   }
 
   /* ---------- ficha da obra ---------- */
@@ -289,8 +386,8 @@
     $('#fTecnica').textContent = tecnica(o.tecnica);
     $('#fTitulo').textContent = o.titulo;
     $('#fAno').textContent = o.ano || '—';
-    $('#fDim').textContent = o.dimensoes || '—';
-    $('#fMat').textContent = material(o.material) || '—';
+    $('#fDim').textContent = dimensoes(o.dimensoes);
+    $('#fMat').textContent = material(o.material);
     $('#fInteresse').href = zap(txt(
       `Olá! Tenho interesse na obra "${o.titulo}" (${o.ano}), de Hermes Santos. Pode me passar mais informações?`,
       `Hello! I'm interested in the work "${o.titulo}" (${o.ano}) by Hermes Santos. Could you send me more information?`));
@@ -305,7 +402,7 @@
         minis.append(b);
       });
     }
-    mostrarFoto(0);
+    mostrarFoto(fotoInicial(o));
     if (!ficha.open) {
       ficha.showModal();
       if (lenis) lenis.stop();
@@ -326,140 +423,174 @@
     });
   }
 
-  /* ---------- destaques (rolagem horizontal) ---------- */
-  const DESTAQUES = ['obra-solar', 'ganesh', 'horse-power', 'resiliencia', 'amonite', 'gravidade', 'sea-dragon', 'jelly-fish'];
+  /* ---------- obras em destaque ---------- */
+  const DESTAQUES = ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'gravidade', 'sea-dragon', 'jelly-fish'];
+  const PY = [80, -60, 100, -50];
   function destaques() {
-    const secao = $('#destaques'), trilho = $('#dTrilho');
+    const cont = $('#placas');
     const obras = DESTAQUES.map(id => OBRAS.find(o => o.id === id)).filter(Boolean);
-    if (!obras.length) { secao.hidden = true; return; }
+    if (!obras.length) { $('#destaques').hidden = true; return; }
+    cont.classList.add('com-foco');
+    const total = String(obras.length).padStart(2, '0');
     obras.forEach((o, i) => {
-      const f = o.fotos[0];
-      const b = el('button', 'd-item'); b.type = 'button'; b.dataset.cursor = txt('Ver', 'View');
-      b.setAttribute('aria-label', `${o.titulo}, ${o.ano} — ${txt('ver ficha', 'view details')}`);
-      const mold = el('span', 'd-moldura'); mold.style.setProperty('--ar', (f.w / f.h).toFixed(3));
-      const img = el('img'); img.src = f.p; img.srcset = srcset(f); img.sizes = '(max-width: 767px) 76vw, 50vw';
-      img.alt = ''; img.loading = 'lazy'; img.width = f.w; img.height = f.h;
-      mold.append(img);
-      const leg = el('span', 'd-legenda');
-      leg.append(el('strong', null, o.titulo), el('span', null, `${o.ano} · ${tecnica(o.tecnica)}`));
-      b.append(mold, leg);
-      b.addEventListener('click', () => abrirFicha(obras, i));
-      trilho.append(b);
+      const placa = el('article', 'placa');
+      placa.setAttribute('aria-labelledby', `placa-${o.id}`);
+      // a foto abre a ficha com o mouse; no teclado, o botão "Ver ficha" faz o mesmo
+      const imagem = el('div', 'placa-obra'); imagem.dataset.cursor = txt('Ver', 'View');
+      imagem.append(foto(o, '(max-width: 767px) 92vw, 58vw'));
+      imagem.addEventListener('click', () => abrirFicha(obras, i));
+      const leg = el('div', 'placa-leg'); leg.dataset.py = PY[i % PY.length];
+      const titulo = el('h3', null, o.titulo); titulo.id = `placa-${o.id}`;
+      const dados = el('p', 'placa-dados');
+      dados.append(`${o.ano} · ${tecnica(o.tecnica)}`, el('br'), material(o.material), el('br'), dimensoes(o.dimensoes));
+      const ver = el('button', 'link-seta', txt('Ver ficha', 'View details')); ver.type = 'button';
+      ver.setAttribute('aria-label', `${txt('Ver ficha de', 'View details of')} ${o.titulo}`);
+      ver.addEventListener('click', () => abrirFicha(obras, i));
+      leg.append(el('p', 'placa-n', `${String(i + 1).padStart(2, '0')} / ${total}`), titulo, dados, ver);
+      placa.append(imagem, leg);
+      cont.append(placa);
+      observar(placa);
     });
-    $('#dTotal').textContent = String(obras.length).padStart(2, '0');
-    const atualEl = $('#dAtual'), barra = $('#dBarra');
-    const largo = matchMedia('(min-width: 768px) and (min-height: 521px)');
-    let distancia = 0;
-    const medir = () => {
-      if (!largo.matches) { secao.style.height = ''; trilho.style.transform = ''; return; }
-      distancia = Math.max(0, trilho.scrollWidth - innerWidth);
-      secao.style.height = `${innerHeight + distancia}px`;
-      atualizar();
-    };
-    let pedido = 0;
-    const atualizar = () => {
-      pedido = 0;
-      if (!largo.matches) return;
-      const topoSec = secao.getBoundingClientRect().top;
-      const p = distancia ? Math.min(1, Math.max(0, -topoSec / distancia)) : 0;
-      trilho.style.transform = `translate3d(${-p * distancia}px,0,0)`;
-      barra.style.transform = `scaleX(${p})`;
-      atualEl.textContent = String(Math.min(obras.length, Math.round(p * (obras.length - 1)) + 1)).padStart(2, '0');
-    };
-    addEventListener('scroll', () => { if (!pedido) pedido = requestAnimationFrame(atualizar); }, { passive: true });
-    addEventListener('resize', medir);
-    largo.addEventListener('change', medir);
-    $$('img', trilho).forEach(im => im.addEventListener('load', medir, { once: true }));
-    medir();
   }
 
   /* ---------- acervo ---------- */
   function acervo() {
-    const filtros = $('#filtros'), grade = $('#grade');
+    const filtros = $('#filtros'), grade = $('#grade'), indice = $('#indice'), previa = $('#previa');
+    const anos = OBRAS.map(o => parseInt(o.ano, 10)).filter(Boolean);
+    if (anos.length) {
+      const de = Math.min(...anos), ate = Math.max(...anos);
+      $('#aNota').textContent = txt(`${OBRAS.length} obras, de ${de} a ${ate}.`, `${OBRAS.length} works, ${de} to ${ate}.`);
+    }
     const tecnicas = ['Escultura', 'Pintura', 'Instalação', 'Colagem'].filter(t => OBRAS.some(o => o.tecnica === t));
-    let ativa = '';
+    let ativa = '', vista = 'grade';
     const botao = (rotulo, valor, total) => {
       const b = el('button', 'filtro', rotulo); b.type = 'button';
       b.setAttribute('aria-pressed', String(valor === ativa));
-      b.append(el('small', null, total));
-      b.addEventListener('click', () => { ativa = valor; $$('.filtro', filtros).forEach(x => x.setAttribute('aria-pressed', String(x === b))); render(true); });
+      b.append(el('sup', null, total));
+      b.addEventListener('click', () => {
+        ativa = valor;
+        $$('.filtro', filtros).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+        render(true);
+      });
       return b;
     };
     filtros.append(botao(txt('Todas', 'All'), '', OBRAS.length));
     tecnicas.forEach(t => filtros.append(botao(tecnica(t), t, OBRAS.filter(o => o.tecnica === t).length)));
-    const render = trocou => {
-      const obras = ativa ? OBRAS.filter(o => o.tecnica === ativa) : OBRAS;
+    $$('.vistas button').forEach(b => b.addEventListener('click', () => {
+      vista = b.dataset.vista;
+      $$('.vistas button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      render(true);
+    }));
+
+    const desenharGrade = (obras, trocou) => {
       grade.textContent = '';
       obras.forEach((o, i) => {
-        const f = o.fotos[0];
         const li = el('li');
         const b = el('button', 'obra'); b.type = 'button'; b.dataset.cursor = txt('Ver', 'View');
-        const fig = el('span', 'obra-foto');
-        const img = el('img'); img.src = f.p; img.srcset = srcset(f); img.sizes = '(max-width: 600px) 92vw, (max-width: 1100px) 46vw, 25vw';
-        img.alt = `${o.titulo}, ${tecnica(o.tecnica).toLowerCase()} ${txt('de', 'from')} ${o.ano}`; img.loading = 'lazy'; img.width = f.w; img.height = f.h;
-        fig.append(img);
         const leg = el('span', 'obra-leg');
-        leg.append(el('strong', null, o.titulo), el('span', null, `${o.ano} · ${tecnica(o.tecnica)}`));
-        b.append(fig, leg);
+        leg.append(el('em', null, o.titulo), el('span', null, `${o.ano} · ${tecnica(o.tecnica)}`));
+        b.append(foto(o, '(max-width: 600px) 92vw, (max-width: 1100px) 46vw, 25vw'), leg);
         b.addEventListener('click', () => abrirFicha(obras, i));
         li.append(b);
-        li.style.setProperty('--atraso', `${(trocou ? i % 8 : i % 4) * 0.08}s`);
+        li.style.setProperty('--atraso', `${(trocou ? i % 8 : i % 4) * 0.07}s`);
         grade.append(li);
         observar(li);
       });
     };
+    const desenharLista = obras => {
+      indice.textContent = '';
+      obras.forEach((o, i) => {
+        const li = el('li');
+        const b = el('button', 'ix'); b.type = 'button';
+        const f = o.fotos[fotoInicial(o)];
+        const mini = el('img', 'ix-mini'); mini.src = f.p; mini.alt = ''; mini.loading = 'lazy'; mini.width = 64; mini.height = 64;
+        b.append(mini, el('span', 'ix-n', String(i + 1).padStart(2, '0')), el('span', 'ix-t', o.titulo),
+          el('span', 'ix-tec', tecnica(o.tecnica)), el('span', 'ix-mat', material(o.material)), el('span', 'ix-ano', o.ano));
+        b.addEventListener('click', () => abrirFicha(obras, i));
+        b.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') mostrarPrevia(o); });
+        b.addEventListener('pointerleave', esconderPrevia);
+        li.append(b);
+        indice.append(li);
+      });
+    };
+    const render = trocou => {
+      const obras = ativa ? OBRAS.filter(o => o.tecnica === ativa) : OBRAS;
+      esconderPrevia();
+      grade.hidden = vista !== 'grade';
+      indice.hidden = vista !== 'lista';
+      if (vista === 'grade') desenharGrade(obras, trocou); else desenharLista(obras);
+    };
+
+    // prévia da foto que acompanha o mouse na lista
+    let px = 0, py = 0, cx = 0, cy = 0, girando = false, visivel = false;
+    const fino = matchMedia('(pointer: fine)');
+    function mostrarPrevia(o) {
+      if (!previa || !fino.matches) return;
+      const f = o.fotos[fotoInicial(o)];
+      previa.textContent = '';
+      const im = el('img'); im.src = f.p; im.alt = ''; im.width = f.w; im.height = f.h;
+      previa.append(im);
+      if (!visivel) { cx = px; cy = py; }
+      visivel = true;
+      previa.classList.add('ver');
+      if (!girando) { girando = true; requestAnimationFrame(mover); }
+    }
+    function esconderPrevia() { visivel = false; if (previa) previa.classList.remove('ver'); }
+    function mover() {
+      cx += (px - cx) * 0.16; cy += (py - cy) * 0.16;
+      const largura = previa.offsetWidth, altura = previa.offsetHeight;
+      const x = Math.min(innerWidth - largura - 16, cx + 28), y = Math.min(innerHeight - altura - 16, Math.max(16, cy - altura / 2));
+      previa.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      if (visivel || Math.abs(px - cx) > .5) requestAnimationFrame(mover); else girando = false;
+    }
+    addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; }, { passive: true });
+
     render(false);
   }
 
   /* ---------- exposições ---------- */
   function exposicoes() {
-    const anos = $('#ltAnos');
+    const lista = H.exposicoes || [];
+    const anos = lista.map(x => x.ano);
+    if (anos.length) {
+      const de = Math.min(...anos), ate = Math.max(...anos);
+      $('#eNota').textContent = txt(`${lista.length} exposições, prêmios e eventos, de ${de} a ${ate}.`, `${lista.length} exhibitions, awards and events, ${de} to ${ate}.`);
+    }
+    const cv = $('#cv');
     const grupos = new Map();
-    (H.exposicoes || []).forEach(x => { if (!grupos.has(x.ano)) grupos.set(x.ano, []); grupos.get(x.ano).push(x); });
+    lista.forEach(x => { if (!grupos.has(x.ano)) grupos.set(x.ano, []); grupos.get(x.ano).push(x); });
     [...grupos.keys()].sort((a, b) => b - a).forEach(ano => {
-      const bloco = el('div', 'lt-ano');
+      const bloco = el('div', 'cv-ano');
       bloco.append(el('h3', null, ano));
       const ul = el('ul');
       grupos.get(ano).forEach((x, i) => {
         const li = el('li');
         li.style.setProperty('--atraso', `${Math.min(i, 8) * 0.06}s`);
-        const titulo = el('span', 'lt-titulo', EN ? x.en || x.titulo : x.titulo);
-        if (x.intl) titulo.append(el('span', 'lt-intl', txt('Internacional', 'International')));
-        li.append(el('span', 'lt-data', dataCurta(x.data)), titulo, el('span', 'lt-lugar', EN ? x.lugarEn || x.lugar : x.lugar));
+        li.append(el('span', 'cv-data', dataCurta(x.data)), el('span', 'cv-titulo', EN ? x.en || x.titulo : x.titulo), el('span', 'cv-lugar', EN ? x.lugarEn || x.lugar : x.lugar));
         ul.append(li);
       });
       bloco.append(ul);
-      anos.append(bloco);
+      cv.append(bloco);
       observar(bloco);
     });
     const hon = $('#honrarias');
-    (H.honrarias || []).forEach(h => hon.append(el('li', null, `${EN ? h.en : h.pt} (${h.ano})`)));
-    // eixo que se preenche com a rolagem
-    const linha = $('#linhaTempo'), barra = $('#ltBarra');
-    let pedido = 0;
-    const atualizar = () => {
-      pedido = 0;
-      const r = linha.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (innerHeight * 0.65 - r.top) / r.height));
-      barra.style.transform = `scaleY(${p})`;
-    };
-    addEventListener('scroll', () => { if (!pedido) pedido = requestAnimationFrame(atualizar); }, { passive: true });
-    atualizar();
+    (H.honrarias || []).forEach(h => {
+      const [titulo, ...resto] = (EN ? h.en : h.pt).split(' — ');
+      const li = el('li', null, titulo);
+      li.append(el('span', null, [resto.join(' — '), h.ano].filter(Boolean).join(', ')));
+      li.dataset.rv = 'up';
+      hon.append(li);
+    });
   }
 
   /* ---------- imprensa ---------- */
   function imprensa() {
-    const lista = H.imprensa || [];
-    const faixa = $('#faixa');
-    const nomes = [...new Set(lista.map(m => m.veiculo.split(' · ')[0]))];
-    for (let k = 0; k < 2; k++) nomes.forEach(n => faixa.append(el('span', null, n)));
     const ul = $('#materias');
-    lista.forEach(m => {
+    (H.imprensa || []).forEach(m => {
       const li = el('li'); li.dataset.rv = 'up';
       const a = el('a'); a.href = m.url; a.target = '_blank'; a.rel = 'noopener';
       a.append(el('span', 'mt-veiculo', m.veiculo), el('span', 'mt-titulo', m.titulo), el('span', 'mt-data', EN ? m.dataEn : m.data));
       li.append(a); ul.append(li);
-      observar(li);
     });
   }
 
@@ -467,7 +598,7 @@
   function visita() {
     const c = H.contato || {};
     const end = $('#vEndereco');
-    (c.endereco || []).forEach((linha, i) => { if (i) end.append(el('br')); end.append(document.createTextNode(linha)); });
+    (c.endereco || []).forEach((linha, i) => { if (i) end.append(el('br')); end.append(linha); });
     $('#vMapa').href = c.mapa;
     const email = $('#vEmail'); email.href = `mailto:${c.email}`; email.textContent = c.email;
     const tel = $('#vTel'); tel.href = `https://wa.me/${c.whatsapp}`; tel.textContent = `WhatsApp ${c.telefone}`;
@@ -480,26 +611,25 @@
     $('#ano').textContent = new Date().getFullYear();
   }
 
-  /* ---------- cursor ---------- */
+  /* ---------- cursor "Ver" sobre as obras (só mouse) ---------- */
   function cursor() {
     const c = $('#cursor'), rotulo = $('#cursorTexto');
     if (!c || !matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return;
-    let x = -100, y = -100, cx = -100, cy = -100, ativo = false;
+    let x = 0, y = 0, cx = 0, cy = 0, girando = false;
+    const passo = () => {
+      cx += (x - cx) * 0.22; cy += (y - cy) * 0.22;
+      c.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+      if (c.classList.contains('grande') || Math.abs(x - cx) + Math.abs(y - cy) > .5) requestAnimationFrame(passo); else girando = false;
+    };
     addEventListener('pointermove', e => {
       if (e.pointerType !== 'mouse') return;
       x = e.clientX; y = e.clientY;
-      if (!ativo) { ativo = true; cx = x; cy = y; c.classList.remove('some'); }
       const alvo = e.target.closest('[data-cursor]');
+      if (alvo && !c.classList.contains('grande')) { cx = x; cy = y; rotulo.textContent = alvo.dataset.cursor; }
       c.classList.toggle('grande', !!alvo);
-      if (alvo) rotulo.textContent = alvo.dataset.cursor;
+      if (!girando) { girando = true; requestAnimationFrame(passo); }
     }, { passive: true });
-    document.addEventListener('pointerleave', () => { ativo = false; c.classList.add('some'); });
-    const passo = () => {
-      cx += (x - cx) * 0.2; cy += (y - cy) * 0.2;
-      c.style.transform = `translate3d(${cx}px,${cy}px,0)`;
-      requestAnimationFrame(passo);
-    };
-    requestAnimationFrame(passo);
+    document.addEventListener('pointerleave', () => c.classList.remove('grande'));
   }
 
   /* ---------- ordem de montagem ---------- */
@@ -508,6 +638,8 @@
   tentar('idiomas', idiomas);
   tentar('rolagem', rolagem);
   tentar('preloader', preloader);
+  tentar('luz', luz);
+  tentar('abertura', abertura);
   tentar('palavras', prepararPalavras);
   tentar('topo', topoEMenu);
   tentar('ficha', prepararFicha);
@@ -517,10 +649,11 @@
   tentar('imprensa', imprensa);
   tentar('visita', visita);
   tentar('revelacoes', prepararRevelacoes);
+  tentar('paralaxe', paralaxe);
   tentar('cursor', cursor);
   // se o endereço já vier com #secao, vai até ela depois de montar tudo
   if (location.hash.length > 1) {
     const alvo = $(location.hash);
-    if (alvo) HermesIntro.then(() => setTimeout(() => (lenis ? lenis.scrollTo(alvo, { immediate: true }) : alvo.scrollIntoView()), 50));
+    if (alvo) intro.then(() => setTimeout(() => (lenis ? lenis.scrollTo(alvo, { immediate: true }) : alvo.scrollIntoView()), 50));
   }
 })();
