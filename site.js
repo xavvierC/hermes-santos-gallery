@@ -20,7 +20,7 @@
   const T = {
     pular: 'Skip to content', inicio: 'Hermes Santos — home', secoes: 'Sections', menu: 'Menu', fechar: 'Close',
     'nav.obras': 'Works', 'nav.acervo': 'Collection', 'nav.sobre': 'About', 'nav.exposicoes': 'Exhibitions', 'nav.imprensa': 'Press', 'nav.visita': 'Visit',
-    'ab.meta': 'Sculptor and visual artist<br>São Paulo, Brazil', 'ab.descer': 'See the works',
+    'sala.sub': 'Art gallery', 'sala.alt': 'Zona Neutra, by Hermes Santos: a disc of light fibres around a dark centre', 'ab.descer': 'See the works',
     'lede.aria': 'Introduction',
     'lede.c': 'Hermes Santos brings robotics, laser cutting and additive manufacturing from industry into sculpture.',
     'lede.link': 'About the artist',
@@ -123,13 +123,12 @@
     rotuloLuz();
     const b = $('#luz');
     if (b) b.addEventListener('click', () => { mexeuNaLuz = true; definirLuz(!apagada()); });
-    // depois da abertura, a sala apaga e as obras de aluminato de estrôncio aparecem brilhando
+    // a sala começa acesa (a abertura é a luz revelando a obra); quando a entrada termina,
+    // um pulso discreto mostra que dá para apagar a luz e ver as obras brilhando no escuro
     intro.then(() => setTimeout(() => {
-      if (mexeuNaLuz) return;
-      definirLuz(true);
-      // um pulso discreto mostra que a luz pode ser acesa de novo
-      if (movimento && b) { b.classList.add('chama'); setTimeout(() => b.classList.remove('chama'), 2700); }
-    }, movimento ? 1100 : 0));
+      if (mexeuNaLuz || !movimento || !b) return;
+      b.classList.add('chama'); setTimeout(() => b.classList.remove('chama'), 2700);
+    }, 3800));
   }
 
   /* foto de uma obra; se ela tiver par, leva as duas versões sobrepostas */
@@ -436,7 +435,8 @@
   }
 
   /* ---------- obras em destaque ---------- */
-  const DESTAQUES = ['obra-solar', 'ganesh', 'amonite', 'horse-power', 'resiliencia', 'jelly-fish'];
+  // Whale abre a lista: com o botão de luz ela alterna entre a foto iluminada e a que brilha no escuro
+  const DESTAQUES = ['whale', 'obra-solar', 'ganesh', 'horse-power', 'resiliencia', 'jelly-fish'];
   const PY = [80, -60, 100, -50];
   function destaques() {
     const cont = $('#placas');

@@ -14,9 +14,14 @@ many pieces are painted with strontium aluminate, which glows in the dark, so th
 and the about/exhibitions/press block is light paper. Type: Newsreader (titles, long text, artwork titles in
 italic) and Hanken Grotesk (navigation, captions, data), both from Google Fonts.
 
-Signature: the **light switch** in the top bar. Works photographed both lit and glowing with the same framing
-(`PARES` in `site.js`: Whale, Obra Solar) swap between the two photos; with the light on, a soft spotlight
-appears behind the works. After the opening, the room goes dark on its own.
+Opening: the gallery room from the original approved hero (`assets/gallery-room.webp`, `gallery-bench.webp`,
+`zona-neutra-hero.webp`). When the preloader ring opens, the room appears, the spotlight comes on over
+Zona Neutra, then the bench and the name (timings in the `.sala` block of `site.css`).
+
+Signature: the **light switch** in the top bar. The site starts with the light on. Turning it off darkens the
+room (the spotlight and floor reflections go away) and works photographed both lit and glowing with the same
+framing (`PARES` in `site.js`: Whale, Obra Solar) swap to the glowing photo; with the light on, a soft spotlight
+appears behind them. The button pulses once after the opening so visitors notice it.
 
 ## Structure
 

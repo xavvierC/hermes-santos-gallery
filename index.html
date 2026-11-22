@@ -22,7 +22,8 @@
   <meta property="og:locale" content="pt_BR">
   <meta property="og:locale:alternate" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="preload" href="assets/obras/whale-2-g.webp" as="image" fetchpriority="high">
+  <link rel="preload" href="assets/gallery-room.webp" as="image" fetchpriority="high">
+  <link rel="preload" href="assets/zona-neutra-hero.webp" as="image" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap">
   <link rel="stylesheet" href="site.css">
@@ -34,9 +35,8 @@
       /* site.js marca window.__hsAssumiu ao começar; daí em diante ele mesmo garante o fim do preloader. */
       var semSite = function (fn) { return function () { if (!window.__hsAssumiu) fn(); }; };
       window.HermesIntro = new Promise(function (ok) { window.__fimIntro = ok; setTimeout(semSite(ok), 5000); });
-      if (calmo) d.classList.add('luz-apagada');
-      else d.classList.add('com-preloader', 'motion', 'intro-espera');
-      setTimeout(semSite(function () { d.classList.remove('com-preloader', 'intro-espera'); d.classList.add('luz-apagada'); }), 6000);
+      if (!calmo) d.classList.add('com-preloader', 'motion', 'intro-espera');
+      setTimeout(semSite(function () { d.classList.remove('com-preloader', 'intro-espera'); }), 6000);
     })(document.documentElement);
   </script>
   <script src="data/conteudo.js" defer></script>
@@ -85,18 +85,21 @@
   </div>
 
   <main id="conteudo" tabindex="-1">
-    <!-- abertura: uma obra no escuro. As obras com tinta de aluminato de estrôncio acumulam luz e brilham quando a sala apaga -->
-    <section class="abertura" id="inicio" aria-labelledby="nome">
-      <figure class="ab-obra com-foco">
-        <span class="foto par" style="--ar: .6654">
-          <img class="v-acesa" src="assets/obras/whale-2-g.webp" width="851" height="1279" alt="" fetchpriority="high">
-          <img class="v-apagada" src="assets/obras/whale-1-g.webp" width="851" height="1279" alt="" decoding="async">
-        </span>
-        <figcaption class="legenda ab-legenda"><em>Whale</em>, 2017</figcaption>
-      </figure>
-      <p class="ab-meta" data-i18n="ab.meta">Escultor e artista visual<br>São Paulo, Brasil</p>
-      <h1 class="ab-nome" id="nome"><span class="linha"><span>Hermes</span></span><span class="linha"><span>Santos</span></span></h1>
-      <a class="ab-descer" href="#destaques"><span data-i18n="ab.descer">Ver as obras</span><span class="seta" aria-hidden="true">↓</span></a>
+    <!-- abertura: a sala da galeria no escuro; o foco acende sobre a obra Zona Neutra, depois o nome e o banco aparecem -->
+    <section class="sala" id="inicio" aria-labelledby="nome">
+      <div class="sala-palco">
+        <img class="sala-fundo" src="assets/gallery-room.webp" width="1672" height="941" alt="" fetchpriority="high">
+        <div class="sala-escuro" aria-hidden="true"></div>
+        <div class="sala-chao" aria-hidden="true"></div>
+        <div class="sala-bordas" aria-hidden="true"></div>
+        <div class="sala-obra sala-obra--sombra" aria-hidden="true"></div>
+        <div class="sala-obra"><img src="assets/zona-neutra-hero.webp" width="740" height="740" alt="Zona Neutra, de Hermes Santos: disco de fibras claras em torno de um centro escuro" data-i18n-alt="sala.alt" fetchpriority="high"></div>
+        <h1 class="sala-nome" id="nome" aria-label="Hermes Santos"><span>H<span class="versalete">ermes</span></span> <span>S<span class="versalete">antos</span></span></h1>
+        <p class="sala-sub" data-i18n="sala.sub">Galeria de arte</p>
+        <img class="sala-banco" src="assets/gallery-bench.webp" width="1390" height="223" alt="">
+        <div class="sala-banco-luz" aria-hidden="true"></div>
+        <a class="sala-descer" href="#destaques"><span data-i18n="ab.descer">Ver as obras</span><span class="seta" aria-hidden="true">↓</span></a>
+      </div>
     </section>
 
     <section class="lede" aria-label="Apresentação" data-i18n-aria="lede.aria">
